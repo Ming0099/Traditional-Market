@@ -1,0 +1,121 @@
+body{
+    height: 100vh;
+}
+.logoBox{
+    width:100%;
+    border-bottom: 1px solid rgb(216, 216, 216);
+    height: 7%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.logoBox span[id="back"]{
+    position:absolute;
+    left:0;
+    margin-left: 2%;
+    font-size: 20px;
+    cursor: pointer;
+}
+.logoBox span[id="login"]{
+    font-size: 23px;
+}
+.idBox{
+    margin-top: 12%;
+    padding-left: 5%;
+    height: 15%;
+}
+.textview{
+    font-size: 23px;
+}
+.blank{
+    padding:2%;
+}
+.text_input{
+    width: 92%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 20px;
+}
+.pwBox{
+    padding-left: 5%;
+    height: 15%;
+}
+.nickBox{
+    padding-left: 5%;
+    height: 15%;
+}
+.mainmarketBox{
+    padding-left: 5%;
+    height: 35%;
+}
+.blank2{
+    padding:1%;
+}
+.textinfo{
+    font-size: 14px;
+    margin-left: 10px;
+    color: #888888;
+}
+.sel_market{
+    margin-left: 10px;
+}
+.market{
+    font-size: 13px;
+    font-weight: bold;
+}
+.adressBox{
+    padding-left: 5%;
+    height: 22%;
+}
+.address1{
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 4%;
+    width: 65%;
+    font-size: 20px;
+}
+.address2{
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    width: 85%;
+    font-size: 20px;
+}
+.adressBox button[id="addressSearch"]{
+    width: 20%;
+    border-radius: 16px;
+    background-color: black;
+    padding: 5px;
+    color:white;
+    border:none;
+}
+.lowerBox{
+    display: flex;
+    align-items: center;
+    height: 12%;
+}
+.okBox{
+    padding-left: 10%;
+    width: 50%;
+    height: 50%;
+}
+.cancelBox{
+    width: 50%;
+    height: 50%;
+}
+.lowerBox button{
+    width: 70%;
+    height: 100%;
+    font-size: 20px;
+    border-radius: 16px;
+    background-color: black;
+    border:none;
+    color:white;
+    box-shadow: 0px 5px 5px gray;
+}
+.lowerBox button[id="ok"]{
+    background-color: #0080FF;
+}
+.lowerBox button[id="cancel"]{
+    background-color: #6E6E6E;
+}

@@ -1,0 +1,265 @@
+body{
+    margin: 0;
+}
+
+a{
+    text-decoration:none;
+    color:#FFFFE0;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#FFA500;
+    padding:8px 12px;
+}
+
+.slidemenu{
+    font-size:24px;
+    color:white;
+}
+
+input[id="slidemenuicon"]{
+    display:none;
+}
+
+input[id="slidemenuicon"] + label{
+    display:block;
+    width:30px;
+    height:20px;
+    position:relative;
+    cursor:pointer;
+    z-index:2;
+}
+
+input[id="slidemenuicon"] + label span{
+    display:block;
+    position:absolute;
+    width:100%;
+    height:3px;
+    border-radius:30px;
+    background:white;
+    transition:all .35s;
+}
+
+input[id="slidemenuicon"] + label span:nth-child(1){
+    top:0;
+}
+input[id="slidemenuicon"] + label span:nth-child(2){
+    top:50%;
+    transform:translateY(-50%);
+}
+input[id="slidemenuicon"] + label span:nth-child(3){
+    bottom:0;
+}
+input[id="slidemenuicon"]:checked + label span:nth-child(1){
+    top:50%;
+    transform:translateY(-50%) rotate(45deg);
+}
+input[id="slidemenuicon"]:checked + label span:nth-child(2){
+    opacity: 0;
+}
+input[id="slidemenuicon"]:checked + label span:nth-child(3){
+    bottom:50%;
+    transform:translateY(50%) rotate(-45deg);
+}
+
+.sidebar{
+    width:200px;
+    height:100%;
+    margin-top: 126px;
+    background:#F5DEB3;
+    position:fixed;
+    top:0;
+    left:-200px;
+    z-index:2;
+    transition:all .35s;
+}
+
+input[id="slidemenuicon"]:checked + label + div{
+    left:0;
+}
+
+.sidebar ul > li > a {
+    display: block;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 40px;
+}
+
+.sidebar ul > li{
+    list-style: none; 
+}
+
+.logo {
+    font-family: 'East Sea Dokdo', sans-serif;
+    display:flex;
+    font-size: 40px;
+    list-style:none;
+    padding-left: 0;
+}
+
+.logo li {
+    padding: 8px 12px;
+    margin-left: 20px;
+}
+
+.logo li a i{
+    font-size: 25px;
+}
+
+.user{
+    list-style: none;
+    color:white;
+    display:flex;
+}
+
+input[id="userbutton"]{
+    display: none;
+}
+
+@media screen and (max-width:768px){ }
+
+.searchbar{
+    background-color:#FFA500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbar input {
+    width:75%;
+    border-color: #bbb;
+    border-bottom-left-radius: 16px;
+    border-top-left-radius: 16px;
+    border-width: 1px;
+    padding: 6px 0 6px 0;
+    margin: 0px 0px 15px 0px;
+    text-align: center;
+}
+.searchbar button {
+    border-bottom-right-radius: 16px;
+    border-top-right-radius: 16px;
+    width:8%;
+    height:29px;
+    background: white;
+    border-width:1px;
+    border-left: none;
+    border-color: #bbb;
+    margin: 0px 0px 15px 0px;
+}
+
+.selectmenu1{
+    background-color: #F5DEB3;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    align-items: center;
+}
+.selectmenu1 button{
+    width:17%;
+    background:#fff7f0;
+    border-width: 1px;
+    border-color: #ffffff;
+    border-radius: 100%;
+    padding: 20px;
+    margin: 3px;
+}
+.selectmenu1 i{
+    font-size: 30px;
+}
+.swiper-slide{
+    margin-bottom: 10px;
+}
+.swiper-slide button{
+    width:100%;
+    background:white;
+    border-width: 1px;
+    border-color: #ffffff;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding:5px;
+}
+.swiper .swiper-button-prev,
+.swiper .swiper-button-next{
+    display: none;
+}
+.swiper-slide input[type="radio"]{
+    display: none;
+}
+.swiper-slide label{
+    display: block;
+    border-right: 1px solid #ccc;
+   	margin: 0 auto;
+    text-align: center;
+    height: -webkit-fill-available;
+    line-height: 45px;
+}
+.swiper-slide label:hover{
+    background: #F9FAFC;
+    color:#000000;
+}
+.swiper-slide input[type="radio"] + label{
+    background: #F9FAFC;
+	color: #666;
+}
+.swiper-slide input[type="radio"]:checked + label{
+    background: #FFA500;
+	color: #fff;
+}
+
+.Box{
+    display: flex;
+    width: 100%;
+    height: 200px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #666;
+}
+
+.Box img{
+    width: 80%;
+    height: 80%;
+    margin: 25px;
+    border-radius: 16px;
+}
+.imageBox{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.textBox{
+    margin-top: 5px;
+    width: 60%;
+}
+.textBox label[id="Title"]{
+    font-size: 20px;
+}
+.textBox label[id="star"]{
+    font-size: 15px;
+    color:gold;
+}
+.textBox label[id="rate"]{
+    font-size: 15px;
+}
+.textBox label[id="tip"]{
+    margin-left: 10px;
+    font-size: 15px;
+}
+.textBox label[id="minimumAmount"]{
+    margin-left: 10px;
+    font-size: 15px;
+}
+.textBox label[id="menu"]{
+    margin-left: 10px;
+    font-size: 12px;
+    border:1px solid #8a8a8a;
+    background-color: #e7e7e7;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 16px;
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="import" href="login_screen.html">
+    <link rel="stylesheet" href="css/registerstyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
+
+    <script>
+
+        function cancel(){ /*가입취소 버튼 -> 로그인 화면으로*/
+            location.href = "/m/login";
+        }
+        function register_check(){ /*가입확인 버튼 -> 홈 화면으로*/
+            location.href = "/m";
+        }
+
+        function findAddr(){
+            new daum.Postcode({
+                oncomplete: function(data){
+                    var addr = '';
+                    if(data.userSelectedType === 'R'){
+                        addr = data.roadAddress;
+                    }
+                    else{
+                        addr = data.jibunAddress;
+                    }
+                    $("#main_address").val(addr);
+                }
+            }).open();
+        }
+        function back(){ // 뒤로가기 버튼 클릭시
+            location.href = "/m/login";
+        }
+    </script>
+</head>
+<body>
+    <div class="logoBox">
+        <span id="back" onclick="back()"><i class="fa-solid fa-chevron-left"></i></span>
+        <span id="login">회원가입</span>
+    </div>
+    <div class="idBox">
+        <span class="textview"><b>아이디 입력</b></span> 
+        <div class="blank"></div>
+        <input class="text_input" type="text" placeholder="아이디 또는 이메일">
+    </div>
+    <div class="pwBox">
+        <span class="textview"><b>비밀번호 입력</b></span>
+        <div class="blank"></div>
+        <input class="text_input" type="password" placeholder="8자리 이상 입력해주세요.">
+    </div>
+    <div class="nickBox">
+        <span class="textview"><b>닉네임 입력</b></span>
+        <div class="blank"></div>
+        <input class="text_input" type="text" placeholder="본명이나 닉네임을 입력하세요.">
+    </div>
+    <div class="mainmarketBox">
+        <span class="textview"><b>자주 이용할 시장</b></span>
+        <div class="blank2"></div>
+        <span class="textinfo"><b>가장 가까운 3지점의 시장이 표시됩니다.</b></span><br>
+        <span class="textinfo"><b>마이페이지에서 변경할 수 있습니다.</b></span>
+        <div class="blank"></div>
+        <input type="radio" name="use_market" class="sel_market" checked><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market1"></span></span>
+        <div class="blank"></div>
+        <input type="radio" name="use_market" class="sel_market"><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market2"></span></span>
+        <div class="blank"></div>
+        <input type="radio" name="use_market" class="sel_market"><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market3"></span></span>
+    </div>
+    <div class="adressBox">
+        <div class="blank"></div>
+        <span class="textview"><b>주소 설정</b></span>
+        <div class="blank2"></div><div class="blank"></div>
+        <input class="address1" type="text" id="main_address" readonly>
+        <button type="button" id="addressSearch" onclick="findAddr()" class="address btn-10" >주소검색</button> 
+        <div class="blank2"></div>
+        <input class="address2" type="text" id="main_address" placeholder="상세주소 입력">
+    </div>
+    <div class="lowerBox">
+        <div class="okBox">
+            <button type="button" class="address btn-14 " id="ok" onclick="register_check()"><b>가입하기</b></button>
+        </div>
+        <div class="cancelBox">
+            <button type="button" class="address btn-14" id="cancel" onclick="cancel()"><b>취소하기</b></button>
+        </div>
+    </div>
+
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        var latitude;
+        var longitude;
+        $(document).ready(function(){ /*위치권한*/
+            
+            if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
+                navigator.geolocation.getCurrentPosition(function(data) {
+			
+                    latitude = data.coords.latitude;
+                    longitude = data.coords.longitude;
+                    var arr = data.coords.accuracy;
+
+                    // 파일 경로
+                    const filePath = 'traditional_market.json';
+                    var market_name = new Map();
+                    fetch(filePath)
+                        .then(response => response.json())
+                        .then(data => {
+                            var storage = data.items;
+                            for(i in storage){
+                                if(storage[i]["시장개설주기"] == "매일"){
+                                    market_name.set(storage[i]["시장명"] + " (" + storage[i]["소재지도로명주소"] + ")", distance(latitude, storage[i]["위도"], longitude, storage[i]["경도"]));
+                                    console.log(storage[i]);
+                                }
+                            }
+                            let sorted_market = [...market_name].sort((a,b) => a[1] - b[1]);
+                            $('#market1').text(sorted_market[0][0]);
+                            $('#market2').text(sorted_market[1][0]);
+                            $('#market3').text(sorted_market[2][0]);
+                        })
+                        .catch(error => console.error("에러"));
+                }, function(error) {
+                    alert(error);
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: Infinity,
+                    maximumAge: 0
+                });
+            } else {	/* geolocation 사용 불가능 */
+                alert('geolocation 사용 불가능');
+            }
+            
+        });
+
+        function distance(lat1, lat2, lon1, lon2){
+            const R = 6371; // 지구 반지름 (단위: km)
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c; // 두 지점 간의 거리 (단위: km)
+            return distance;
+        }
+
+        function deg2rad(deg){
+            return deg * (Math.PI/180);
+        }
+    </script>
+</body>
+</html>

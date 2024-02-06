@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Gothic+A1&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <title>메인</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
+    <!--파이어베이스-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+    <script>
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
+          authDomain: "vacation2023-2.firebaseapp.com",
+          projectId: "vacation2023-2",
+          storageBucket: "vacation2023-2.appspot.com",
+          messagingSenderId: "617591015177",
+          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
+        };
+      
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        if(localStorage.getItem('pclogin') != 'success'){
+            location.href = "/";
+        }
+    </script>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logoBox">
+            <span>전통시장</span>
+        </div>
+        <div class="marketinfoBox">
+            <span id="storeName">가게명 : </span>
+        </div>
+    </div>
+    <div class="mainBox">
+        <div class="sideBox">
+            <div class="menuBox">
+                <input type="radio" name="menu" value="1" id="menu1" checked="true">
+                <label for="menu1">메뉴관리</label>
+            </div>
+            <div class="menuBox">
+                <input type="radio" name="menu" value="2" id="menu2">
+                <label for="menu2">배달요청</label>
+            </div>
+            <div class="menuBox">
+                <input type="radio" name="menu" value="3" id="menu3">
+                <label for="menu3">접수완료</label>
+            </div>
+            <div class="menuBox">
+                <input type="radio" name="menu" value="4" id="menu4">
+                <label for="menu4">배달완료</label>
+            </div>
+        </div>
+        <div class="managementBox">
+            <!--메뉴관리-->
+            <div class="menuInfoBox">
+                <!--메뉴 추가-->
+            </div>
+
+            <div class="add">
+                <button id="show" onclick="show()"><i class="fa-solid fa-cart-plus"></i> 상품추가</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="modalbackground">
+        <div class="window">
+            <div class="popup">
+                <div class="popuplogo">
+                    <span>상품등록</span>
+                </div>
+                <div class="popuptitle">
+                    <span>이미지</span>
+                </div>
+                <div class="popupimg">
+                    <div class="popupmenuimg">
+                        <img id="preview">
+                    </div>
+                    <div class="imgupload">
+                        <input id="uploadfile" type="file" class="real-upload" accept="image/*" onchange="readURL(this)" multiple>
+                    </div>
+                </div>
+                <div class="popuptitle">
+                    <span>이름</span>
+                    <br>
+                    <input id="productname" placeholder="상품의 이름"/>
+                </div>
+                <div class="popuptitle">
+                    <span>설명</span>
+                    <br>
+                    <input id="productinfo" placeholder="상품의 설명"/>
+                </div>
+                <div class="popuptitle">
+                    <span>가격</span>
+                    <br>
+                    <input id="productprice" placeholder="상품의 가격 (숫자)"/><i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="popupaction">
+                    <div class="popupcancel">
+                        <button id="cancel" onclick="cancel()">취소</button>
+                    </div>
+                    <div class="popupok">
+                        <button id="ok" onclick="ok()">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                document.getElementById('preview').src = "";
+            }
+        }
+    </script>
+    <script>
+        var myAllData = {};
+
+        var temp = window.location.search.split('=');
+        var myMarket = decodeURI(temp[1].split('&')[0]);
+        var myStore = decodeURI(temp[2].split('&')[0]).replace( /_/gi, ' ');
+        var myCategory = decodeURI(temp[3]);
+        
+        $('#storeName').text('가게명 : ' + myStore);
+
+        const db = firebase.firestore();
+
+        try{
+            db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).get().then((result)=>{
+                var str = "";
+                myAllData = result.data();
+                var myMenuData = result.data()['menu'];
+                for(let i=0;i<myMenuData.length;i++){
+                    str += createmenu(myMenuData[i]['imgurl'],myMenuData[i]['name'],myMenuData[i]['info'],myMenuData[i]['price']);
+                }
+                $(str).appendTo('.menuInfoBox');
+            })
+        }
+        catch(e){
+            location.href = "/";
+        }
+
+        function show () {
+            document.querySelector(".modalbackground").className = "modalbackground show";
+        }
+
+        function cancel () { 
+            document.querySelector(".modalbackground").className = "modalbackground";
+        }
+
+        // 상품추가
+        function ok(){
+            var imgurl = document.getElementById("preview").src;
+            var name = document.getElementById("productname").value;
+            var info = document.getElementById("productinfo").value;
+            var price = document.getElementById("productprice").value;
+            var imgfile = document.getElementById("uploadfile").files[0];
+
+            if(name.length < 1){
+                window.alert("상품 이름을 입력해주세요.");
+                return;
+            }
+            if(price.length < 1){
+                window.alert("가격을 정확히 입력해주세요.");
+                return;
+            }
+            if(isNaN(price)){
+                window.alert("가격을 정확히 입력해주세요.");
+                return;
+            }
+            if(Number(price) < 0){
+                window.alert("가격을 정확히 입력해주세요.");
+                return;
+            }
+
+            var str = createmenu(imgurl,name,info,price);
+            $(str).appendTo('.menuInfoBox');
+
+            const storage = firebase.storage();
+            
+            storageRef = storage.ref();
+            var mountainsRef = storageRef.child(imgfile.name);
+            var uploadwork = mountainsRef.put(imgfile);
+
+            uploadwork.on( 'state_changed', 
+                // 변화시 동작하는 함수 
+                null, 
+                //에러시 동작하는 함수
+                (error) => {
+                    console.error('실패사유는', error);
+                }, 
+                // 성공시 동작하는 함수
+                () => {
+                    uploadwork.snapshot.ref.getDownloadURL().then((url) => {
+                        db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).update({
+                            menu : firebase.firestore.FieldValue.arrayUnion({
+                                imgurl : [url],
+                                name : [name],
+                                info : [info],
+                                price : [price]
+                            })
+                        });
+                    });
+                }
+            );
+
+            document.querySelector(".modalbackground").className = "modalbackground";
+        }
+
+        function createmenu(imgurl, name, info, price){
+            var str = "";
+            str += '<div class="menu">'
+                        + '<div class="menuimg">'
+                            + '<img src="' + imgurl + '">'
+                        + '</div>'
+                        + '<div class="menuinfo">'
+                            + '<span>메뉴명 : ' + name + '<br>설명 : ' + info + '<br>가격 : ' + price + '</span>'
+                        + '</div>'
+                        + '<div class="delete">'
+                            + '<button><i class="fa-solid fa-trash-can"></i></button>'
+                        + '</div>'
+                    + '</div>'
+            return str;
+        }
+        
+    </script>
+</body>
+</html>

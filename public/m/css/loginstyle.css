@@ -1,0 +1,107 @@
+body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.loginlogo{
+    width:100%;
+    background-color: black;
+    height: 7vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.loginlogo span[id="back"]{
+    position:absolute;
+    left:0;
+    margin-left: 2%;
+    font-size: 20px;
+    color:white;
+    cursor: pointer;
+}
+.loginlogo span[id="login"]{
+    color:white;
+    font-size: 23px;
+}
+
+div.content_screen{
+    margin-top: 8vh;
+    margin-left: 10vw;
+    width: 80vw;
+    height: 70vh;
+}
+
+.appinfo{
+    width: 100%;
+    height: 50%;
+}
+.applogo{
+    font-family: 'East Sea Dokdo', sans-serif;
+    display:flex;
+    align-items: center;
+    color:#FFA500;
+    font-size: 80px;
+    list-style:none;
+    padding-left: 0;
+}
+.appmaininfo{
+    display:flex;
+    align-items: center;
+    font-size: 25px;
+    margin: 2%;
+}
+.appsubinfo{
+    display:flex;
+    align-items: center;
+    font-size: 15px;
+    margin: 2%;
+    margin-top: 5%;
+    color:grey;
+}
+.inputBox{
+    width: 100%;
+    height: 20%;
+}
+.inputBox input{
+    width: 95%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+.optionBox{
+    display: flex;
+}
+.option1{
+    width: 50%;
+}
+.option2{
+    width: 50%;
+    display: flex;
+    justify-content: right;
+    margin-right: 5%;
+}
+.register{
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
+.loginbuttonBox{
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login_button{
+    width: 100%;
+    background-color: #FFA500;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0px 5px 5px gray;
+    font-size: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color:#f0f0f0;
+}

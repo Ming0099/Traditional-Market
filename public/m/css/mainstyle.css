@@ -1,0 +1,209 @@
+body{
+    margin: 0;
+}
+
+a{
+    text-decoration:none;
+    color:#FFFFE0;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#FFA500;
+    padding:8px 12px;
+}
+
+.slidemenu{
+    font-size:24px;
+    color:white;
+}
+
+input[id="slidemenuicon"]{
+    display:none;
+}
+
+input[id="slidemenuicon"] + label{
+    display:block;
+    width:30px;
+    height:20px;
+    position:relative;
+    cursor:pointer;
+    z-index:2;
+}
+
+input[id="slidemenuicon"] + label span{
+    display:block;
+    position:absolute;
+    width:100%;
+    height:3px;
+    border-radius:30px;
+    background:white;
+    transition:all .35s;
+}
+
+input[id="slidemenuicon"] + label span:nth-child(1){
+    top:0;
+}
+input[id="slidemenuicon"] + label span:nth-child(2){
+    top:50%;
+    transform:translateY(-50%);
+}
+input[id="slidemenuicon"] + label span:nth-child(3){
+    bottom:0;
+}
+input[id="slidemenuicon"]:checked + label span:nth-child(1){
+    top:50%;
+    transform:translateY(-50%) rotate(45deg);
+}
+input[id="slidemenuicon"]:checked + label span:nth-child(2){
+    opacity: 0;
+}
+input[id="slidemenuicon"]:checked + label span:nth-child(3){
+    bottom:50%;
+    transform:translateY(50%) rotate(-45deg);
+}
+
+.sidebar{
+    width:200px;
+    height:100%;
+    margin-top: 126px;
+    background:#F5DEB3;
+    position:fixed;
+    top:0;
+    left:-200px;
+    z-index:1;
+    transition:all .35s;
+}
+
+input[id="slidemenuicon"]:checked + label + div{
+    left:0;
+}
+
+.sidebar ul > li > a {
+    display: block;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 40px;
+}
+
+.sidebar ul > li{
+    list-style: none; 
+}
+
+.logo {
+    font-family: 'East Sea Dokdo', sans-serif;
+    display:flex;
+    font-size: 40px;
+    list-style:none;
+    padding-left: 0;
+}
+
+.logo li {
+    padding: 8px 12px;
+    margin-left: 20px;
+}
+
+.logo li a i{
+    font-size: 25px;
+}
+
+.user{
+    list-style: none;
+    color:white;
+    display:flex;
+}
+
+input[id="userbutton"]{
+    display: none;
+}
+
+@media screen and (max-width:768px){ }
+
+.searchbar{
+    background-color:#FFA500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbar input {
+    width:75%;
+    border-color: #bbb;
+    border-bottom-left-radius: 16px;
+    border-top-left-radius: 16px;
+    border-width: 1px;
+    padding: 6px 0 6px 0;
+    margin: 0px 0px 15px 0px;
+    text-align: center;
+}
+.searchbar button {
+    border-bottom-right-radius: 16px;
+    border-top-right-radius: 16px;
+    width:8%;
+    height:29px;
+    background: white;
+    border-width:1px;
+    border-left: none;
+    border-color: #bbb;
+    margin: 0px 0px 15px 0px;
+}
+
+.selectmenu1{
+    margin-top: 15px;
+}
+.selectmenu1 form{
+    display: flex;
+    justify-content: center;
+}
+.selectmenu1 button{
+    width:20%;
+    background:#fff7f0;
+    border-width: 1px;
+    border-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 5px;
+    font-size: 10px;
+    font-family: 'Black Han Sans', sans-serif;
+}
+.selectmenu2 form{
+    display: flex;
+    justify-content: center;
+}
+.selectmenu2 button{
+    width:20%;
+    background:#fff7f0;
+    border-width: 1px;
+    border-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 5px;
+    font-size: 10px;
+    font-family: 'Black Han Sans', sans-serif;
+}
+.selectmenu3 form{
+    display: flex;
+    justify-content: center;
+}
+.selectmenu3 button{
+    width:20%;
+    background:#fff7f0;
+    border-width: 1px;
+    border-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 5px;
+    font-size: 10px;
+    font-family: 'Black Han Sans', sans-serif;
+}
+
+.recommendmenu{
+    display: flex;
+    margin-left: 8%;
+    margin-top: 5%;
+    font-size: 18px;
+    font-family: 'Black Han Sans', sans-serif;
+}

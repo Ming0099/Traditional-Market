@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="css/mainstyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
+</head>
+<body>
+    <!--상단바-->
+    <nav class="navbar">
+        <div class="slidemenu">
+            <input type="checkbox" id="slidemenuicon">
+
+            <label for="slidemenuicon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <div class="sidebar">
+                <ul>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-motorcycle"></i> 배달현황</a>
+                    </li>
+
+                    <li>
+                      <a href="#"><i class="fa-solid fa-cart-shopping"></i> 구매내역</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa-solid fa-pen"></i> 남긴리뷰</a>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+
+        <div class="logo">
+            <li><a href="/m"><i class="fa-solid fa-bowl-food"></i> 전통시장 <i class="fa-solid fa-utensils"></i></a></li>
+            
+        </div>
+
+        <ul class="user">
+            <a href="/m/login"><i class="fa-solid fa-user fa-xl"></i></a>
+        </ul>
+    </nav>
+
+    <!--검색바-->
+    <div class="searchbar">
+        <input name="q" type="text" class="form-control rounded-pill" 
+        placeholder="음식명 또는 가게명 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button>
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+
+    <!--메인-->
+    <div class="mainbody">
+
+        <div class="selectmenu1">
+            <form method="get" action="/m/menu">
+                <button id="btn1" name="menucategory" value="1">
+                    <img src="image/grain.png" width="70%" height="70%">
+                    <br>곡물류
+                </button>
+
+                <button id="btn2" name="menucategory" value="2">
+                    <img src="image/vegetable.png" width="70%" height="70%">
+                    <br>채소류
+                </button>
+
+                <button id="btn3" name="menucategory" value="3">
+                    <img src="image/fruit.png" width="70%" height="70%">
+                    <br>과일류
+                </button>
+
+                <button id="btn4" name="menucategory" value="4">
+                    <img src="image/nuts.png" width="70%" height="70%">
+                    <br>견과류
+                </button>
+            </form>
+        </div>
+
+        <div class="selectmenu2">
+            <form method="get" action="/m/menu">
+                <button id="btn5" name="menucategory" value="5">
+                    <img src="image/fish.png" width="70%" height="70%">
+                    <br>수산물
+                </button>
+
+                <button id="btn6" name="menucategory" value="6">
+                    <img src="image/meat.png" width="70%" height="70%">
+                    <br>축산물
+                </button>
+
+                <button id="btn7" name="menucategory" value="7">
+                    <img src="image/sidedish.png" width="70%" height="70%">
+                    <br>반찬
+                </button>
+
+                <button id="btn8" name="menucategory" value="8">
+                    <img src="image/tteokbokki.png" width="70%" height="70%">
+                    <br>분식
+                </button>
+            </form>
+            
+        </div>
+
+        <div class="selectmenu3">
+            <form method="get" action="/m/menu">
+                <button id="btn9" name="menucategory" value="9">
+                    <img src="image/noodles.png" width="70%" height="70%">
+                    <br>중식
+                </button>
+
+                <button id="btn10" name="menucategory" value="10">
+                    <img src="image/chicken.png" width="70%" height="70%">
+                    <br>통닭
+                </button>
+
+                <button id="btn11" name="menucategory" value="11">
+                    <img src="image/dessert.png" width="70%" height="70%">
+                    <br>디저트
+                </button>
+
+                <button id="btn12" name="menucategory" value="12">
+                    <img src="image/dot.png" width="70%" height="70%">
+                    <br>기타
+                </button>
+            </form>
+        </div>
+
+        <div class="recommendmenu">
+            추천상품&nbsp;<i class="fa-solid fa-arrow-right"></i>
+        </div>
+        
+    </div>
+
+</body>
+</html>

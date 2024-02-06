@@ -1,0 +1,255 @@
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100%;
+    height: 100vh;
+}
+.topbar{
+    background-color: #FFA500;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-bottom : 5px solid #d3d3d3;
+}
+.logoBox{
+    display: flex;
+    align-items: center;
+    width: 15%;
+    height: 100%;
+}
+.logoBox span{
+    margin-left: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'East Sea Dokdo', sans-serif;
+    color:white;
+    font-size: 50px;
+}
+.marketinfoBox{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 90%;
+    height: 100%;
+}
+.marketinfoBox span{
+    font-family: 'East Sea Dokdo', sans-serif;
+    margin-right: 40px;
+    color:white;
+    font-size: 30px;
+}
+.mainBox{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+.sideBox{
+    width: 400px;
+    border-right: 5px solid #d3d3d3;
+    height: 100%;
+}
+.sideBox input[type="radio"]:checked + label{
+    background: #FFA500;
+	color: #fff;
+}
+.menuBox{
+    border-bottom: 3px solid #d3d3d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.menuBox label{
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 25px;
+}
+.sideBox input[type="radio"]{
+    display: none;
+}
+
+.managementBox{
+    width: 100%;
+}
+.menu{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgb(119, 119, 119);
+    padding: 10px;
+}
+.menuimg{
+    width: 70px;
+    height: 70px;
+}
+.menuimg img{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+.menuinfo{
+    width:70%;
+    padding-left: 10px;
+}
+.delete{
+    width: 20%;
+    display: flex;
+    justify-content: right;
+}
+.delete button{
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    background-color: rgb(255, 65, 65);
+    color:white;
+    border:none;
+    border-radius: 5px;
+}
+.add{
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.add button{
+    background-color: #1A73E8;
+    color:white;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+    padding:10px;
+}
+
+/*상품추가 팝업*/
+.modalbackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    
+    /* 숨기기 */
+    z-index: -1;
+    opacity: 0;
+}
+  
+.show {
+    opacity: 1;
+    z-index: 1000;
+    transition: all .5s;
+}
+  
+.window {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+  
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    
+    /* 임시 지정 */
+    width: 500px;
+    height: 900px;
+    
+    /* 초기에 약간 아래에 배치 */
+    transform: translate(-50%, -40%);
+}
+  
+.show .popup {
+    transform: translate(-50%, -50%);
+    transition: all .5s;
+}
+
+.popuplogo{
+    border-bottom:1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    font-size: 30px;
+}
+
+.popupimg{
+    display: flex;
+    padding-left: 10px;
+    height: 150px;
+}
+.popupmenuimg{
+    width: 38%;
+    height: 100%;
+    padding:15px;
+}
+.popupmenuimg img{
+    width: 100%;
+    height: 100%;
+    border-radius:0px;
+}
+.imgupload{
+    width: 62%;
+    height: 100%;
+    padding-top: 20px;
+}
+.popuptitle{
+    margin-top: 30px;
+    margin-left: 20px;
+}
+.popuptitle span{
+    font-size: 25px;
+}
+.popuptitle input{
+    width: 90%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.popuptitle input[id="productprice"]{
+    width: 30%;
+}
+.popupaction{
+    display: flex;
+    padding-top: 80px;
+    padding-left: 20px;
+    padding-right: 40px;
+}
+.popupcancel{
+    width: 50%;
+}
+.popupcancel button{
+    width: 150px;
+    height: 50px;
+    background-color: white;
+    border-color: #1A73E8;
+    font-size: 18px;
+    border-radius: 10px;
+    color:#1A73E8;
+}
+.popupok{
+    display: flex;
+    justify-content: right;
+    width: 50%;
+}
+.popupok button{
+    width: 150px;
+    height: 50px;
+    background-color: #1A73E8;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    color:#f0f0f0;
+}

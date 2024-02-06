@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="css/menustyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Gothic+A1&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <title>메뉴</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!--파이어베이스-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
+          authDomain: "vacation2023-2.firebaseapp.com",
+          projectId: "vacation2023-2",
+          storageBucket: "vacation2023-2.appspot.com",
+          messagingSenderId: "617591015177",
+          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
+        };
+      
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        var socket;
+        var selectedMenuID; // 선택된 메뉴
+        var marketname = '삼방시장'; // 회원가입 완료후 수정 필요
+        const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
+
+        window.onload = function(){
+            selectedMenuID = window.location.search.split('=')[1];
+
+            $('#menu' + selectedMenuID).prop("checked", true);
+
+            menuinit(selectedMenuID);
+        }
+
+        function menuinit(id){
+            const db = firebase.firestore();
+
+            var count = 0;
+            var str = "";
+            db.collection('전통시장').doc(marketname).collection(menuTag[id-1]).get().then((result)=>{
+                result.forEach((doc)=>{
+                    
+                    if(doc.id != 'temp'){
+                        var myData = doc.data();
+
+                        str += '<div class="Box" onclick="clickmenu(this.id)" id=' + doc.id.replace( / /gi, '_') + '>'
+                            +'<div class="imageBox">'
+                                +'<img src=' + myData.imgurl + '>'
+                                +'</div>'
+                                +'<div class="textBox">'
+                                    +'<br>'
+                                    +'<label id="Title"><b>' + doc.id + '</b></label>'
+                                    +'<label id="star"><i class="fa-solid fa-star"></i></label>'
+                                    +'<label id="rate"><b>' + myData.rate + '</b></label>'
+                                    +'<br><br>'
+                                    +'<label id="tip">배달팁 ' + myData.tip + '원</label>'
+                                    +'<br>'
+                                    +'<label id="minimumAmount">최소주문 ' + myData.minamount + '원</label>'
+                                    +'<br><br>';
+                        for(let j=0;j<myData.bestmenu.length;j++){
+                            str += '<label id="menu">' + myData.bestmenu[j] + '</label>';
+                        }
+                        str +='</div>'
+                            +'</div>';
+                        count++;
+                    }
+                })
+            }).then(()=>{
+                if(count == 0){
+                    $('.mainBox').html("");
+                }else{
+                    $('.mainBox').html(str);
+                }
+            })
+        }
+
+        function changemenu(){
+            var menuval = $('input[name=menu]:checked').val();
+            selectedMenuID = menuval;
+            menuinit(menuval)
+        }
+
+        function clickmenu(selectedObjID){
+            console.log(selectedMenuID + "번째 메뉴")
+            console.log(selectedObjID);
+            location.href = '/m/info?restaurant=' + selectedMenuID + ',' + selectedObjID;
+        }
+        
+    </script>
+</head>
+<body>
+    <!--상단바-->
+    <nav class="navbar">
+        <div class="slidemenu">
+            <input type="checkbox" id="slidemenuicon">
+
+            <label for="slidemenuicon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <div class="sidebar">
+                <ul>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-motorcycle"></i> 배달현황</a>
+                    </li>
+
+                    <li>
+                      <a href="#"><i class="fa-solid fa-cart-shopping"></i> 구매내역</a>
+                    </li>
+                    
+                    <li>
+                      <a href="#"><i class="fa-solid fa-heart"></i> 찜목록</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa-solid fa-pen"></i> 남긴리뷰</a>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+
+        <div class="logo">
+            <li><a href="/m"><i class="fa-solid fa-bowl-food"></i> 전통시장 <i class="fa-solid fa-utensils"></i></a></li>
+            
+        </div>
+
+        <ul class="user">
+            <a href="/m/login"><i class="fa-solid fa-user fa-xl"></i></a>
+        </ul>
+    </nav>
+
+    <!--검색바-->
+    <div class="searchbar">
+        <input name="q" type="text" class="form-control rounded-pill" 
+        placeholder="음식명 또는 가게명 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button>
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+
+    <!--메인-->
+    <div class="mainbody">
+        
+    </div>
+
+        <!-- Slider main container -->
+    <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="1" id="menu1" onclick="changemenu()">
+                <label for="menu1"><b>곡물류</b></label>
+            </div>
+
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="2" id="menu2" onclick="changemenu()">
+                <label for="menu2"><b>채소류</b></label>
+            </div>
+
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="3" id="menu3" onclick="changemenu()">
+                <label for="menu3"><b>과일류</b></label>
+            </div>
+
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="4" id="menu4" onclick="changemenu()">
+                <label for="menu4"><b>견과류</b></label>
+            </div>
+            
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="5" id="menu5" onclick="changemenu()">
+                <label for="menu5"><b>수산물</b></label>
+            </div>
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="6" id="menu6" onclick="changemenu()">
+                <label for="menu6"><b>축산물</b></label>
+            </div>
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="7" id="menu7" onclick="changemenu()">
+                <label for="menu7"><b>반찬</b></label>
+            </div>
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="8" id="menu8" onclick="changemenu()">
+                <label for="menu8"><b>분식</b></label>
+            </div>
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="9" id="menu9" onclick="changemenu()">
+                <label for="menu9"><b>중식</b></label>
+            </div>
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="10" id="menu10" onclick="changemenu()">
+                <label for="menu10"><b>통닭</b></label>
+            </div>
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="11" id="menu11" onclick="changemenu()">
+                <label for="menu11"><b>디저트</b></label>
+            </div>            
+            <div class="swiper-slide">
+                <input type="radio" name="menu" value="12" id="menu12" onclick="changemenu()">
+                <label for="menu12"><b>기타</b></label>
+            </div>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+    
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+    </div>
+    
+    <script>
+        const swiper = new Swiper('.swiper', {
+            slidesPerView : 5,
+            spaceBetween :0,
+            slidesOffsetBefore: 0,
+            slidesOffsetAfter: 0,
+            // Optional parameters
+            direction: 'horizontal',
+            loop: false,
+            pagination : false,
+
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                
+            },
+            // And if we need scrollbar
+            scrollbar: {
+                el: '.swiper-scrollbar',
+            },
+        });
+
+    </script>
+    
+    <form method="get" action="/m/info">
+        <div class="mainBox">
+        
+
+        </div>
+    </form>
+    
+</body>
+</html>

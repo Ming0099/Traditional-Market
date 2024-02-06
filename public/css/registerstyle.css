@@ -1,0 +1,176 @@
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+.signupBox{
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+    width: 500px;
+    height: 900px;
+}
+.logoBox{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    width: 100%;
+    height: 100px;
+}
+.logoBox span{
+    font-size: 50px;
+    font-family: 'East Sea Dokdo', sans-serif;
+}
+.textBox{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    width: 100%;
+    height: 50px;
+}
+.textBox span{
+    font-size: 25px;
+}
+.signupinfo{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    width: 100%;
+    height: 30px;
+}
+.signupinfo span{
+    font-size: 14px;
+}
+.marketselectBox{
+    width: 100%;
+    height: 150px;
+    padding-left: 10%;
+    padding-top: 8%;
+}
+.marketselectBox span{
+    font-size: 20px;
+}
+.marketselectBox input{
+    width: 90%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.markettitleBox{
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    padding-left: 10%;
+}
+.markettitleBox span{
+    font-size: 20px;
+}
+.markettitleBox input{
+    width: 90%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.idBox{
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    padding-left: 10%;
+}
+.idBox span{
+    font-size: 20px;
+}
+.idBox input{
+    width: 90%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.pwBox{
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    padding-left: 10%;
+}
+.pwBox span{
+    font-size: 20px;
+}
+.pwBox input{
+    width: 90%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.buttonBox{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+}
+.signupbuttonBox{
+    padding-left: 10%;
+    width:50%;
+    height: 100px;
+}
+.signupbuttonBox button{
+    width: 100px;
+    height: 50px;
+    background-color: white;
+    border-color: #1A73E8;
+    font-size: 18px;
+    border-radius: 10px;
+    color:#1A73E8;
+}
+.loginbuttonBox{
+    width:50%;
+    height: 100px;
+    display: flex;
+    justify-content: right;
+    padding-right: 10%;
+}
+.loginbuttonBox button{
+    width: 100px;
+    height: 50px;
+    background-color: #1A73E8;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    color:#f0f0f0;
+}
+.categoryBox{
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    padding-left: 10%;
+}
+.categoryBox span{
+    font-size: 20px;
+}
+.categoryBox select{
+    width: 90%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+}

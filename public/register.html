@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/registerstyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <title>점포등록</title>
+    <!--파이어베이스-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+    <script>
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
+          authDomain: "vacation2023-2.firebaseapp.com",
+          projectId: "vacation2023-2",
+          storageBucket: "vacation2023-2.appspot.com",
+          messagingSenderId: "617591015177",
+          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
+        };
+      
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        var marketData = [];
+        var str = "";
+        fetch('m/traditional_market.json')
+        .then((data)=>data.json())
+        .then((obj)=>{
+            for(let i=0;i<obj['items'].length;i++){
+                str += '<option value="' + obj['items'][i]['시장명'] + '"></option>';
+                marketData.push(obj['items'][i]['시장명']);
+            }
+            $('#list').html(str);
+        })
+
+        function to_login(){
+            location.href='/';
+        }
+        
+        // 회원가입
+        function signup(){
+
+            var marketName = document.getElementById("markets").value;
+            var storeName = document.getElementById("markettitleinput").value;
+            var myCategory = document.getElementById("category").value;
+            var myId = document.getElementById("idinput").value;
+            var myPw = document.getElementById("pwinput").value;
+
+            console.log(myCategory);
+            // 체크
+            var pass = false;
+            for(let i=0; i<marketData.length;i++){
+                if(marketData[i] == marketName){
+                    pass = true;
+                }
+            }
+            if(!pass){
+                window.alert("시장을 정확히 입력해주세요.");
+                return;
+            }
+
+            if(storeName.length == 0){
+                window.alert("점포 이름을 입력해주세요.");
+                return;
+            }
+
+            if(myId.length < 5){
+                window.alert("아이디를 5자리 이상 입력해주세요.");
+                return;
+            }
+
+            if(myPw.length < 8){
+                window.alert("비밀번호를 8자리 이상 입력해주세요.");
+                return;
+            }
+
+            const db = firebase.firestore();
+            var pass2 = false;
+
+            
+            db.collection('점포').doc(marketName).get().then((result)=>{
+                // 체크2
+                if(result.data() == undefined){
+                    pass2 = true;
+                }else{
+                    if(result.data()[storeName] == undefined){
+                        pass2 = true;
+                    }else{
+                        pass2 = false;
+                    }
+                }
+                
+                if(pass2){
+                    db.collection('점포').doc(marketName).update({
+                        [myId] : {
+                            name : storeName,
+                            pw : myPw,
+                            category : myCategory,
+                        }
+                    });
+                    db.collection('전통시장').doc(marketName).collection(myCategory).doc(storeName).set({
+                        bestmenu : ['족발','불족발','막국수'],
+                        imgurl : "",
+                        maxtime : 30,
+                        mintime : 21,
+                        menu : [],
+                        minamount : 20000,
+                        rate : 3.5,
+                        review : {
+                            size : 0,
+                        },
+                        tip : 3000,
+                    }).then(()=>{ // 점포 등록 완료시 로그인 창으로 이동
+                        location.href='/';
+                    });
+
+                }else{
+                    window.alert("이미 등록된 점포입니다.");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="signupBox">
+        <div class="logoBox">
+            <span>전통시장</span>
+        </div>
+        <div class="textBox">
+            <span>점포등록</span>
+        </div>
+        <div class="signupinfo">
+            <span>본인의 점포를 등록해보세요!</span>
+        </div>
+        <div class="marketselectBox">
+            <span>시장선택</span><br>
+            <input type="text" list="list" id="markets" placeholder="시장명을 정확하게 입력해주세요."/>
+            <datalist id ="list">
+                <!--시장 이름 옵션들-->
+            </datalist>
+        </div>
+        <div class="markettitleBox">
+            <span>점포명</span>
+            <br>
+            <input id="markettitleinput" placeholder="점포 이름을 입력해주세요."/>
+        </div>
+        <div class="categoryBox">
+            <span>카테고리</span>
+            <br>
+            <select id="category">
+                <option value="곡물류">곡물류</option>
+                <option value="채소류">채소류</option>
+                <option value="과일류">과일류</option>
+                <option value="견과류">견과류</option>
+                <option value="수산물">수산물</option>
+                <option value="축산물">축산물</option>
+                <option value="반찬">반찬</option>
+                <option value="분식">분식</option>
+                <option value="중식">중식</option>
+                <option value="통닭">통닭</option>
+                <option value="디저트">디저트</option>
+                <option value="기타">기타</option>
+            </select>
+        </div>
+        <div class="idBox">
+            <span>아이디</span>
+            <br>
+            <input id="idinput" placeholder="이메일 또는 아이디를 입력해주세요."/>
+        </div>
+        <div class="pwBox">
+            <span>비밀번호</span>
+            <br>
+            <input id="pwinput" placeholder="8자리 이상 입력해주세요."/>
+        </div>
+        <div class="buttonBox">
+            <div class="signupbuttonBox">
+                <button onclick="to_login()">취소</button>
+            </div>
+            <div class="loginbuttonBox">
+                <button onclick="signup()">점포등록</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
