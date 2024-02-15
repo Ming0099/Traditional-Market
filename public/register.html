@@ -8,28 +8,10 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <title>점포등록</title>
-    <!--파이어베이스-->
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
-    <script>
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
-          authDomain: "vacation2023-2.firebaseapp.com",
-          projectId: "vacation2023-2",
-          storageBucket: "vacation2023-2.appspot.com",
-          messagingSenderId: "617591015177",
-          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
-        };
-      
-        firebase.initializeApp(firebaseConfig);
-    </script>
     <script>
         // 소켓을 생성합니다.
         var socket = io.connect();
-        
+
         var marketData = [];
         var str = "";
         fetch('m/traditional_market.json')
@@ -83,51 +65,16 @@
                 return;
             }
 
-            const db = firebase.firestore();
-            var pass2 = false;
-
-            
-            db.collection('점포').doc(marketName).get().then((result)=>{
-                // 체크2
-                if(result.data() == undefined){
-                    pass2 = true;
-                }else{
-                    if(result.data()[storeName] == undefined){
-                        pass2 = true;
-                    }else{
-                        pass2 = false;
-                    }
-                }
-                
-                if(pass2){
-                    db.collection('점포').doc(marketName).update({
-                        [myId] : {
-                            name : storeName,
-                            pw : myPw,
-                            category : myCategory,
-                        }
-                    });
-                    db.collection('전통시장').doc(marketName).collection(myCategory).doc(storeName).set({
-                        bestmenu : ['','',''],
-                        imgurl : "",
-                        maxtime : 0,
-                        mintime : 0,
-                        menu : [],
-                        minamount : 0,
-                        rate : 0,
-                        review : {
-                            size : 0,
-                        },
-                        tip : 0,
-                    }).then(()=>{ // 점포 등록 완료시 로그인 창으로 이동
-                        location.href='/';
-                    });
-
-                }else{
-                    window.alert("이미 등록된 점포입니다.");
-                }
-            });
+            socket.emit('signUpReq', marketName, storeName, myCategory, myId, myPw);
         }
+        
+        socket.on('signUp', function(route,message){
+            if(message == ""){
+                location.href = route;
+            }else{
+                window.alert(message);
+            }
+        });
     </script>
 </head>
 <body>

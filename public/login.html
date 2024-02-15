@@ -60,10 +60,10 @@
             socket.emit('loginReq', marketName, myId, myPw);
         }
 
-        socket.on('login', function(data,message){
+        socket.on('login', function(route,message){
             if(message == ""){
                 localStorage.setItem('pclogin', 'success');
-                location.href = data;
+                location.href = route;
             }else{
                 window.alert(message);
             }
