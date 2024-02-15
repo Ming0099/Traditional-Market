@@ -6,29 +6,12 @@
     <link rel="stylesheet" href="css/mainstyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Gothic+A1&family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <title>메인</title>
     <script 
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
-    <!--파이어베이스-->
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
-    <script>
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
-          authDomain: "vacation2023-2.firebaseapp.com",
-          projectId: "vacation2023-2",
-          storageBucket: "vacation2023-2.appspot.com",
-          messagingSenderId: "617591015177",
-          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
-        };
-      
-        firebase.initializeApp(firebaseConfig);
-    </script>
     <script>
         if(localStorage.getItem('pclogin') != 'success'){
             location.href = "/";
@@ -132,7 +115,8 @@
         }
     </script>
     <script>
-        var myAllData = {};
+        // 소켓을 생성합니다.
+        var socket = io.connect();
 
         var temp = window.location.search.split('=');
         var myMarket = decodeURI(temp[1].split('&')[0]);
@@ -141,22 +125,7 @@
         
         $('#storeName').text('가게명 : ' + myStore);
 
-        const db = firebase.firestore();
-
-        try{
-            db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).get().then((result)=>{
-                var str = "";
-                myAllData = result.data();
-                var myMenuData = result.data()['menu'];
-                for(let i=0;i<myMenuData.length;i++){
-                    str += createmenu(myMenuData[i]['imgurl'],myMenuData[i]['name'],myMenuData[i]['info'],myMenuData[i]['price']);
-                }
-                $(str).appendTo('.menuInfoBox');
-            })
-        }
-        catch(e){
-            location.href = "/";
-        }
+        socket.emit('mainInitReq',myMarket,myStore,myCategory);
 
         function show () {
             document.querySelector(".modalbackground").className = "modalbackground show";
@@ -191,55 +160,26 @@
                 return;
             }
 
-            var str = createmenu(imgurl,name,info,price);
-            $(str).appendTo('.menuInfoBox');
+            var storePathData = [myMarket,myCategory,myStore];
+            socket.emit('addProductReq',imgurl,name,info,price,imgfile,imgfile.name,storePathData);
+        }
 
-            const storage = firebase.storage();
-            
-            storageRef = storage.ref();
-            var mountainsRef = storageRef.child(imgfile.name);
-            var uploadwork = mountainsRef.put(imgfile);
+        socket.on('mainInit',function(data, error){
+            if(error == ""){
+                $(data).appendTo('.menuInfoBox');
+            }else{
+                location.href = "/";
+            }
+        })
 
-            uploadwork.on( 'state_changed', 
-                // 변화시 동작하는 함수 
-                null, 
-                //에러시 동작하는 함수
-                (error) => {
-                    console.error('실패사유는', error);
-                }, 
-                // 성공시 동작하는 함수
-                () => {
-                    uploadwork.snapshot.ref.getDownloadURL().then((url) => {
-                        db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).update({
-                            menu : firebase.firestore.FieldValue.arrayUnion({
-                                imgurl : [url],
-                                name : [name],
-                                info : [info],
-                                price : [price]
-                            })
-                        });
-                    });
-                }
-            );
-
+        socket.on('addProduct',function(data, error){
+            if(error == ""){
+                $(data).appendTo('.menuInfoBox');
+            }else{
+                window.alert(error);
+            }
             document.querySelector(".modalbackground").className = "modalbackground";
-        }
-
-        function createmenu(imgurl, name, info, price){
-            var str = "";
-            str += '<div class="menu">'
-                        + '<div class="menuimg">'
-                            + '<img src="' + imgurl + '">'
-                        + '</div>'
-                        + '<div class="menuinfo">'
-                            + '<span>메뉴명 : ' + name + '<br>설명 : ' + info + '<br>가격 : ' + price + '</span>'
-                        + '</div>'
-                        + '<div class="delete">'
-                            + '<button><i class="fa-solid fa-trash-can"></i></button>'
-                        + '</div>'
-                    + '</div>'
-            return str;
-        }
+        })
         
     </script>
 </body>

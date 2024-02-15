@@ -11,7 +11,8 @@ var firestore = require("firebase-admin/firestore");
 var serviceAccount = require("./vacation2023-2-firebase-adminsdk-guq8c-803226e5b1.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket : 'vacation2023-2.appspot.com'
 });
 const db = firestore.getFirestore();
 
@@ -56,6 +57,7 @@ io.sockets.on('connection',function(socket){
             socket.emit('login',myRoute,errorMessage);
         })
     })
+
 
     // 회원가입 요청
     socket.on('signUpReq', function(marketName, storeName, myCategory, myId, myPw){
@@ -105,7 +107,82 @@ io.sockets.on('connection',function(socket){
         });
     })
 
+
+    // 메인화면 init 요청
+    socket.on('mainInitReq',function(myMarket,myStore,myCategory){
+        var myData = "";
+        var errorMessage = "";
+
+        try{
+            db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).get().then((result)=>{
+                var str = "";
+                var myMenuData = result.data()['menu'];
+                for(let i=0;i<myMenuData.length;i++){
+                    str += createmenu(myMenuData[i]['imgurl'],myMenuData[i]['name'],myMenuData[i]['info'],myMenuData[i]['price']);
+                }
+                myData = str;
+                socket.emit('mainInit',myData,errorMessage);
+            })
+        }
+        catch(e){
+            errorMessage = "error";
+            socket.emit('mainInit',myData,errorMessage);
+        }
+    })
+
+
+    // 메인화면 상품추가 요청
+    socket.on('addProductReq',function(imgurl,name,info,price,imgfile,imgfilename,storePathData){
+        var myData = "";
+        var errorMessage = "";
+
+        myData = createmenu(imgurl,name,info,price);
+
+        const storage = admin.storage();
+        
+        async function uploadFromMemory() {
+                await storage.bucket('vacation2023-2.appspot.com').file(imgfilename).save(imgfile);
+
+                const fileRef = storage.bucket('vacation2023-2.appspot.com').file(imgfilename);
+                
+                return fileRef.getSignedUrl({
+                    action: 'read',
+                    expires: '03-09-2491'
+                }).then(signedUrls => {
+                    db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
+                        menu : admin.firestore.FieldValue.arrayUnion({
+                            imgurl : [signedUrls[0]],
+                            name : [name],
+                            info : [info],
+                            price : [price]
+                        })
+                    }).then(()=>{
+                        socket.emit('addProduct',myData,errorMessage);
+                    });
+                });
+        }
+        
+        uploadFromMemory()
+    })
+
+
     socket.on('changemenu',function(data){
         socket.emit('selectmenu',data, alldata);
     })
 })
+
+function createmenu(imgurl, name, info, price){
+    var str = "";
+    str += '<div class="menu">'
+                + '<div class="menuimg">'
+                    + '<img src="' + imgurl + '">'
+                + '</div>'
+                + '<div class="menuinfo">'
+                    + '<span>메뉴명 : ' + name + '<br>설명 : ' + info + '<br>가격 : ' + price + '</span>'
+                + '</div>'
+                + '<div class="delete">'
+                    + '<button><i class="fa-solid fa-trash-can"></i></button>'
+                + '</div>'
+            + '</div>'
+    return str;
+}
