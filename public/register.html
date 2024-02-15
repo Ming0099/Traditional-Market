@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/registerstyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <title>점포등록</title>
     <!--파이어베이스-->
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
@@ -26,6 +27,9 @@
         firebase.initializeApp(firebaseConfig);
     </script>
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+        
         var marketData = [];
         var str = "";
         fetch('m/traditional_market.json')
@@ -104,17 +108,17 @@
                         }
                     });
                     db.collection('전통시장').doc(marketName).collection(myCategory).doc(storeName).set({
-                        bestmenu : ['족발','불족발','막국수'],
+                        bestmenu : ['','',''],
                         imgurl : "",
-                        maxtime : 30,
-                        mintime : 21,
+                        maxtime : 0,
+                        mintime : 0,
                         menu : [],
-                        minamount : 20000,
-                        rate : 3.5,
+                        minamount : 0,
+                        rate : 0,
                         review : {
                             size : 0,
                         },
-                        tip : 3000,
+                        tip : 0,
                     }).then(()=>{ // 점포 등록 완료시 로그인 창으로 이동
                         location.href='/';
                     });
