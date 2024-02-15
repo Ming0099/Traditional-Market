@@ -6,26 +6,12 @@
     <link rel="stylesheet" href="css/loginstyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <title>로그인</title>
-    <!--파이어베이스-->
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
-          authDomain: "vacation2023-2.firebaseapp.com",
-          projectId: "vacation2023-2",
-          storageBucket: "vacation2023-2.appspot.com",
-          messagingSenderId: "617591015177",
-          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
-        };
-      
-        firebase.initializeApp(firebaseConfig);
-    </script>
-    <script>
         localStorage.setItem('pclogin', 'fail');
         var marketData = [];
         var str = "";
@@ -42,6 +28,7 @@
         function to_signup(){
             location.href = "/register";
         }
+
         function login(){
             var marketName = document.getElementById("markets").value;
             var myId = document.getElementById("idinput").value;
@@ -68,23 +55,19 @@
                 window.alert("비밀번호를 8자리 이상 입력해주세요.");
                 return;
             }
-            
-            const db = firebase.firestore();
 
-            db.collection('점포').doc(marketName).get().then((result)=>{
-                if(result.data()[myId] == undefined){
-                    window.alert("등록되지 않은 점포입니다.");
-                }else{
-                    if(result.data()[myId]['pw'] == myPw){
-                        localStorage.setItem('pclogin', 'success');
-                        location.href = "/main?market=" + marketName + "&name=" + result.data()[myId]['name'].replace( / /gi, '_')
-                            + "&category=" + result.data()[myId]['category'];
-                    }else{
-                        window.alert("등록되지 않은 점포입니다.");
-                    }
-                }
-            })
+            // 로그인 요청
+            socket.emit('loginReq', marketName, myId, myPw);
         }
+
+        socket.on('login', function(data,message){
+            if(message == ""){
+                localStorage.setItem('pclogin', 'success');
+                location.href = data;
+            }else{
+                window.alert(message);
+            }
+        });
     </script>
 </head>
 <body>

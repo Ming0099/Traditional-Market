@@ -3,6 +3,19 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var socketio = require('socket.io');
+var admin = require("firebase-admin");
+var firestore = require("firebase-admin/firestore");
+
+var serviceAccount = require("./vacation2023-2-firebase-adminsdk-guq8c-803226e5b1.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+/*
+const db = firestore.getFirestore();
+db.collection('점포').doc('삼방시장').get().then((result)=>{
+    console.log(result.data());
+});*/
 
 const app = express();
 
@@ -63,6 +76,29 @@ servers.listen(8080, function(){
 // 소켓
 var io = socketio.listen(servers);
 io.sockets.on('connection',function(socket){
+
+    // 로그인요청
+    socket.on('loginReq', function(name, id, pw){
+
+        var message = "";
+        var errorMessage = "";
+        
+        const db = firestore.getFirestore();
+
+        db.collection('점포').doc(name).get().then((result)=>{
+            if(result.data()[id] == undefined){
+                errorMessage = "등록되지 않은 점포입니다.";
+            }else{
+                if(result.data()[id]['pw'] == pw){
+                    message = "/main?market=" + name + "&name=" + result.data()[id]['name'].replace( / /gi, '_')
+                        + "&category=" + result.data()[id]['category'];
+                }else{
+                    errorMessage = "등록되지 않은 점포입니다.";
+                }
+            }
+            socket.emit('login',message,errorMessage);
+        })
+    })
 
     socket.on('changemenu',function(data){
         socket.emit('selectmenu',data, alldata);
