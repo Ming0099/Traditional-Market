@@ -8,13 +8,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- 반응형 웹 형태-->
+    <script src="/socket.io/socket.io.js"></script>
     <title>로그인</title>
     <script 
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+
         function changing(){ //login버튼 클릭시
+            var myId = document.getElementById('idinput').value;
+            var myPw = document.getElementById('pwinput').value;
+            var autoLogin = document.getElementById('autologinbox').checked;
+
+            socket.emit('mobileLoginReq', myId, myPw, autoLogin);
         }
 
         function register(){ //회원가입 버튼 클릭시
@@ -24,6 +33,17 @@
         function home(){ // 뒤로가기 버튼 클릭시
             location.href = "/m";
         }
+
+        socket.on('login',function(route,message,data,data2){
+            if(message == ""){
+                localStorage.setItem('mlogin','success');
+                localStorage.setItem('user', data);
+                localStorage.setItem('mauto', data2);
+                location.href = route;
+            }else{
+                window.alert(message);
+            }
+        })
     </script>
 </head>
 <body>
@@ -45,7 +65,7 @@
         <div class="optionBox">
             <div class="option1">
                 <label id="autologin">
-                    <input type="checkbox" name="자동 로그인">자동 로그인
+                    <input type="checkbox" id="autologinbox" name="자동 로그인">자동 로그인
                 </label>
             </div>
             <div class="option2">

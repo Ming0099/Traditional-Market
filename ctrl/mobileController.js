@@ -112,8 +112,36 @@ function mobileSignUpReq(id, pw, nickname, oftenmarket, address, address2, socke
     });
 }
 
+// 모바일 로그인 요청
+function mobileLoginReq(id, pw, autologin, socket){
+    var myRoute = "";
+    var errorMessage = "";
+
+    db.collection('유저').doc(id).get().then((result)=>{
+        // id체크
+        if(result.data() == undefined){
+            errorMessage = "아이디나 비밀번호를 다시 입력해주세요."
+            socket.emit('login',myRoute,errorMessage);
+            return;
+        }
+        // pw체크
+        if(result.data().pw != pw){
+            errorMessage = "아이디나 비밀번호를 다시 입력해주세요."
+            socket.emit('login',myRoute,errorMessage);
+            return;
+        }
+
+        var marketName = result.data().oftenmarket;
+        myRoute = "/m";
+
+        socket.emit('login',myRoute,errorMessage,JSON.stringify(result.data()),autologin);
+        
+    })
+}
+
 module.exports = {
     mobileInfoInitReq,
     mobileMenuInit,
     mobileSignUpReq,
+    mobileLoginReq,
 };

@@ -153,8 +153,6 @@ input[id="userbutton"]{
 
 .selectmenu1{
     margin-top: 15px;
-}
-.selectmenu1 form{
     display: flex;
     justify-content: center;
 }
@@ -169,7 +167,7 @@ input[id="userbutton"]{
     font-size: 10px;
     font-family: 'Black Han Sans', sans-serif;
 }
-.selectmenu2 form{
+.selectmenu2{
     display: flex;
     justify-content: center;
 }
@@ -184,7 +182,7 @@ input[id="userbutton"]{
     font-size: 10px;
     font-family: 'Black Han Sans', sans-serif;
 }
-.selectmenu3 form{
+.selectmenu3{
     display: flex;
     justify-content: center;
 }

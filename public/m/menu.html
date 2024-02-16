@@ -21,7 +21,7 @@
         var socket = io.connect();
 
         var selectedMenuID; // 선택된 메뉴
-        var marketname = '삼방시장'; // 회원가입 완료후 수정 필요
+        var marketname = JSON.parse(localStorage.getItem('user')).oftenmarket[0]; 
         const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
 
         window.onload = function(){
@@ -44,6 +44,13 @@
 
         function clickmenu(selectedObjID){
             location.href = '/m/info?restaurant=' + selectedMenuID + ',' + selectedObjID;
+        }
+
+
+        function toLogin(){
+            if(localStorage.getItem('mlogin') != 'success'){ // 로그인 상태가 아니면 로그인창으로
+                location.href = '/m/login';
+            }
         }
 
         socket.on('changeMenu',function(htm){
@@ -91,7 +98,7 @@
         </div>
 
         <ul class="user">
-            <a href="/m/login"><i class="fa-solid fa-user fa-xl"></i></a>
+            <a href="#" onclick="toLogin()"><i class="fa-solid fa-user fa-xl"></i></a>
         </ul>
     </nav>
 

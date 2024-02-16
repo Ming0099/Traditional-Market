@@ -51,6 +51,11 @@
                 $('#count'+data).val(Number(value)-1);
             }
         }
+        function toLogin(){
+            if(localStorage.getItem('mlogin') != 'success'){ // 로그인 상태가 아니면 로그인창으로
+                location.href = '/m/login';
+            }
+        }
     </script>
 </head>
 <body>
@@ -92,7 +97,7 @@
         </div>
 
         <ul class="user">
-            <a href="/m/login"><i class="fa-solid fa-user fa-xl"></i></a>
+            <a href="#" onclick="toLogin()"><i class="fa-solid fa-user fa-xl"></i></a>
         </ul>
     </nav>
 

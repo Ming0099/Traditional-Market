@@ -71,4 +71,9 @@ io.sockets.on('connection',function(socket){
     socket.on('mobileSignUpReq',function(id, pw, nickname, oftenmarket, address, address2){
         mobileCtrl.mobileSignUpReq(id, pw, nickname, oftenmarket, address, address2, socket);
     })
+
+    // 모바일 로그인 요청
+    socket.on('mobileLoginReq',function(id,pw,autologin){
+        mobileCtrl.mobileLoginReq(id,pw,autologin,socket);
+    })
 })

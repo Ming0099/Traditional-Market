@@ -13,6 +13,49 @@
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
+    <script>
+        window.onload = function(){
+            var login = localStorage.getItem('mlogin');
+            var auto = localStorage.getItem('mauto');
+
+            // 이전 페이지의 URL이 없으면 -> 최초실행
+            if(document.referrer == ""){
+                // 자동로그인 체크
+                if(login != 'success' || auto != 'true'){
+                    localStorage.removeItem('mlogin');
+                    localStorage.removeItem('mauto');
+                    localStorage.removeItem('user');
+                }
+            }
+
+            if(login != 'success'){
+                localStorage.removeItem('mlogin');
+                localStorage.removeItem('mauto');
+                localStorage.removeItem('user');
+            }
+
+            for(let i=1; i<=12; i++){
+                document.getElementById('btn'+i).addEventListener('click',function(){toMenu(this)});
+            }
+        }
+    </script>
+    <script>
+        function toMenu(e){
+            if(localStorage.getItem('mlogin') != 'success'){
+                window.alert('로그인 후 이용해주세요.');
+            }else{
+                location.href = '/m/menu?' + $(e).attr('name') + '=' + $(e).attr('value');
+                //?menucategory=12
+            }
+        }
+        function toLogin(){
+            if(localStorage.getItem('mlogin') != 'success'){ // 로그인 상태가 아니면 로그인창으로
+                location.href = '/m/login';
+            }
+            // 추후 마이페이지로 가도록
+        }
+        
+    </script>
 </head>
 <body>
     <!--상단바-->
@@ -49,7 +92,7 @@
         </div>
 
         <ul class="user">
-            <a href="/m/login"><i class="fa-solid fa-user fa-xl"></i></a>
+            <a href="#" onclick="toLogin()"><i class="fa-solid fa-user fa-xl"></i></a>
         </ul>
     </nav>
 
@@ -66,76 +109,70 @@
     <div class="mainbody">
 
         <div class="selectmenu1">
-            <form method="get" action="/m/menu">
-                <button id="btn1" name="menucategory" value="1">
-                    <img src="image/grain.png" width="70%" height="70%">
-                    <br>곡물류
-                </button>
+            <button id="btn1" name="menucategory" value="1">
+                <img src="image/grain.png" width="70%" height="70%">
+                <br>곡물류
+            </button>
 
-                <button id="btn2" name="menucategory" value="2">
-                    <img src="image/vegetable.png" width="70%" height="70%">
-                    <br>채소류
-                </button>
+            <button id="btn2" name="menucategory" value="2">
+                <img src="image/vegetable.png" width="70%" height="70%">
+                <br>채소류
+            </button>
 
-                <button id="btn3" name="menucategory" value="3">
-                    <img src="image/fruit.png" width="70%" height="70%">
-                    <br>과일류
-                </button>
+            <button id="btn3" name="menucategory" value="3">
+                <img src="image/fruit.png" width="70%" height="70%">
+                <br>과일류
+            </button>
 
-                <button id="btn4" name="menucategory" value="4">
-                    <img src="image/nuts.png" width="70%" height="70%">
-                    <br>견과류
-                </button>
-            </form>
+            <button id="btn4" name="menucategory" value="4">
+                <img src="image/nuts.png" width="70%" height="70%">
+                <br>견과류
+            </button>
         </div>
 
         <div class="selectmenu2">
-            <form method="get" action="/m/menu">
-                <button id="btn5" name="menucategory" value="5">
-                    <img src="image/fish.png" width="70%" height="70%">
-                    <br>수산물
-                </button>
+            <button id="btn5" name="menucategory" value="5">
+                <img src="image/fish.png" width="70%" height="70%">
+                <br>수산물
+            </button>
 
-                <button id="btn6" name="menucategory" value="6">
-                    <img src="image/meat.png" width="70%" height="70%">
-                    <br>축산물
-                </button>
+            <button id="btn6" name="menucategory" value="6">
+                <img src="image/meat.png" width="70%" height="70%">
+                <br>축산물
+            </button>
 
-                <button id="btn7" name="menucategory" value="7">
-                    <img src="image/sidedish.png" width="70%" height="70%">
-                    <br>반찬
-                </button>
+            <button id="btn7" name="menucategory" value="7">
+                <img src="image/sidedish.png" width="70%" height="70%">
+                <br>반찬
+            </button>
 
-                <button id="btn8" name="menucategory" value="8">
-                    <img src="image/tteokbokki.png" width="70%" height="70%">
-                    <br>분식
-                </button>
-            </form>
+            <button id="btn8" name="menucategory" value="8">
+                <img src="image/tteokbokki.png" width="70%" height="70%">
+                <br>분식
+            </button>
             
         </div>
 
         <div class="selectmenu3">
-            <form method="get" action="/m/menu">
-                <button id="btn9" name="menucategory" value="9">
-                    <img src="image/noodles.png" width="70%" height="70%">
-                    <br>중식
-                </button>
+            <button id="btn9" name="menucategory" value="9">
+                <img src="image/noodles.png" width="70%" height="70%">
+                <br>중식
+            </button>
 
-                <button id="btn10" name="menucategory" value="10">
-                    <img src="image/chicken.png" width="70%" height="70%">
-                    <br>통닭
-                </button>
+            <button id="btn10" name="menucategory" value="10">
+                <img src="image/chicken.png" width="70%" height="70%">
+                <br>통닭
+            </button>
 
-                <button id="btn11" name="menucategory" value="11">
-                    <img src="image/dessert.png" width="70%" height="70%">
-                    <br>디저트
-                </button>
+            <button id="btn11" name="menucategory" value="11">
+                <img src="image/dessert.png" width="70%" height="70%">
+                <br>디저트
+            </button>
 
-                <button id="btn12" name="menucategory" value="12">
-                    <img src="image/dot.png" width="70%" height="70%">
-                    <br>기타
-                </button>
-            </form>
+            <button id="btn12" name="menucategory" value="12">
+                <img src="image/dot.png" width="70%" height="70%">
+                <br>기타
+            </button>
         </div>
 
         <div class="recommendmenu">
