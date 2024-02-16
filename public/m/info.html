@@ -14,26 +14,10 @@
         crossorigin="anonymous"
     ></script>
     <script src="/socket.io/socket.io.js"></script>
-    <!--파이어베이스-->
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
     <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyD9vjq1SNxxTM2PB6xrTyBMPdzRZswqpTk",
-          authDomain: "vacation2023-2.firebaseapp.com",
-          projectId: "vacation2023-2",
-          storageBucket: "vacation2023-2.appspot.com",
-          messagingSenderId: "617591015177",
-          appId: "1:617591015177:web:034f4f010626b8c95ff5d8"
-        };
-      
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-    </script>
-    <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+
         var shoppingbasket = {}; // 장바구니
         const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
         var marketname = '삼방시장'; // 회원가입 완료후 수정 필요
@@ -41,43 +25,22 @@
         var restaurantID;
 
         window.onload = function(){
+
             var temp = window.location.search.split('=')[1];
             restaurantID = temp.split(',');
             var storeName = decodeURI(restaurantID[1]).replace( /_/gi, ' ');
 
-            const db = firebase.firestore();
-            db.collection('전통시장').doc(marketname).collection(menuTag[restaurantID[0]-1]).doc(storeName).get().then((result)=>{
-                data = result.data();
-                
-                $('#titleImg').attr('src',data['imgurl']);
-                $('#Title').text(storeName);
-                $('#tip').text('배달팁 ' + data['tip'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')); // 숫자 콤마 변환 정규식
-                $('#minimumAmount').text('최소주문 ' + data['minamount'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-                $('#rate').text(data['rate']);
-                $('#reviewcount').text('리뷰 ' + data['review']['size'] + '개');
-                $('#timerange').text(' ' + data['mintime'] + ' ~ ' + data['maxtime'] + '분');
-
-                var str = "";
-                for(let i=0; i<data['menu'].length; i++){
-                    str += '<div class="menuBox">'
-                        +'<div class="menuinfoBox">'
-                            +'<label id="menutitle"><b>' + data['menu'][i]['name'] + '</b></label>'
-                            +'<br>'
-                            +'<label id="menuinfo">' + data['menu'][i]['info'] + '</label>'
-                            +'<br><br>'
-                            +'<label id="menuprice"><b>' + data['menu'][i]['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</b></label>'
-                            +'<button id=' + i + ' onclick="plus(this.id)"><b>+</b></button>'
-                            +'<button id=' + i + ' onclick="minus(this.id)"><b>−</b></button>'
-                            +'<input id="count' + i + '" value=0>'
-                        +'</div>'
-                        +'<div class="menuimageBox">'
-                            +'<img src="' + data['menu'][i]['imgurl'] + '">'
-                        +'</div>'
-                    +'</div>';
-                }
-                $(str).appendTo('.menu');
-            });
+            socket.emit('mobileInfoInitReq',marketname,menuTag[restaurantID[0]-1],storeName);
         }
+        socket.on('changeText',function(Tag,text){
+            $(Tag).text(text);
+        })
+        socket.on('changeImg',function(Tag,img){
+            $(Tag).attr('src', img);
+        })
+        socket.on('infoInit', function(str){
+            $(str).appendTo('.menu');
+        })
         function plus(data){
             var value = $('#count'+data).val();
             $('#count'+data).val(Number(value)+1);

@@ -6,6 +6,7 @@ var socketio = require('socket.io');
 const home = require("./routes"); // 라우팅
 const PORT = 8080;
 const webCtrl = require("./ctrl/webController");
+const mobileCtrl = require("./ctrl/mobileController");
 
 const app = express();
 
@@ -52,5 +53,17 @@ io.sockets.on('connection',function(socket){
     // 메인화면 상품추가 요청
     socket.on('addProductReq',function(imgurl,name,info,price,imgfile,imgfilename,storePathData){
         webCtrl.addProductReq(imgurl,name,info,price,imgfile,imgfilename,storePathData,socket);
+    })
+
+
+    /* 모바일 */
+    // 점포 정보창 초기화
+    socket.on('mobileInfoInitReq', function(marketname,category,storeName){
+        mobileCtrl.mobileInfoInitReq(marketname,category,storeName,socket);
+    })
+
+    // 메뉴창 초기화
+    socket.on('mobileMenuInit',function(marketname,category){
+        mobileCtrl.mobileMenuInit(marketname,category,socket);
     })
 })
