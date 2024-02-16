@@ -8,19 +8,55 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
     <title>회원가입</title>
     <script 
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
-
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
 
         function cancel(){ /*가입취소 버튼 -> 로그인 화면으로*/
             location.href = "/m/login";
         }
         function register_check(){ /*가입확인 버튼 -> 홈 화면으로*/
-            location.href = "/m";
+            var myId = document.getElementById("idinput").value;
+            var myPw = document.getElementById("pwinput").value;
+            var myNickName = document.getElementById("nicknameinput").value;
+            var myOftenMarketList = document.getElementsByName("use_market");
+            var myOftenMarketId = "";
+            myOftenMarketList.forEach((node)=>{
+                if(node.checked){
+                    myOftenMarketId = node.id;
+                }
+            })
+            var myOftenMarket = document.getElementById("market" + myOftenMarketId).innerText.split(' ')[0];
+            var myAddress = document.getElementsByClassName("address1")[0].value;
+            var myAddress2 = document.getElementsByClassName("address2")[0].value;
+
+            if(myId.length < 5){
+                window.alert("아이디를 5자리 이상 입력해주세요.");
+                return;
+            }
+
+            if(myPw.length < 8){
+                window.alert("비밀번호를 8자리 이상 입력해주세요.");
+                return;
+            }
+
+            if(myNickName.length == 0){
+                window.alert("닉네임을 입력해주세요.");
+                return;
+            }
+
+            if(myAddress.length == 0){
+                window.alert("주소를 설정해주세요.");
+                return;
+            }
+
+            socket.emit("mobileSignUpReq",myId,myPw,myNickName,myOftenMarket,myAddress,myAddress2);
         }
 
         function findAddr(){
@@ -40,6 +76,14 @@
         function back(){ // 뒤로가기 버튼 클릭시
             location.href = "/m/login";
         }
+
+        socket.on('signUp',function(route,message){
+            if(message == ""){
+                location.href = route;
+            }else{
+                window.alert(message);
+            }
+        })
     </script>
 </head>
 <body>
@@ -50,17 +94,17 @@
     <div class="idBox">
         <span class="textview"><b>아이디 입력</b></span> 
         <div class="blank"></div>
-        <input class="text_input" type="text" placeholder="아이디 또는 이메일">
+        <input class="text_input" id="idinput" type="text" placeholder="아이디 또는 이메일">
     </div>
     <div class="pwBox">
         <span class="textview"><b>비밀번호 입력</b></span>
         <div class="blank"></div>
-        <input class="text_input" type="password" placeholder="8자리 이상 입력해주세요.">
+        <input class="text_input" id="pwinput" type="password" placeholder="8자리 이상 입력해주세요.">
     </div>
     <div class="nickBox">
         <span class="textview"><b>닉네임 입력</b></span>
         <div class="blank"></div>
-        <input class="text_input" type="text" placeholder="본명이나 닉네임을 입력하세요.">
+        <input class="text_input" id="nicknameinput" type="text" placeholder="본명이나 닉네임을 입력하세요.">
     </div>
     <div class="mainmarketBox">
         <span class="textview"><b>자주 이용할 시장</b></span>
@@ -68,11 +112,11 @@
         <span class="textinfo"><b>가장 가까운 3지점의 시장이 표시됩니다.</b></span><br>
         <span class="textinfo"><b>마이페이지에서 변경할 수 있습니다.</b></span>
         <div class="blank"></div>
-        <input type="radio" name="use_market" class="sel_market" checked><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market1"></span></span>
+        <input type="radio" id="1" name="use_market" class="sel_market" checked><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market1"></span></span>
         <div class="blank"></div>
-        <input type="radio" name="use_market" class="sel_market"><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market2"></span></span>
+        <input type="radio" id="2" name="use_market" class="sel_market"><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market2"></span></span>
         <div class="blank"></div>
-        <input type="radio" name="use_market" class="sel_market"><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market3"></span></span>
+        <input type="radio" id="3" name="use_market" class="sel_market"><span class="market"> <i class="fa-solid fa-store"></i> : <span id="market3"></span></span>
     </div>
     <div class="adressBox">
         <div class="blank"></div>

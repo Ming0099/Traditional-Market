@@ -66,4 +66,9 @@ io.sockets.on('connection',function(socket){
     socket.on('mobileMenuInit',function(marketname,category){
         mobileCtrl.mobileMenuInit(marketname,category,socket);
     })
+
+    // 모바일 회원가입 요청
+    socket.on('mobileSignUpReq',function(id, pw, nickname, oftenmarket, address, address2){
+        mobileCtrl.mobileSignUpReq(id, pw, nickname, oftenmarket, address, address2, socket);
+    })
 })

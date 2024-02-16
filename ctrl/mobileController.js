@@ -80,7 +80,40 @@ function mobileMenuInit(marketname,category,socket){
     })
 }
 
+// 모바일 회원가입 요청
+function mobileSignUpReq(id, pw, nickname, oftenmarket, address, address2, socket){
+    var myRoute = "";
+    var errorMessage = "";
+    
+    var pass = true;
+    db.collection('유저').get().then((result)=>{
+        result.forEach((doc)=>{
+            if(doc.id == id){
+                pass = false;
+                return;
+            }
+        })
+        if(!pass){
+            errorMessage = "id 중복";
+            socket.emit('signUp',myRoute,errorMessage);
+            return;
+        }else{
+            db.collection('유저').doc(id).set({
+                pw : [pw],
+                nickname : [nickname],
+                oftenmarket : [oftenmarket],
+                address : [address],
+                address2 : [address2],
+            }).then(()=>{
+                myRoute = "/m/login";
+                socket.emit('signUp',myRoute,errorMessage);
+            })
+        }
+    });
+}
+
 module.exports = {
     mobileInfoInitReq,
     mobileMenuInit,
+    mobileSignUpReq,
 };
