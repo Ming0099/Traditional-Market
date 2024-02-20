@@ -1,0 +1,160 @@
+body{
+    margin: 0;
+}
+
+a{
+    text-decoration:none;
+    color:#FFFFE0;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#FFA500;
+    padding:8px 12px;
+}
+
+.logo {
+    font-family: 'East Sea Dokdo', sans-serif;
+    display:flex;
+    font-size: 40px;
+    list-style:none;
+    padding-left: 0;
+}
+
+.logo li {
+    padding: 8px 12px;
+    margin-left: 20px;
+}
+
+.logo li a i{
+    font-size: 25px;
+}
+
+.home{
+    list-style: none;
+    color:white;
+    display:flex;
+}
+
+.back{
+    list-style: none;
+    color:white;
+    display:flex;
+}
+
+input[id="userbutton"]{
+    display: none;
+}
+
+@media screen and (max-width:768px){ }
+
+.margin1{
+    padding: 3px;
+    background-color: #d3d3d3;
+}
+
+.maininfo{
+    display: flex;
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid #666;
+}
+.infoBox{
+    text-align: center;
+    width: 100%;
+}
+.infoBox label[id="Title"]{
+    font-weight: bold;
+    font-size: 20px;
+}
+.infoBox label[id="star"]{
+    font-size: 15px;
+    color:gold;
+}
+.infoBox label[id="rate"]{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.reviewBox{
+    position:fixed;
+    background-color: #FFA500;
+    width: 80%;
+    height: 6%;
+    bottom:5%;
+    left: 10%;
+    border-radius: 16px;
+    box-shadow: 0px 5px 5px gray;
+}
+.reviewText{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    color:#f0f0f0;
+}
+.reviewText label{
+    display: block;
+    font-family: 'East Sea Dokdo', sans-serif;
+    font-size: 40px;
+    margin:auto;
+}
+.reviewText label i{
+    font-size: 22px;
+}
+.reviews{
+    padding: 10px;
+    padding-left: 15px;
+    font-family: 'East Sea Dokdo', sans-serif;
+    font-size: 25px;
+    border-bottom : 1px solid #666;
+}
+.reviewSee{
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #d3d3d3;
+}
+.reviewMargin{
+    margin: 10px;
+}
+.reviewSeeName{
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.reviewSeeRate{
+    font-size: 15px;
+    color:gold;
+}
+.reviewSeeReview{
+    font-weight: lighter;
+    margin-top: 10px;
+}
+.rateBox{
+    margin-top: 50px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.rateNumber{
+    width: 35%;
+}
+.rateNumber label[id="rating"]{
+    font-size: 40px;
+}
+.rateNumber label[id="star"]{
+    font-size: 15px;
+    color:gold;
+}
+.rateScore{
+    width: 50%;
+}
+.rateProgress{
+    text-align: left;
+}
+.rateCount{
+    width: 10%;
+}
