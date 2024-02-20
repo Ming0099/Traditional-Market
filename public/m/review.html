@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
-    <title>Document</title>
+    <title>ReviewPage</title>
     <script 
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
@@ -17,67 +17,66 @@
 <body>
     <!--상단바-->
     <nav class="navbar">
-        <div class="slidemenu">
-            <input type="checkbox" id="slidemenuicon">
-
-            <label for="slidemenuicon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
-
-            <div class="sidebar">
-                <ul>
-                    <li>
-                        <a href="#"><i class="fa-solid fa-motorcycle"></i> 배달현황</a>
-                    </li>
-
-                    <li>
-                      <a href="#"><i class="fa-solid fa-cart-shopping"></i> 구매내역</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa-solid fa-pen"></i> 남긴리뷰</a>
-                    </li>
-                  </ul>
-            </div>
+        <div class="back">
+            <a href="info.html"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
         </div>
 
         <div class="logo">
-            <li><a href="/m"><i class="fa-solid fa-bowl-food"></i> 전통시장 <i class="fa-solid fa-utensils"></i></a></li>
+            <li><a>리뷰</a></li>
             
         </div>
 
-        <ul class="user">
-            <a href="#" onclick="toLogin()"><i class="fa-solid fa-user fa-xl"></i></a>
-        </ul>
+        <div class="home">
+            <a href="/m"><i class="fa-solid fa-home fa-xl"></i></a>
+        </div>
     </nav>
 
     <!--메인-->
     <div class="mainbody">       
         <div class="maininfo">
-            <div class="imageBox">
-                <img id="titleImg" src="">
-            </div>
             <div class="infoBox">
-                <br>
-                <label id="Title">가게명</label>
-                <br><br>
-                <label id="tip">배달팁</label>
-                <br>
-                <label id="minimumAmount">최소주문금액</label>
-                <br><br>
-                <label id="star"><i class="fa-solid fa-star"></i></label>
-                <label id="rate">별점</label>
-                <a href="#"><b id="reviewcount">리뷰개수</b><i class="fa-solid fa-chevron-right"></i></a>
-                <br>
-                <label id="timeicon"><i class="fa-solid fa-motorcycle"></i></label>
-                <label id="timerange">배달시간</label>
+                <div class="rateBox">
+                    <div class="rateNumber">
+                        <div><label id="rating">5.0</label></div>
+                        <div><label id="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></label></div>
+                    </div>
+                    <div class="rateScore">
+                        <div class="rateProgress">
+                            <div>5점 <progress value="100" max="100"></progress></div>
+                            <div>4점 <progress value="0" max="100"></progress></div>
+                            <div>3점 <progress value="0" max="100"></progress></div>
+                            <div>2점 <progress value="0" max="100"></progress></div>
+                            <div>1점 <progress value="0" max="100"></progress></div>
+                        </div>
+                    </div>
+                    <div class="rateCount">
+                        <div>100</div>
+                        <div>0</div>
+                        <div>0</div>
+                        <div>0</div>
+                        <div>0</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="recommendmenu">
-            리뷰 리스트&nbsp;<i class="fa-solid"></i>
+        <div class="reviewlist">
+            <div class="margin1"></div>
+            <div class="reviews">리뷰 리스트</div>
+            <!-- 리뷰 추가 -->
+            <div class="reviewSee">
+                <div class =reviewMargin>
+                    <div class="reviewSeeName">사용자 이름</div>
+                    <div class="reviewSeeRate"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+                    <div class="reviewSeeReview">리뷰 내용</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviewBox" onclick="">
+            <div class="reviewText">
+                <label><i class="fa-solid"></i>리뷰쓰기</label>
+            </div>
         </div>
     </div>
 
