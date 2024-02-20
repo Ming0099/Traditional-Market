@@ -21,11 +21,11 @@ function mobileInfoInitReq(marketname,category,storeName,socket){
         for(let i=0; i<data['menu'].length; i++){
             str += '<div class="menuBox">'
                 +'<div class="menuinfoBox">'
-                    +'<label id="menutitle"><b>' + data['menu'][i]['name'] + '</b></label>'
+                    +'<label id="menutitle' + i + '"><b>' + data['menu'][i]['name'] + '</b></label>'
                     +'<br>'
-                    +'<label id="menuinfo">' + data['menu'][i]['info'] + '</label>'
+                    +'<label id="menuinfo' + i + '">' + data['menu'][i]['info'] + '</label>'
                     +'<br><br>'
-                    +'<label id="menuprice"><b>' + data['menu'][i]['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</b></label>'
+                    +'<label id="menuprice' + i + '"><b>' + data['menu'][i]['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</b></label>'
                     +'<button id=' + i + ' onclick="plus(this.id)"><b>+</b></button>'
                     +'<button id=' + i + ' onclick="minus(this.id)"><b>−</b></button>'
                     +'<input id="count' + i + '" value=0>'
@@ -35,6 +35,7 @@ function mobileInfoInitReq(marketname,category,storeName,socket){
                 +'</div>'
             +'</div>';
         }
+        socket.emit('cartInit',data['menu'].length);
         socket.emit('infoInit',str);
     });
 }
@@ -131,13 +132,15 @@ function mobileLoginReq(id, pw, autologin, socket){
             return;
         }
 
-        var marketName = result.data().oftenmarket;
+        var user = result.data();
+        user.id = id;
         myRoute = "/m";
 
-        socket.emit('login',myRoute,errorMessage,JSON.stringify(result.data()),autologin);
+        socket.emit('login',myRoute,errorMessage,JSON.stringify(user),autologin);
         
     })
 }
+
 
 module.exports = {
     mobileInfoInitReq,

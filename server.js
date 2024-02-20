@@ -76,4 +76,24 @@ io.sockets.on('connection',function(socket){
     socket.on('mobileLoginReq',function(id,pw,autologin){
         mobileCtrl.mobileLoginReq(id,pw,autologin,socket);
     })
+
+
+    /* 통신 */
+    // 점포 방 참가
+    socket.on('join',function(market, store){
+        socket.join(market+'&'+store);
+    })
+
+    // 주문하기(send)
+    socket.on('order',function(market,store,data,id,address){
+        // 주문탭 만든후 수정필요 str -> html
+        var str = "주문자ID : " + id + "\n";
+        str += "주문 목록\n";
+        for(let key in data){
+            str += key + " " + data[key] + "개\n";
+        }
+        str += "\n주소 : " + address[0] + "\n";
+        str += "상세주소 : " + address[1];
+        io.sockets.in(market+'&'+store).emit('order',str);
+    })
 })

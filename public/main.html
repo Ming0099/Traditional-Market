@@ -122,6 +122,9 @@
         var myMarket = decodeURI(temp[1].split('&')[0]);
         var myStore = decodeURI(temp[2].split('&')[0]).replace( /_/gi, ' ');
         var myCategory = decodeURI(temp[3]);
+
+        // 방 참가
+        socket.emit('join',myMarket,myStore);
         
         $('#storeName').text('가게명 : ' + myStore);
 
@@ -179,6 +182,11 @@
                 window.alert(error);
             }
             document.querySelector(".modalbackground").className = "modalbackground";
+        })
+
+        // 주문탭 만든후 수정필요
+        socket.on('order',function(data){
+            window.alert(data);
         })
         
     </script>
