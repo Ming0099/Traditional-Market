@@ -13,6 +13,18 @@
     <title>Document</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
+        var marketData = [];
+        var str = "";
+        fetch('./traditional_market.json')
+            .then((data) => data.json())
+            .then((obj) => {
+                for (let i = 0; i < obj['items'].length; i++) {
+                    str += '<option value="' + obj['items'][i]['시장명'] + '"></option>';
+                    marketData.push(obj['items'][i]['시장명']);
+                }
+                $('#list').html(str);
+            })
+
         function findAddr() {
             new daum.Postcode({
                 oncomplete: function (data) {
@@ -32,13 +44,33 @@
 
 <body>
     <div class="modal" id="modal">
-        <div class="write_screen">
-            <span style="font-weight: bold;">작성하기</span>
-            <br>
-            <textarea class="textarea_screen"></textarea>
-            <br><br>
-            <button class="check" style="width: 20%; height: 10%; font-size: 15px; margin-right: 2%; background-color: #FFA500; " onclick="write_cancel()">취소</button>
-            <button class="check" style="width: 20%; height: 10%; font-size: 15px; margin-left: 2%; background-color: #FFA500; ">확인</button>
+        <div class="write_screen" id="middle_screen">
+            <div id="text_modal" style="width: 100%; height: 100%;"><!--텍스트 입력 모달창-->
+                <span style="font-weight: bold;">작성하기</span>
+                <br>
+                <textarea class="textarea_screen" id="content"></textarea>
+                <br><br>
+                <button class="check"
+                    style="width: 20%; height: 10%; font-size: 15px; margin-right: 2%; background-color: #FFA500; "
+                    onclick="write_cancel()">취소</button>
+                <button class="check"
+                    style="width: 20%; height: 10%; font-size: 15px; margin-left: 2%; background-color: #FFA500; "
+                    onclick="write_save('')">확인</button>
+            </div>
+            <div id="market_modal" style="width: 100%; height: 100%;"> <!--시장 변경 모달창-->
+                <span>시장선택</span><br>
+                <input type="text" list="list" id="markets" placeholder="시장명을 정확하게 입력해주세요."
+                    style="width: 90%; height: 10%; margin-top: 30%;" />
+                <datalist id="list">
+                    <!--시장 이름 옵션들-->
+                </datalist>
+                <button class="check"
+                    style="width: 30%; height: 15%; font-size: 15px; margin-right: 2%; background-color: #FFA500;margin-top: 30%; "
+                    onclick="write_cancel()">취소</button>
+                <button class="check"
+                    style="width: 30%; height: 15%; font-size: 15px; margin-left: 2%; background-color: #FFA500; margin-top: 30%;"
+                    onclick="write_save('market')">확인</button>
+            </div>
         </div>
     </div>
     <div class="main_screen" id="main_screen">
@@ -52,22 +84,27 @@
             </div>
         </div>
         <div class="middle">
-            <span class="show_text">닉네임 : </span> <span class="modified" onclick="write_onclick()">수정하기</span> <br>
-            <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)">
+            <span class="show_text">닉네임 : </span> <span class="modified" onclick="write_onclick('nickname')">수정하기</span>
+            <br>
+            <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)" id="nickname">
             <br>
 
-            <span class="show_text">주소 : </span> <button class="addr_search" onclick="findAddr()">수정하기</button> <br> 
-            <input type="text" id="house_addr" class="show_content" readonly onmousedown="ignoreClick(event)">
+            <span class="show_text">주소 : </span> <button class="addr_search" onclick="findAddr()">수정하기</button> <br>
+            <input type="text" id="house_addr" class="show_content" readonly onmousedown="ignoreClick(event)"
+                id="simple_addr">
 
-            <span class="show_text" style="font-size: 110%; margin-top: 1%; margin-left: 8%;">상세주소 : </span> <span class="modified" onclick="write_onclick()">수정하기</span> <br> 
-            <input type="text" class="show_content" style="height: 4%;" readonly onmousedown="ignoreClick(event)">
+            <span class="show_text" style="font-size: 110%; margin-top: 1%; margin-left: 8%;">상세주소 : </span> <span
+                class="modified" onclick="write_onclick('detailed_addr')">수정하기</span> <br>
+            <input type="text" class="show_content" style="height: 4%;" readonly onmousedown="ignoreClick(event)"
+                id="detailed_addr">
 
             <br>
-            <span class="show_text">등록된 시장 : </span> <span class="modified" onclick="write_onclick()">수정하기</span> <br>
-            <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)">
+            <span class="show_text">등록된 시장 : </span> <span class="modified"
+                onclick="write_onclick('market')">수정하기</span> <br>
+            <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)" id="market">
         </div>
         <div class="bottom">
-            <button class="check" style="margin-right: 5%; margin-top: 3%;">취소</button>
+            <button class="check" style="margin-right: 5%; margin-top: 3%;" onclick="mypage_cancel()">취소</button>
             <button class="check" style="margin-left: 5%; margin-top: 3%;">저장</button>
         </div>
     </div>
@@ -75,28 +112,60 @@
         var sel_textbox = null;
         function ignoreClick(event) {
             event.preventDefault();
-            // 추가로 원하는 작업을 수행할 수 있습니다.
         }
-        function write_cancel() {
+        function write_cancel() { //모달창 취소
             elem = document.getElementById('main_screen');
             elem.style.zIndex = 2;
             elem = document.getElementById('modal');
             elem.style.display = 'none';
         }
-        function write_onclick() {
+        function write_onclick(text_id) { //수정하기 클릭
+            if (text_id.includes('market') === true) { //시장일때
+                document.getElementById('middle_screen').style.height = "30%"
+                document.getElementById('text_modal').style.display = 'none'
+                document.getElementById('market_modal').style.display = 'block'
+            }
+            else {
+                document.getElementById('middle_screen').style.height = "40%"
+                document.getElementById('text_modal').style.display = 'block'
+                document.getElementById('market_modal').style.display = 'none'
+            }
+            sel_textbox = document.getElementById(text_id);
             elem = document.getElementById('main_screen');
             elem.style.zIndex = -1;
             elem = document.getElementById('modal');
             elem.style.display = 'block';
         }
-        function write_save(){
-
+        function write_save(text_find) { //수정 모달창에서 저장
+            if (text_find.includes('market') === true) { //알맞은 시장인지 확인
+                name = document.getElementById('markets').value;
+                var check = 0;
+                for (var item of marketData) {
+                    if (item.includes(name) === true) {
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 1) {
+                    sel_textbox.value = name;
+                    document.getElementById('markets').value = "";
+                    write_cancel();
+                }
+                else {
+                    alert("시장을 다시 입력하시오");
+                }
+            }
+            else {
+                sel_textbox.value = document.getElementById('content').value;
+                document.getElementById('content').value = "";
+                write_cancel();
+            }
         }
 
-        function mypage_cancel(){
-
+        function mypage_cancel() { //마이페이지 나가기
+            location.href = "/m/main.html";
         }
-        function mypage_save(){
+        function mypage_save() { //마이페이지 저장
 
         }
     </script>
