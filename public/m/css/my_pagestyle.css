@@ -91,21 +91,23 @@ div.main_screen{
 }
 
 div.write_screen{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: block;
-    margin-left: 20%;
-    margin-top: 60%;
     background-color: white;
-    width: 60%;
-    height: 40%;
+    width: 80%;
+    height: 160px;
     text-align: center;
     border-radius: 20px;
 }
 
 .textarea_screen{
     resize: none;
-    margin-top: 2%;
-    width: 80%;
-    height: 70%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 90%;
     font-size: 20px;
 }
 

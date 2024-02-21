@@ -50,30 +50,32 @@
     <div class="modal" id="modal">
         <div class="write_screen" id="middle_screen">
             <div id="text_modal" style="width: 100%; height: 100%;"><!--텍스트 입력 모달창-->
+                <br>
                 <span style="font-weight: bold;">작성하기</span>
                 <br>
-                <textarea class="textarea_screen" id="content"></textarea>
-                <br><br>
+                <textarea rows="1" class="textarea_screen" id="content" wrap="off"></textarea>
+                <br>
                 <button class="check"
-                    style="width: 20%; height: 10%; font-size: 15px; margin-right: 2%; background-color: #FFA500; "
-                    onclick="write_cancel()">취소</button>
-                <button class="check"
-                    style="width: 20%; height: 10%; font-size: 15px; margin-left: 2%; background-color: #FFA500; "
+                    style="width: 100px; height: 30px; font-size: 15px; margin-right: 2%; background-color: #0080FF; box-shadow:none;"
                     onclick="write_save('')">확인</button>
+                <button class="check"
+                    style="width: 100px; height: 30px; font-size: 15px; margin-left: 2%; box-shadow:none; "
+                    onclick="write_cancel()">취소</button>
             </div>
             <div id="market_modal" style="width: 100%; height: 100%;"> <!--시장 변경 모달창-->
-                <span>시장선택</span><br>
-                <input type="text" list="list" id="markets" placeholder="시장명을 정확하게 입력해주세요."
-                    style="width: 90%; height: 10%; margin-top: 30%;" />
+                <br>
+                <span style="font-weight: bold;">시장선택</span><br>
+                <input type="text" list="list" id="markets"
+                    style="width: 90%; margin-top: 5%; font-size: 20px; margin-bottom: 5%;" />
                 <datalist id="list">
                     <!--시장 이름 옵션들-->
                 </datalist>
                 <button class="check"
-                    style="width: 30%; height: 15%; font-size: 15px; margin-right: 2%; background-color: #FFA500;margin-top: 30%; "
-                    onclick="write_cancel()">취소</button>
-                <button class="check"
-                    style="width: 30%; height: 15%; font-size: 15px; margin-left: 2%; background-color: #FFA500; margin-top: 30%;"
+                    style="width: 100px; height: 30px; font-size: 15px; margin-right: 2%; background-color: #0080FF; box-shadow:none;"
                     onclick="write_save('market')">확인</button>
+                <button class="check"
+                    style="width: 100px; height: 30px; font-size: 15px; margin-left: 2%; box-shadow:none;"
+                    onclick="write_cancel()">취소</button>
             </div>
         </div>
     </div>
@@ -122,12 +124,10 @@
         }
         function write_onclick(text_id) { //수정하기 클릭
             if (text_id.includes('market') === true) { //시장일때
-                document.getElementById('middle_screen').style.height = "30%"
                 document.getElementById('text_modal').style.display = 'none'
                 document.getElementById('market_modal').style.display = 'block'
             }
             else {
-                document.getElementById('middle_screen').style.height = "40%"
                 document.getElementById('text_modal').style.display = 'block'
                 document.getElementById('market_modal').style.display = 'none'
             }
