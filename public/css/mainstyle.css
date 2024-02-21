@@ -253,3 +253,64 @@ body{
     border-radius: 10px;
     color:#f0f0f0;
 }
+.deliveryReqMenuBox{
+    padding: 20px;
+    display: flex;
+}
+.deliveryReqInfoBox{
+    width: 80%;
+}
+.deliveryReqInfoBox span{
+    font-size: 17px;
+    margin-left: 10px;
+    display:inline-block;
+    margin-bottom: 5px;
+}
+.deliveryReqInfoBox span[id="deliveryReqId"]{
+    margin-left: 0px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+.deliveryReqInfoBox span[id="deliveryReqMenuDetail"]{
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+.deliveryReqButton{
+    align-items: center;
+    width: 20%;
+    display: flex;
+    justify-content: right;
+}
+.deliveryReqButton button{
+    width: 60px;
+    height: 60px;
+    font-size: 25px;
+    background-color: rgb(255, 65, 65);
+    color:white;
+    border:none;
+    border-radius: 5px;
+    margin: 10px;
+}
+.deliveryReqButton button[id="deliveryReqAcceptButton"]{
+    background-color: #1A73E8;
+}
+.deliveryReqAddressBox{
+    border-top: 2px solid #d3d3d3;
+    border-bottom: 5px solid #d3d3d3;
+    display: flex;
+}
+.deliveryReqAddressTextBox{
+    border-right: 2px solid #d3d3d3;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+}
+.deliveryReqAddressInfoBox{
+    width: 90%;
+}
+.deliveryReqAddressInfoBox div[id="deliveryReqAddress2"]{
+    border-top: 1px solid #d3d3d3;
+}
