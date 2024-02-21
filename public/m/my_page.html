@@ -11,6 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap"
         rel="stylesheet">
     <title>Document</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         var marketData = [];
@@ -75,37 +79,34 @@
     </div>
     <div class="main_screen" id="main_screen">
         <div class="header">
-            <div class="logo">
-                <li style="float: left; margin-top: 10%; margin-left: 2%;"><span
-                        style="font-family: 'East Sea Dokdo', sans-serif;">전통시장</span>
-            </div>
-            <div style="float: left; display: block;">
-                <span style="margin-top: 15%; font-size: 250%; font-weight: bold; display: block;">내정보</span>
-            </div>
+            <span id="back"><i class="fa-solid fa-chevron-left"></i></span>
+            <span id="logo">내 정보 수정</span>
+        </div>
+        <div class="userIcon">
+            <i class="fa-solid fa-circle-user"></i>
         </div>
         <div class="middle">
-            <span class="show_text">닉네임 : </span> <span class="modified" onclick="write_onclick('nickname')">수정하기</span>
+            <span class="show_text">닉네임 </span> <span class="modified" onclick="write_onclick('nickname')"><i class="fa-regular fa-pen-to-square"></i></span>
             <br>
             <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)" id="nickname">
             <br>
 
-            <span class="show_text">주소 : </span> <button class="addr_search" onclick="findAddr()">수정하기</button> <br>
+            <span class="show_text">주소  </span> <button class="addr_search" onclick="findAddr()"><i class="fa-regular fa-pen-to-square"></i></button> <br>
             <input type="text" id="house_addr" class="show_content" readonly onmousedown="ignoreClick(event)"
                 id="simple_addr">
 
-            <span class="show_text" style="font-size: 110%; margin-top: 1%; margin-left: 8%;">상세주소 : </span> <span
-                class="modified" onclick="write_onclick('detailed_addr')">수정하기</span> <br>
-            <input type="text" class="show_content" style="height: 4%;" readonly onmousedown="ignoreClick(event)"
-                id="detailed_addr">
+            <input type="text" class="show_content" style="height: 4%; width: 80%; display: inline-block; font-size: 16px;" readonly onmousedown="ignoreClick(event)"
+                id="detailed_addr" placeholder="상세주소">
+            <span class="modified" onclick="write_onclick('detailed_addr')"><i class="fa-regular fa-pen-to-square"></i></span>
 
             <br>
-            <span class="show_text">등록된 시장 : </span> <span class="modified"
-                onclick="write_onclick('market')">수정하기</span> <br>
+            <span class="show_text">이용 시장  </span> <span class="modified"
+                onclick="write_onclick('market')"><i class="fa-regular fa-pen-to-square"></i></span> <br>
             <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)" id="market">
         </div>
         <div class="bottom">
-            <button class="check" style="margin-right: 5%; margin-top: 3%;" onclick="mypage_cancel()">취소</button>
-            <button class="check" style="margin-left: 5%; margin-top: 3%;">저장</button>
+            <button class="check" style="margin-right: 5%; margin-top: 3%; background-color: #0080FF;">저장</button>
+            <button class="check" style="margin-left: 5%; margin-top: 3%;" onclick="mypage_cancel()">취소</button>
         </div>
     </div>
     <script>
