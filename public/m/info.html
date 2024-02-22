@@ -66,6 +66,8 @@
         function toLogin(){
             if(localStorage.getItem('mlogin') != 'success'){ // 로그인 상태가 아니면 로그인창으로
                 location.href = '/m/login';
+            }else{
+                location.href = '/m/mypage';
             }
         }
         function order(){

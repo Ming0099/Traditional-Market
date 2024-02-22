@@ -44,6 +44,19 @@
             }).open();
         }
     </script> 
+    <script>
+        // init
+        window.onload = function(){
+            // 유저정보 불러오기
+            var userData = JSON.parse(localStorage.getItem('user'));
+
+            // 유저정보 init
+            document.getElementById('nickname').value = userData.nickname;
+            document.getElementById('house_addr').value = userData.address;
+            document.getElementById('detailed_addr').value = userData.address2;
+            document.getElementById('market').value = userData.oftenmarket;
+        }
+    </script>
 </head>
 
 <body>
@@ -81,7 +94,7 @@
     </div>
     <div class="main_screen" id="main_screen">
         <div class="header">
-            <span id="back"><i class="fa-solid fa-chevron-left"></i></span>
+            <span id="back" onclick="mypage_cancel()"><i class="fa-solid fa-chevron-left"></i></span>
             <span id="logo">내 정보 수정</span>
         </div>
         <div class="userIcon">
@@ -119,6 +132,8 @@
         function write_cancel() { //모달창 취소
             elem = document.getElementById('main_screen');
             elem.style.zIndex = 2;
+            document.getElementById('content').value = "";
+            document.getElementById('markets').value = "";
             elem = document.getElementById('modal');
             elem.style.display = 'none';
         }
@@ -164,7 +179,8 @@
         }
 
         function mypage_cancel() { //마이페이지 나가기
-            location.href = "/m/main.html";
+            // 이전 링크로
+            location.href = document.referrer;
         }
         function mypage_save() { //마이페이지 저장
 

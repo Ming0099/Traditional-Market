@@ -41,4 +41,9 @@ router.get('/m/info',function(req,res){
     res.sendFile(path.join(__dirname, '../public/m/info.html'));
 })
 
+// 모바일 마이페이지
+router.get('/m/mypage',function(req,res){
+    res.sendFile(path.join(__dirname, '../public/m/my_page.html'));
+})
+
 module.exports = router;
