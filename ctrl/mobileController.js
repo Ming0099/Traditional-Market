@@ -100,11 +100,11 @@ function mobileSignUpReq(id, pw, nickname, oftenmarket, address, address2, socke
             return;
         }else{
             db.collection('유저').doc(id).set({
-                pw : [pw],
-                nickname : [nickname],
-                oftenmarket : [oftenmarket],
-                address : [address],
-                address2 : [address2],
+                pw : pw,
+                nickname : nickname,
+                oftenmarket : oftenmarket,
+                address : address,
+                address2 : address2,
             }).then(()=>{
                 myRoute = "/m/login";
                 socket.emit('signUp',myRoute,errorMessage);
@@ -141,10 +141,23 @@ function mobileLoginReq(id, pw, autologin, socket){
     })
 }
 
+// 마이페이지 수정 요청
+function userInfoUpdataReq(id,nick,address,market,socket){
+    db.collection('유저').doc(id).update({
+        nickname : nick,
+        address : address[0],
+        address2 : address[1],
+        oftenmarket : market,
+    }).then(()=>{
+        socket.emit('userInfoUpdataRes',"저장이 완료되었습니다.");
+    })
+}
+
 
 module.exports = {
     mobileInfoInitReq,
     mobileMenuInit,
     mobileSignUpReq,
     mobileLoginReq,
+    userInfoUpdataReq,
 };

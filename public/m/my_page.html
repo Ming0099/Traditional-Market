@@ -15,6 +15,7 @@
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         var marketData = [];
@@ -120,11 +121,14 @@
             <input type="text" class="show_content" readonly onmousedown="ignoreClick(event)" id="market">
         </div>
         <div class="bottom">
-            <button class="check" style="margin-right: 5%; margin-top: 3%; background-color: #0080FF;">저장</button>
+            <button class="check" style="margin-right: 5%; margin-top: 3%; background-color: #0080FF;" onclick="mypage_save()">저장</button>
             <button class="check" style="margin-left: 5%; margin-top: 3%;" onclick="mypage_cancel()">취소</button>
         </div>
     </div>
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+
         var sel_textbox = null;
         function ignoreClick(event) {
             event.preventDefault();
@@ -183,8 +187,16 @@
             location.href = document.referrer;
         }
         function mypage_save() { //마이페이지 저장
+            var id = JSON.parse(localStorage.getItem('user')).id;
+            var nick = document.getElementById('nickname').value;
+            var address = [document.getElementById('house_addr').value,document.getElementById('detailed_addr').value];
+            var market = document.getElementById('market').value;
 
+            socket.emit('userInfoUpdataReq',id,nick,address,market);
         }
+        socket.on('userInfoUpdataRes',function(message){
+            window.alert(message);
+        })
     </script>
 </body>
 

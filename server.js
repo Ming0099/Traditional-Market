@@ -78,6 +78,11 @@ io.sockets.on('connection',function(socket){
         mobileCtrl.mobileLoginReq(id,pw,autologin,socket);
     })
 
+    // 마이페이지 정보수정 요청
+    socket.on('userInfoUpdataReq',function(id,nick,address,market){
+        mobileCtrl.userInfoUpdataReq(id,nick,address,market,socket);
+    })
+
 
     /* 통신 */
     // 점포 방 참가
