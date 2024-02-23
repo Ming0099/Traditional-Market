@@ -76,6 +76,7 @@ function signUpReq(marketName, storeName, myCategory, myId, myPw, socket){
             myRoute = '/';
             socket.emit('signUp',myRoute,errorMessage);
         });
+        db.collection('점포배달').doc(marketName+'&'+storeName).set({});
     });
 }
 

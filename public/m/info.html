@@ -91,8 +91,8 @@
             }
             if(!isEmptyObj(sendCart)){
                 id = JSON.parse(localStorage.getItem('user'))['id'];
-                address.push(JSON.parse(localStorage.getItem('user'))['address'][0]);
-                address.push(JSON.parse(localStorage.getItem('user'))['address2'][0]);
+                address.push(JSON.parse(localStorage.getItem('user'))['address']);
+                address.push(JSON.parse(localStorage.getItem('user'))['address2']);
                 socket.emit('order',marketname,storeName,sendCart,price,id,address);
             }
         }
