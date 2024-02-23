@@ -192,10 +192,23 @@
             var address = [document.getElementById('house_addr').value,document.getElementById('detailed_addr').value];
             var market = document.getElementById('market').value;
 
+            // 유저정보 불러오기
+            var userData = JSON.parse(localStorage.getItem('user'));
+            userData.id = id;
+            userData.nickname = nick;
+            userData.address = address[0];
+            userData.address2 = address[1];
+            userData.oftenmarket = market;
+            
+            // localStorage 유저정보 수정
+            localStorage.setItem('user',JSON.stringify(userData));
+
             socket.emit('userInfoUpdataReq',id,nick,address,market);
         }
         socket.on('userInfoUpdataRes',function(message){
             window.alert(message);
+            // 이전 링크로
+            location.href = document.referrer;
         })
     </script>
 </body>

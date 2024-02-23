@@ -21,7 +21,7 @@
         var socket = io.connect();
 
         var selectedMenuID; // 선택된 메뉴
-        var marketname = JSON.parse(localStorage.getItem('user')).oftenmarket[0]; 
+        var marketname = JSON.parse(localStorage.getItem('user')).oftenmarket;
         const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
 
         window.onload = function(){
