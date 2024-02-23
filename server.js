@@ -102,6 +102,6 @@ io.sockets.on('connection',function(socket){
 
     // 주문하기(send)
     socket.on('order',function(market,store,data,price,id,address){
-        communicationCtrl.oderReq(market,store,data,price,id,address,io);
+        communicationCtrl.oderReq(market,store,data,price,id,address,io,socket);
     })
 })

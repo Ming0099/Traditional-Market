@@ -103,6 +103,9 @@
             }
             return false;
         }
+        socket.on('orderError',function(message){
+            window.alert(message);
+        })
     </script>
 </head>
 <body>

@@ -112,9 +112,9 @@ function addProductReq(imgurl,name,info,price,imgfile,imgfilename,storePathData,
     const storage = admin.storage();
     
     async function uploadFromMemory() {
-            await storage.bucket('vacation2023-2.appspot.com').file(imgfilename).save(imgfile);
+            await storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+imgfilename).save(imgfile);
 
-            const fileRef = storage.bucket('vacation2023-2.appspot.com').file(imgfilename);
+            const fileRef = storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+imgfilename);
             
             return fileRef.getSignedUrl({
                 action: 'read',
