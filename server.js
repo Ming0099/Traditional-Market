@@ -83,6 +83,16 @@ io.sockets.on('connection',function(socket){
         mobileCtrl.userInfoUpdataReq(id,nick,address,market,socket);
     })
 
+    // 점포 온라인 상태확인 요청
+    socket.on('onlineCheckReq',function(market,store){
+        var temp = io.sockets.adapter.rooms[market+'&'+store];
+        if(temp == undefined){ // 오프라인
+            socket.emit('onlineCheck',false);
+        }else{ // 온라인
+            socket.emit('onlineCheck',true);
+        }
+    })
+
 
     /* 통신 */
     // 점포 방 참가

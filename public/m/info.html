@@ -20,13 +20,22 @@
 
         var shoppingbasket = {}; // 장바구니
         const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
-        var marketname = JSON.parse(localStorage.getItem('user')).oftenmarket[0]; 
+        var marketname = JSON.parse(localStorage.getItem('user')).oftenmarket; 
         var data;
         var restaurantID;
 
         var temp = window.location.search.split('=')[1];
         restaurantID = temp.split(',');
         var storeName = decodeURI(restaurantID[1]).replace( /_/gi, ' ');
+
+        socket.emit('onlineCheckReq',marketname,storeName);
+
+        socket.on('onlineCheck',function(data){
+            if(!data){
+                window.alert("영업 준비중 입니다.");
+                location.href = document.referrer;
+            }
+        })
 
         socket.emit('mobileInfoInitReq',marketname,menuTag[restaurantID[0]-1],storeName);
 

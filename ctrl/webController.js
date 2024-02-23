@@ -10,7 +10,7 @@ const db = firestore.getFirestore();
 
 // 로그인요청
 function loginReq(name, id, pw, socket){
-    console.log(name,id,pw);
+    console.log("점포 :", name,"login");
     
     var myRoute = "";
     var errorMessage = "";
@@ -26,7 +26,6 @@ function loginReq(name, id, pw, socket){
                 errorMessage = "등록되지 않은 점포입니다.";
             }
         }
-        console.log(myRoute,errorMessage);
         socket.emit('login',myRoute,errorMessage);
     })
     
