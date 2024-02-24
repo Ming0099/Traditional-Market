@@ -18,23 +18,24 @@ function mobileInfoInitReq(marketname,category,storeName,socket){
         socket.emit('changeText','#timerange',' ' + data['mintime'] + ' ~ ' + data['maxtime'] + '분');
 
         var str = "";
-        for(let i=0; i<data['menu'].length; i++){
+        for(const key in data['menu']){
             str += '<div class="menuBox">'
                 +'<div class="menuinfoBox">'
-                    +'<label id="menutitle' + i + '"><b>' + data['menu'][i]['name'] + '</b></label>'
+                    +'<label id="menutitle-' + key + '"><b>' + key + '</b></label>'
                     +'<br>'
-                    +'<label id="menuinfo' + i + '">' + data['menu'][i]['info'] + '</label>'
+                    +'<label id="menuinfo-' + key + '">' + data['menu'][key]['info'] + '</label>'
                     +'<br><br>'
-                    +'<label id="menuprice' + i + '"><b>' + data['menu'][i]['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</b></label>'
-                    +'<button id=' + i + ' onclick="plus(this.id)"><b>+</b></button>'
-                    +'<button id=' + i + ' onclick="minus(this.id)"><b>−</b></button>'
-                    +'<input id="count' + i + '" value=0>'
+                    +'<label id="menuprice-' + key + '"><b>' + data['menu'][key]['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</b></label>'
+                    +'<button id=plus-' + key + ' onclick="plus(this.id)"><b>+</b></button>'
+                    +'<button id=minus-' + key + ' onclick="minus(this.id)"><b>−</b></button>'
+                    +'<input id="count-' + key + '" value=0>'
                 +'</div>'
                 +'<div class="menuimageBox">'
-                    +'<img src="' + data['menu'][i]['imgurl'] + '">'
+                    +'<img src="' + data['menu'][key]['imgurl'] + '">'
                 +'</div>'
             +'</div>';
         }
+        
         socket.emit('cartInit',data['menu'].length);
         socket.emit('infoInit',str);
     });

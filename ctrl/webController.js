@@ -65,7 +65,7 @@ function signUpReq(marketName, storeName, myCategory, myId, myPw, socket){
             imgurl : "",
             maxtime : 0,
             mintime : 0,
-            menu : [],
+            menu : {},
             minamount : 0,
             rate : 0,
             review : {
@@ -89,8 +89,8 @@ function mainInitReq(myMarket,myStore,myCategory,socket){
         db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).get().then((result)=>{
             var str = "";
             var myMenuData = result.data()['menu'];
-            for(let i=0;i<myMenuData.length;i++){
-                str += createmenu(myMenuData[i]['imgurl'],myMenuData[i]['name'],myMenuData[i]['info'],myMenuData[i]['price']);
+            for(const key in myMenuData){
+                str += createmenu(myMenuData[key]['imgurl'],key,myMenuData[key]['info'],myMenuData[key]['price']);
             }
             myData = str;
             socket.emit('mainInit',myData,errorMessage);
@@ -112,21 +112,23 @@ function addProductReq(imgurl,name,info,price,imgfile,imgfilename,storePathData,
     const storage = admin.storage();
     
     async function uploadFromMemory() {
-            await storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+imgfilename).save(imgfile);
+            await storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+ name + '.jpg').save(imgfile);
 
-            const fileRef = storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+imgfilename);
+            const fileRef = storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+ name + '.jpg');
             
             return fileRef.getSignedUrl({
                 action: 'read',
                 expires: '03-09-2491'
             }).then(signedUrls => {
                 db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
-                    menu : admin.firestore.FieldValue.arrayUnion({
-                        imgurl : [signedUrls[0]],
-                        name : [name],
-                        info : [info],
-                        price : [price]
-                    })
+                    "menu" : {
+                        [name] :{
+                            imgurl : signedUrls[0],
+                            info : info,
+                            price : price
+                        }
+                    }
+                    
                 }).then(()=>{
                     socket.emit('addProduct',myData,errorMessage);
                 });
@@ -147,10 +149,24 @@ function createmenu(imgurl, name, info, price){
                     + '<span>메뉴명 : ' + name + '<br>설명 : ' + info + '<br>가격 : ' + price + '</span>'
                 + '</div>'
                 + '<div class="delete">'
-                    + '<button><i class="fa-solid fa-trash-can"></i></button>'
+                    + '<button id=delete-'+name+' onclick="deleteMenu(this.id)"><i class="fa-solid fa-trash-can"></i></button>'
                 + '</div>'
             + '</div>'
     return str;
+}
+
+// 메인화면 상품삭제 요청
+function deleteProductReq(storePathData,menuName,socket){
+    const storage = admin.storage();
+    // 스토리지에서 메뉴 사진 삭제
+    storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/'+menuName+'.jpg').delete();
+
+    // 파이어스토어에서 메뉴 정보 삭제
+    db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
+        ["menu."+[menuName]] : firestore.FieldValue.delete()
+    }).then(()=>{
+        socket.emit('deleteProduct','삭제가 완료되었습니다.');
+    });
 }
 
 module.exports = {
@@ -158,4 +174,5 @@ module.exports = {
     signUpReq,
     mainInitReq,
     addProductReq,
+    deleteProductReq,
 };

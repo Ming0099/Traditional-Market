@@ -59,17 +59,19 @@
             $(str).appendTo('.menu');
         })
         function plus(data){
+            data = data.split('-')[1];
             cart[data]++;
-            price += Number($('#menuprice'+data).text().split('원')[0].replace( /,/gi, ''));
-            var value = $('#count'+data).val();
-            $('#count'+data).val(Number(value)+1);
+            price += Number($('#menuprice-'+data).text().split('원')[0].replace( /,/gi, ''));
+            var value = $('#count-'+data).val();
+            $('#count-'+data).val(Number(value)+1);
         }
         function minus(data){
-            var value = $('#count'+data).val();
+            data = data.split('-')[1];
+            var value = $('#count-'+data).val();
             if(Number(value) > 0){
                 cart[data]--;
-                price -= Number($('#menuprice'+data).text().split('원')[0].replace( /,/gi, ''));
-                $('#count'+data).val(Number(value)-1);
+                price -= Number($('#menuprice-'+data).text().split('원')[0].replace( /,/gi, ''));
+                $('#count-'+data).val(Number(value)-1);
             }
         }
         function toLogin(){

@@ -175,7 +175,7 @@
 
         socket.on('mainInit',function(data, error){
             if(error == ""){
-                $(data).appendTo('.menuInfoBox');
+                $('.menuInfoBox').html(data);
             }else{
                 location.href = "/";
             }
@@ -219,6 +219,20 @@
             $(".add").hide();
             $(".deliveryReqBox").hide();
         }
+
+        function deleteMenu(data){
+            var menuName = data.split('-')[1];
+            var storePathData = [myMarket,myCategory,myStore];
+
+            socket.emit('deleteProductReq',storePathData,menuName);
+        }
+
+        socket.on('deleteProduct',function(message){
+            window.alert(message);
+
+            // 새로고침
+            socket.emit('mainInitReq',myMarket,myStore,myCategory);
+        })
         
     </script>
 </body>

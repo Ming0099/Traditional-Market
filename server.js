@@ -56,6 +56,11 @@ io.sockets.on('connection',function(socket){
         webCtrl.addProductReq(imgurl,name,info,price,imgfile,imgfilename,storePathData,socket);
     })
 
+    // 메인화면 상품삭제 요청
+    socket.on('deleteProductReq',function(storePathData,menuName){
+        webCtrl.deleteProductReq(storePathData,menuName,socket);
+    })
+
 
     /* 모바일 */
     // 점포 정보창 초기화
