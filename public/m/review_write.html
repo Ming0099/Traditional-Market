@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="css/review_write.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+    <title>ReviewPage</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
+    <script>
+        window.onload = function(){
+            var score;
+
+            const btn1 = document.getElementById('btn1');
+            const btn2 = document.getElementById('btn2');
+            const btn3 = document.getElementById('btn3');
+            const btn4 = document.getElementById('btn4');
+            const btn5 = document.getElementById('btn5');
+
+            const btn1Image = document.getElementById('btn1Image');
+            const btn2Image = document.getElementById('btn2Image');
+            const btn3Image = document.getElementById('btn3Image');
+            const btn4Image = document.getElementById('btn4Image');
+            const btn5Image = document.getElementById('btn5Image');
+
+            const result = document.getElementById('result');
+
+            btn1.addEventListener('click', (e) => {
+                const btnWidth = btn1.offsetWidth;
+                if(e.offsetX < btnWidth/2){
+                    btn1Image.src = "image/star-half-stroke-solid.png";
+                    btn2Image.src = "image/star-solid empty full star.png";
+                    btn3Image.src = "image/star-solid empty full star.png";
+                    btn4Image.src = "image/star-solid empty full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 0.5;
+                }
+                else{
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid empty full star.png";
+                    btn3Image.src = "image/star-solid empty full star.png";
+                    btn4Image.src = "image/star-solid empty full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 1;
+                }
+            });
+
+            btn2.addEventListener('click', (e) => {
+                const btnWidth = btn2.offsetWidth;
+                if(e.offsetX < btnWidth/2){
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-half-stroke-solid.png";
+                    btn3Image.src = "image/star-solid empty full star.png";
+                    btn4Image.src = "image/star-solid empty full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 1.5;
+                }
+                else{
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-solid empty full star.png";
+                    btn4Image.src = "image/star-solid empty full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 2;
+                }
+            });
+
+            btn3.addEventListener('click', (e) => {
+                const btnWidth = btn2.offsetWidth;
+                if(e.offsetX < btnWidth/2){
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-half-stroke-solid.png";
+                    btn4Image.src = "image/star-solid empty full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 2.5;
+                }
+                else{
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-solid full star.png";
+                    btn4Image.src = "image/star-solid empty full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 3;
+                }
+            });
+
+            btn4.addEventListener('click', (e) => {
+                const btnWidth = btn2.offsetWidth;
+                if(e.offsetX < btnWidth/2){
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-solid full star.png";
+                    btn4Image.src = "image/star-half-stroke-solid.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 3.5
+                }
+                else{
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-solid full star.png";
+                    btn4Image.src = "image/star-solid full star.png";
+                    btn5Image.src = "image/star-solid empty full star.png";
+                    score = 4;
+                }
+            });
+
+            btn5.addEventListener('click', (e) => {
+                const btnWidth = btn2.offsetWidth;
+                if(e.offsetX < btnWidth/2){
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-solid full star.png";
+                    btn4Image.src = "image/star-solid full star.png";
+                    btn5Image.src = "image/star-half-stroke-solid.png";
+                    score = 4.5;
+                }
+                else{
+                    btn1Image.src = "image/star-solid full star.png";
+                    btn2Image.src = "image/star-solid full star.png";
+                    btn3Image.src = "image/star-solid full star.png";
+                    btn4Image.src = "image/star-solid full star.png";
+                    btn5Image.src = "image/star-solid full star.png";
+                    score = 5;
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <!--상단바-->
+    <nav class="navbar">
+        <div class="back">
+            <a href="info.html"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
+        </div>
+
+        <div class="logo">
+            <li><a>리뷰작성</a></li>
+            
+        </div>
+
+        <div class="home">
+            <a href="/m"><i class="fa-solid fa-home fa-xl"></i></a>
+        </div>
+    </nav>
+
+    <!--메인-->
+    <div class="mainbody">       
+        <div class="maininfo">
+            <div class="infoBox">
+                <br>
+                <label id="Title">가게명</label>
+            </div>
+        </div>
+
+        <div class="reviewWriting">
+            <div class="rating">
+                <div class="rate" id="my_div">
+                    <button id="btn1" name="firstStar" value="1" class="stars">
+                        <img src="image/star-solid empty full star.png" id="btn1Image" width="100%">
+                    </button>
+                    <button id="btn2" name="secondStar" value="1" class="stars">
+                        <img src="image/star-solid empty full star.png" id="btn2Image"width="100%">
+                    </button>
+                    <button id="btn3" name="thirdStar" value="1" class="stars">
+                        <img src="image/star-solid empty full star.png" id="btn3Image" width="100%">
+                    </button>
+                    <button id="btn4" name="fourthStar" value="1" class="stars">
+                        <img src="image/star-solid empty full star.png" id="btn4Image" width="100%">
+                    </button>
+                    <button id="btn5" name="fifthStar" value="1" class="stars">
+                        <img src="image/star-solid empty full star.png" id="btn5Image" width="100%">
+                    </button>     
+                </div>
+            </div>
+            <div class="writing">
+                <textarea class="textareaSetting" id= "write" name="write" placeholder="리뷰 입력"></textarea>
+            </div>
+            <div id="result">
+
+            </div> 
+        </div>
+
+        <div class="reviewDoneBox" onclick="">
+            <div class="reviewDoneText">
+                <label><i class="fa-solid"></i>작성완료</label>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
