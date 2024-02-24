@@ -13,9 +13,66 @@
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-         function review_write(){
-            location.href = "/m/review_write";
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+
+        const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
+
+        var storeData = JSON.parse(localStorage.getItem('selectStore'));
+
+        var storePathData = [storeData.market,menuTag[storeData.categoryID-1],storeData.store];
+
+        window.onload = function(){
+            var progressBar = [];
+            var rateText = [];
+            for(let i=0; i<5; i++){
+                progressBar.push(document.getElementById('progress'+(i+1)));
+                rateText.push(document.getElementById('rateText'+(i+1)));
+            }
+
+            // 리뷰화면 init 요청
+            socket.emit('reviewInitReq',storePathData);
+
+            // 점수 init
+            socket.on('reviewRateInit',function(data, data2){
+                // 리뷰 수
+                var max = 0;
+
+                for(let i=0; i<data.length;i++){
+                    max += data[i];
+                }
+                for(let i=0;i<progressBar.length;i++){
+                    rateText[i].innerText = data[i];
+                    progressBar[i].value = data[i];
+                    progressBar[i].max = max;
+                }
+                
+                var averageRate = document.getElementById('rating');
+                if(Number.isInteger(data2)){
+                    data2 = data2 + ".0";
+                }
+                averageRate.innerText = data2;
+            })
+
+            // star init
+            socket.on('starInit', function(data){
+                var averageRateStar = document.getElementById('star');
+                averageRateStar.innerHTML = data;
+            })
+
+            // 리뷰리스트 init
+            socket.on('reviewListInit',function(data){
+                $('.reviewSee').html(data);
+            })
+        }
+
+        function review_write(){
+            //location.href = "/m/review_write";
+        }
+        function back(){
+            location.href = "/m/info?restaurant="+storeData.categoryID+","+storeData.store.replace( / /gi, '_');
         }
     </script>
 </head>
@@ -23,7 +80,7 @@
     <!--상단바-->
     <nav class="navbar">
         <div class="back">
-            <a href="info.html"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
+            <a href="#" onclick="back()"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
         </div>
 
         <div class="logo">
@@ -47,19 +104,19 @@
                     </div>
                     <div class="rateScore">
                         <div class="rateProgress">
-                            <div>5점 <progress value="100" max="100"></progress></div>
-                            <div>4점 <progress value="0" max="100"></progress></div>
-                            <div>3점 <progress value="0" max="100"></progress></div>
-                            <div>2점 <progress value="0" max="100"></progress></div>
-                            <div>1점 <progress value="0" max="100"></progress></div>
+                            <div>5점 <progress id="progress5" value="0" max="0"></progress></div>
+                            <div>4점 <progress id="progress4" value="0" max="0"></progress></div>
+                            <div>3점 <progress id="progress3" value="0" max="0"></progress></div>
+                            <div>2점 <progress id="progress2" value="0" max="0"></progress></div>
+                            <div>1점 <progress id="progress1" value="0" max="0"></progress></div>
                         </div>
                     </div>
                     <div class="rateCount">
-                        <div>100</div>
-                        <div>0</div>
-                        <div>0</div>
-                        <div>0</div>
-                        <div>0</div>
+                        <div id="rateText5">0</div>
+                        <div id="rateText4">0</div>
+                        <div id="rateText3">0</div>
+                        <div id="rateText2">0</div>
+                        <div id="rateText1">0</div>
                     </div>
                 </div>
             </div>
@@ -68,9 +125,10 @@
         <div class="reviewlist">
             <div class="margin1"></div>
             <div class="reviews">리뷰 리스트</div>
-            <!-- 리뷰 추가 -->
+            
             <div class="reviewSee">
-                <div class =reviewMargin>
+                <!-- 리뷰 추가 -->
+                <div class ="reviewMargin">
                     <div class="reviewSeeName">사용자 이름</div>
                     <div class="reviewSeeRate"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
                     <div class="reviewSeeReview">리뷰 내용</div>

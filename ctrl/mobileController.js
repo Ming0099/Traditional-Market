@@ -14,7 +14,7 @@ function mobileInfoInitReq(marketname,category,storeName,socket){
         socket.emit('changeText','#tip','배달팁 ' + data['tip'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
         socket.emit('changeText','#minimumAmount','최소주문 ' + data['minamount'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
         socket.emit('changeText','#rate',data['rate']);
-        socket.emit('changeText','#reviewcount','리뷰 ' + data['review']['size'] + '개');
+        socket.emit('changeText','#reviewcount','리뷰 ' + Object.keys(data['review']).length + '개');
         socket.emit('changeText','#timerange',' ' + data['mintime'] + ' ~ ' + data['maxtime'] + '분');
 
         var str = "";
@@ -155,6 +155,57 @@ function userInfoUpdataReq(id,nick,address,market,socket){
     })
 }
 
+// 리뷰페이지 init 요청
+function mobileReviewInitReq(storePathData,socket){
+    var rateArray = [0,0,0,0,0];
+
+    db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).get().then((result)=>{
+        var reviewData = result.data()['review'];
+        var averageRate = result.data()['rate'];
+
+        for(const key in reviewData){
+            rateArray[parseInt(reviewData[key].rate)-1]++;
+        }
+        socket.emit('reviewRateInit',rateArray,averageRate);
+
+        var str = createStar(averageRate);
+        socket.emit('starInit',str);
+
+        var reviewListHtml = createList(reviewData);
+        socket.emit('reviewListInit',reviewListHtml);
+    })
+}
+
+// 별 html 생성
+function createStar(rate){
+    var str = "";
+    for(let i=0; i<5; i++){
+        if(rate < 1){
+            if(rate >= 0.5){
+                str += '<i class="fa-solid fa-star-half-stroke"></i>';
+            }else{
+                str += '<i class="fa-regular fa-star"></i>';
+            }
+        }else{
+            str += '<i class="fa-solid fa-star"></i>';
+        }
+        rate -= 1;
+    }
+    return str;
+}
+
+// 리뷰리스트 html 생성
+function createList(obj){
+    var str = "";
+    for(const key in obj){
+        str += '<div class ="reviewMargin">'
+            + '<div class="reviewSeeName">' + obj[key].name + '</div>'
+            + '<div class="reviewSeeRate">' + createStar(obj[key].rate) + '</div>'
+            + '<div class="reviewSeeReview">' + obj[key].text + '</div>'
+        + '</div>'
+    }
+    return str;
+}
 
 module.exports = {
     mobileInfoInitReq,
@@ -162,4 +213,5 @@ module.exports = {
     mobileSignUpReq,
     mobileLoginReq,
     userInfoUpdataReq,
+    mobileReviewInitReq,
 };

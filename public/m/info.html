@@ -33,7 +33,7 @@
         socket.on('onlineCheck',function(data){
             if(!data){
                 window.alert("영업 준비중 입니다.");
-                location.href = document.referrer;
+                location.href = '/m/menu?menucategory='+restaurantID[0];
             }
         })
 
@@ -169,7 +169,7 @@
                 <br><br>
                 <label id="star"><i class="fa-solid fa-star"></i></label>
                 <label id="rate">별점</label>
-                <a href="#"><b id="reviewcount">리뷰개수</b><i class="fa-solid fa-chevron-right"></i></a>
+                <a href="/m/review"><b id="reviewcount">리뷰개수</b><i class="fa-solid fa-chevron-right"></i></a>
                 <br>
                 <label id="timeicon"><i class="fa-solid fa-motorcycle"></i></label>
                 <label id="timerange">배달시간</label>

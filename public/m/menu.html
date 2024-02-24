@@ -24,6 +24,9 @@
         var marketname = JSON.parse(localStorage.getItem('user')).oftenmarket;
         const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
 
+        // 선택한 식당 정보 초기화
+        localStorage.removeItem('selectStore')
+
         window.onload = function(){
             selectedMenuID = window.location.search.split('=')[1];
 
@@ -43,6 +46,13 @@
         }
 
         function clickmenu(selectedObjID){
+            var newData = {
+                market : marketname,
+                store : selectedObjID.replace( /_/gi, ' '),
+                categoryID : selectedMenuID,
+            }
+            // 선택한 식당 정보 저장
+            localStorage.setItem('selectStore',JSON.stringify(newData));
             location.href = '/m/info?restaurant=' + selectedMenuID + ',' + selectedObjID;
         }
 

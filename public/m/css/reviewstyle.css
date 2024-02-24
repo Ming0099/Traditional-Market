@@ -114,23 +114,27 @@ input[id="userbutton"]{
 .reviewSee{
     display: block;
     width: 100%;
-    border-bottom: 1px solid #d3d3d3;
 }
 .reviewMargin{
-    margin: 10px;
+    border-bottom: 1px solid #d3d3d3;
 }
 .reviewSeeName{
     font-weight: bold;
     font-size: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
     margin-bottom: 10px;
 }
 .reviewSeeRate{
     font-size: 15px;
+    margin-left: 10px;
     color:gold;
 }
 .reviewSeeReview{
     font-weight: lighter;
     margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 .rateBox{
     margin-top: 50px;

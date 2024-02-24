@@ -98,6 +98,11 @@ io.sockets.on('connection',function(socket){
         }
     })
 
+    // 모바일 리뷰 페이지 init요청
+    socket.on('reviewInitReq',function(storePathData){
+        mobileCtrl.mobileReviewInitReq(storePathData,socket);
+    })
+
 
     /* 통신 */
     // 점포 방 참가

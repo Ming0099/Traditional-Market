@@ -68,9 +68,7 @@ function signUpReq(marketName, storeName, myCategory, myId, myPw, socket){
             menu : {},
             minamount : 0,
             rate : 0,
-            review : {
-                size : 0,
-            },
+            review : {},
             tip : 0,
         }).then(()=>{ // 점포 등록 완료시
             myRoute = '/';
