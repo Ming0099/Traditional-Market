@@ -37,9 +37,16 @@ body{
 }
 .marketinfoBox span{
     font-family: 'East Sea Dokdo', sans-serif;
-    margin-right: 40px;
+    margin-right: 10px;
     color:white;
     font-size: 30px;
+}
+.marketinfoBox button{
+    font-size: 25px;
+    color:white;
+    background-color: #FFA500;
+    border:none;
+    margin-right: 30px;
 }
 .mainBox{
     display: flex;
