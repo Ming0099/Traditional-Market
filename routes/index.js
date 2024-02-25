@@ -51,4 +51,10 @@ router.get('/m/review',function(req,res){
     res.sendFile(path.join(__dirname, '../public/m/review.html'));
 })
 
+// 모바일 리뷰작성 페이지
+router.get('/m/review_write',function(req,res){
+    console.log('리뷰작성 페이지')
+    res.sendFile(path.join(__dirname, '../public/m/review_write.html'));
+})
+
 module.exports = router;

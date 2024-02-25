@@ -109,13 +109,17 @@ body{
   .stars{
     background-color: #f0f0f0;
     border: none;
-    width: 15%;
+    width: 10%;
     background-color: white;
   }
   
   .textareaSetting{
-    margin-left: 10%;
-    width: 80%;
+    background-color: #F6F6F6;
+    border: none;
+    margin-left: 5%;
+    width: 85%;
     height: 200px;
-    font-size: 20px;
+    font-size: 25px;
+    padding: 3%;
+    font-family: "Dongle", sans-serif;
   }

@@ -207,6 +207,70 @@ function createList(obj){
     return str;
 }
 
+// 리뷰 작성 완료
+function writeComplete(storePathData,userData,score,text,socket){
+
+    db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).get().then((result)=>{
+        var data = result.data();
+        var reviewData = data['review'];
+
+        if(reviewData[userData.id] != undefined){
+            socket.emit('duplication','이미 리뷰 이력이 있습니다. 수정하시겠습니까?');
+            return;
+        }
+
+        var averageRate = 0;
+        for(const key in reviewData){
+            averageRate += Number(reviewData[key]['rate']);
+        }
+        averageRate += Number(score);
+
+        averageRate /= Object.keys(reviewData).length;
+
+
+        db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
+            rate : averageRate,
+            ['review.'+userData.id] : {
+                name : userData.nickname,
+                rate : score,
+                text : text,
+            }
+        }).then(()=>{
+            socket.emit('complete','리뷰 작성이 완료되었습니다.');
+        })
+    })
+}
+
+// 리뷰 수정
+function correction(storePathData,userData,score,text,socket){
+    db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).get().then((result)=>{
+        var data = result.data();
+        var reviewData = data['review'];
+
+        var averageRate = 0;
+        for(const key in reviewData){
+            if(key != userData.id){
+                averageRate += Number(reviewData[key]['rate']);
+            }
+        }
+        averageRate += Number(score);
+
+        averageRate /= Object.keys(reviewData).length;
+
+
+        db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
+            rate : averageRate,
+            ['review.'+userData.id] : {
+                name : userData.nickname,
+                rate : score,
+                text : text,
+            }
+        }).then(()=>{
+            socket.emit('complete','리뷰 수정이 완료되었습니다.');
+        })
+    })
+}
+
 module.exports = {
     mobileInfoInitReq,
     mobileMenuInit,
@@ -214,4 +278,6 @@ module.exports = {
     mobileLoginReq,
     userInfoUpdataReq,
     mobileReviewInitReq,
+    writeComplete,
+    correction,
 };

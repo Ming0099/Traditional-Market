@@ -69,7 +69,7 @@
         }
 
         function review_write(){
-            //location.href = "/m/review_write";
+            location.href = "/m/review_write";
         }
         function back(){
             location.href = "/m/info?restaurant="+storeData.categoryID+","+storeData.store.replace( / /gi, '_');
@@ -136,7 +136,7 @@
             </div>
         </div>
 
-        <div class="reviewBox" onclick="write_review()">
+        <div class="reviewBox" onclick="review_write()">
             <div class="reviewText">
                 <label><i class="fa-solid"></i>리뷰쓰기</label>
             </div>

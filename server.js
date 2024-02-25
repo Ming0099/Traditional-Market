@@ -103,6 +103,16 @@ io.sockets.on('connection',function(socket){
         mobileCtrl.mobileReviewInitReq(storePathData,socket);
     })
 
+    // 모바일 리뷰 작성 완료
+    socket.on('writeComplete',function(storePathData,userData,score,text){
+        mobileCtrl.writeComplete(storePathData,userData,score,text,socket);
+    })
+
+    // 모바일 리뷰 수정
+    socket.on('correction',function(storePathData, userData, score, text){
+        mobileCtrl.correction(storePathData, userData, score, text,socket);
+    })
+
 
     /* 통신 */
     // 점포 방 참가

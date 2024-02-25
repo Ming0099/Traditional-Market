@@ -7,15 +7,29 @@
     <link rel="stylesheet" href="css/review_write.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Dongle&display=swap" rel="stylesheet">
     <title>ReviewPage</title>
     <script 
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
     ></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+
+        const menuTag = ['곡물류','채소류','과일류','견과류','수산물','축산물','반찬','분식','중식','통닭','디저트','기타'];
+
+        var storeData = JSON.parse(localStorage.getItem('selectStore'));
+        var userData = JSON.parse(localStorage.getItem('user'));
+        var score = 0;
+
+        var storePathData = [storeData.market,menuTag[storeData.categoryID-1],storeData.store];
+
         window.onload = function(){
-            var score;
+
+            // 제목설정
+            $('#Title').text(storeData.store);
 
             for(let i=1;i<=5;i++){
                 const btn = document.getElementById('btn'+i);
@@ -52,13 +66,30 @@
                 btnImage.src = "image/star-solid full star.png";
             }
         }
+        function back(){
+            location.href='/m/review';
+        }
+        function completed(){
+            var text = document.getElementById('write').value;
+            socket.emit('writeComplete', storePathData, userData, score, text);
+        }
+        socket.on('duplication',function(message){
+            if(window.confirm(message)){
+                var text = document.getElementById('write').value;
+                socket.emit('correction', storePathData, userData, score, text);
+            }
+        })
+        socket.on('complete',function(message){
+            window.alert(message);
+            location.href='/m/review';
+        })
     </script>
 </head>
 <body>
     <!--상단바-->
     <nav class="navbar">
         <div class="back">
-            <a href="info.html"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
+            <a href="#" onclick="back()"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
         </div>
 
         <div class="logo">
@@ -101,14 +132,14 @@
                 </div>
             </div>
             <div class="writing">
-                <textarea class="textareaSetting" id= "write" name="write" placeholder="리뷰 입력"></textarea>
+                <textarea class="textareaSetting" id= "write" name="write" placeholder="음식에 대한 리뷰를 남겨주세요."></textarea>
             </div>
             <div id="result">
 
             </div> 
         </div>
 
-        <div class="reviewDoneBox" onclick="">
+        <div class="reviewDoneBox" onclick="completed()">
             <div class="reviewDoneText">
                 <label><i class="fa-solid"></i>작성완료</label>
             </div>
