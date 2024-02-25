@@ -54,6 +54,13 @@
                 location.href = '/m/mypage';
             }
         }
+        function toDelivery(){
+            if(localStorage.getItem('mlogin') != 'success'){
+                window.alert('로그인 후 이용해주세요.');
+            }else{
+                location.href = '/m/delivery';
+            }
+        }
         
     </script>
 </head>
@@ -72,7 +79,7 @@
             <div class="sidebar">
                 <ul>
                     <li>
-                        <a href="/m/delivery"><i class="fa-solid fa-motorcycle"></i> 배달현황</a>
+                        <a href="#" onclick="toDelivery()"><i class="fa-solid fa-motorcycle"></i> 배달현황</a>
                     </li>
 
                     <li>

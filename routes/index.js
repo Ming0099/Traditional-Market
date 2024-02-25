@@ -56,4 +56,9 @@ router.get('/m/review_write',function(req,res){
     res.sendFile(path.join(__dirname, '../public/m/review_write.html'));
 })
 
+// 모바일 배달현황 페이지
+router.get('/m/delivery',function(req,res){
+    res.sendFile(path.join(__dirname, '../public/m/delivery.html'));
+})
+
 module.exports = router;
