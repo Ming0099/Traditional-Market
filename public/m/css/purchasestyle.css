@@ -27,44 +27,39 @@ body{
     background-color: #c0bebe; 
   }
 
-.deliverystate1{
+
+.purchasestate{
     margin-top: 4%;
     padding-left: 2%;
 }
-.textview1{
+.state{
+    color: #0dc7ce;
+    font-size: 21px;
+    font-weight: 800;
+}
+.storename{
+    display: flex;
+    flex-direction: column; 
+    margin-top: 3%;
+    color: #000000;
+    font-size: 25px;
+    font-weight: 900;
+}
+.menu{
+    display: flex;
+    flex-direction: column; 
+    margin-top: 3%;
+    color: #000000;
     font-size: 19px;
+    font-weight: 500;
 }
-.deliverystate1 label{
-    margin-top: 2%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 10px;
-}
-.textcontainer1 {
-    margin-top: 3%;
+.time{
     display: flex;
     flex-direction: column; 
-}
-.textcontainer1 span {
-    margin-bottom: 7px; 
-    margin-left: 0px;
-}
-.progressbar progress[id ="pb"]{
-    margin-top: 3%;
-    width: 98%;
-    display: flex;
-    flex-direction: column; 
-}
-.labels {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; 
-    width: 98%;
-}
-.label {
-    font-size: 12px;
-    margin-bottom: 5px; 
+    margin-top: 5%;
+    color: #a3a2a2;
+    font-size: 19px;
+    font-weight: 400;
 }
 
 .Block {
@@ -72,5 +67,5 @@ body{
     width: 100%;
     height: 5px; 
     background-color: #c0bebe; 
-    margin-top: 2px; 
+    margin-top: 15px; 
   }

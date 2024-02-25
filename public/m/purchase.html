@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <link rel="stylesheet" href="css/deliverystyle.css">
+    <link rel="stylesheet" href="css/purchasestyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>배달 현황</title>
+    <title>주문 내역</title>
     <script 
         src="https://kit.fontawesome.com/9f8bb06fc7.js" 
         crossorigin="anonymous"
@@ -24,24 +24,14 @@
 <body>
     <div class="logoBox">
         <span id="back" onclick="back()"><i class="fa-solid fa-chevron-left"></i></span>
-        <span id="order">배달현황</span>
+        <span id="order">주문내역</span>
     </div>
     <span class = originblock></span>
-    <div class="deliverystate1">
-        <span class="textview1"><b>배송 상태</b></span>  
-        <div class="textcontainer1">
-            <span>가게 이름</span>
-            <span>배달 메뉴</span>
-        </div>
-        <div class = "progressbar">
-			<progress value="33" max="100" id="pb"></progress>
-            <div class="labels">
-                <div class="label">배달요청</div>
-                <div class="label">주문접수</div>
-                <div class="label">배달중</div>
-                <div class="label">배달완료</div>
-            </div>
-        </div>
+    <div class="purchasestate">
+        <div class="state"><b>배달 상태</b></div>
+        <div class="storename">가게 이름</div>
+        <div class="menu">시킨 메뉴이름 몇개</div>
+        <div class="time">주문일시 : </div>
     </div>
     <div class="Block"></div>
 </body>
