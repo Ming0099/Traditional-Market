@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/mainstyle.css">
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Gothic+A1&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Gothic+A1&family=Noto+Sans+KR&display=swap"
+        rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <title>메인</title>
-    <script 
-        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
-        crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/9f8bb06fc7.js" crossorigin="anonymous"></script>
     <script>
-        if(localStorage.getItem('pclogin') != 'success'){
+        if (localStorage.getItem('pclogin') != 'success') {
             location.href = "/";
         }
     </script>
 </head>
+
 <body>
     <div class="topbar">
         <div class="logoBox">
@@ -26,7 +27,7 @@
         <div class="marketinfoBox">
             <span id="storeName">가게명 : </span>
             <!--점포 정보수정 팝업 버튼-->
-            <button><i class="fa-solid fa-gear"></i></button>
+            <button><i class="fa-solid fa-gear" style="cursor: pointer;" onclick="Gear_shape()"></i></button>
         </div>
     </div>
     <div class="mainBox">
@@ -69,6 +70,69 @@
             </div>
         </div>
     </div>
+    <div class="modal_setting" id="modal_setting"> <!--기어모양 클릭시-->
+        <div class="window">
+            <div class="modal_screen">
+                <div class="popuplogo">
+                    <span>정보 변경</span>
+                </div>
+                <div class="popuptitle">
+                    <span>이미지</span>
+                </div>
+                <div class="popupimg">
+                    <div class="popupmenuimg">
+                        <img id="preview">
+                    </div>
+                    <div class="imgupload">
+                        <input id="changefile" type="file" class="real-upload" accept="image/*" onchange="readURL(this)"
+                            multiple>
+                    </div>
+                </div>
+                <div class="popuptitle">
+                    <span>배달 팁</span>
+                    <br>
+                    <input id="delivery_cash" placeholder="배달 금액" type="number"/><i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="popuptitle">
+                    <span>최소주문금액</span>
+                    <br>
+                    <input id="order_min_cash" placeholder="최소주문가능한 금액" type="number"/><i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="popuptitle">
+                    <span>배달시간</span>
+                    <br>
+                    <input id="start_time" placeholder="1~60" class="times" type="number"/><span>분 ~ </span>
+                    <input id="end_time" placeholder="1~60" class="times" type="number"/><span>분</span>
+                </div>
+                <div class="popuptitle">
+                    <span>베스트 메뉴</span>
+                    <br>
+                    <span>1.</span>
+                    <select id="best1"> <!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘-->
+                        <option value="rttre">dsd</option>
+                    </select>
+                    <br>
+                    <span>2.</span>
+                    <select id="best2" name> <!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘-->
+                        <option value="dsad">wqeqw</option>
+                    </select>
+                    <br>
+                    <span>3.</span>
+                    <select id="best3"> <!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘--><!--디자인해줘-->
+                        <option value="ds">bvcb</option>
+                    </select>
+                </div>
+                <div class="popupaction">
+                    <div class="popupcancel">
+                        <button id="cancel" onclick="cancel_Gear()">취소</button>
+                    </div>
+                    <div class="popupok">
+                        <button id="ok" onclick="ok_Gear()">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modalbackground">
         <div class="window">
             <div class="popup">
@@ -83,23 +147,24 @@
                         <img id="preview">
                     </div>
                     <div class="imgupload">
-                        <input id="uploadfile" type="file" class="real-upload" accept="image/*" onchange="readURL(this)" multiple>
+                        <input id="uploadfile" type="file" class="real-upload" accept="image/*" onchange="readURL(this)"
+                            multiple>
                     </div>
                 </div>
                 <div class="popuptitle">
                     <span>이름</span>
                     <br>
-                    <input id="productname" placeholder="상품의 이름"/>
+                    <input id="productname" placeholder="상품의 이름" />
                 </div>
                 <div class="popuptitle">
                     <span>설명</span>
                     <br>
-                    <input id="productinfo" placeholder="상품의 설명"/>
+                    <input id="productinfo" placeholder="상품의 설명" />
                 </div>
                 <div class="popuptitle">
                     <span>가격</span>
                     <br>
-                    <input id="productprice" placeholder="상품의 가격 (숫자)"/><i class="fa-solid fa-dollar-sign"></i>
+                    <input id="productprice" placeholder="상품의 가격 (숫자)" /><i class="fa-solid fa-dollar-sign"></i>
                 </div>
                 <div class="popupaction">
                     <div class="popupcancel">
@@ -116,8 +181,8 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
-                document.getElementById('preview').src = e.target.result;
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
             } else {
@@ -131,65 +196,66 @@
 
         var temp = window.location.search.split('=');
         var myMarket = decodeURI(temp[1].split('&')[0]);
-        var myStore = decodeURI(temp[2].split('&')[0]).replace( /_/gi, ' ');
+        var myStore = decodeURI(temp[2].split('&')[0]).replace(/_/gi, ' ');
         var myCategory = decodeURI(temp[3]);
-        var mainHtml = ["","","",""];
+        var mainHtml = ["", "", "", ""];
         var beforeSelectedMenu = $("input[name='menu']:checked").val();
 
         // 방 참가
-        socket.emit('join',myMarket,myStore);
-        
+        socket.emit('join', myMarket, myStore);
+
         $('#storeName').text('가게명 : ' + myStore);
 
         // 메뉴 init
-        socket.emit('mainInitReq',myMarket,myStore,myCategory);
+        socket.emit('mainInitReq', myMarket, myStore, myCategory);
         // 배달 요청 init
-        socket.emit('otherInitReq',myMarket,myStore,myCategory);
+        socket.emit('otherInitReq', myMarket, myStore, myCategory);
 
-        function show () {
+        function show() {
+            console.log("이거맞음");
             document.querySelector(".modalbackground").className = "modalbackground show";
         }
 
-        function cancel () { 
+        function cancel() {
             document.querySelector(".modalbackground").className = "modalbackground";
         }
 
         // 상품추가
-        function ok(){
+        function ok() {
             var imgurl = document.getElementById("preview").src;
             var name = document.getElementById("productname").value;
             var info = document.getElementById("productinfo").value;
             var price = document.getElementById("productprice").value;
             var imgfile = document.getElementById("uploadfile").files[0];
 
-            if(name.length < 1){
+            if (name.length < 1) {
                 window.alert("상품 이름을 입력해주세요.");
                 return;
             }
-            if(price.length < 1){
+            if (price.length < 1) {
                 window.alert("가격을 정확히 입력해주세요.");
                 return;
             }
-            if(isNaN(price)){
+            if (isNaN(price)) {
                 window.alert("가격을 정확히 입력해주세요.");
                 return;
             }
-            if(Number(price) < 0){
+            if (Number(price) < 0) {
                 window.alert("가격을 정확히 입력해주세요.");
                 return;
             }
 
-            var storePathData = [myMarket,myCategory,myStore];
-            socket.emit('addProductReq',imgurl,name,info,price,imgfile,imgfile.name,storePathData);
+            var storePathData = [myMarket, myCategory, myStore];
+            socket.emit('addProductReq', imgurl, name, info, price, imgfile, imgfile.name, storePathData);
         }
 
-        function deliveryOk(e){
+        function deliveryOk(e) {
             var Tag = e.split('ReqAcceptButton')[0];
             var userID = e.split('&')[1];
 
-            switch(Tag){
+            switch (Tag) {
                 case 'delivery':
-                    socket.emit('deliveryOkReq',userID,myMarket,myStore);
+                    socket.emit('deliveryOkReq', userID, myMarket, myStore);
                     break;
                 case 'receipt':
                     break;
@@ -200,39 +266,39 @@
             }
         }
 
-        function deliveryCancel(e){
+        function deliveryCancel(e) {
             var userID = e.split('&')[1];
-            socket.emit('deliveryCancelReq',userID,myMarket,myStore);
+            socket.emit('deliveryCancelReq', userID, myMarket, myStore);
         }
 
-        socket.on('deliveryCancel',function(id){
-            $('#delivery-'+id).detach();
-            $('#deliveryAddress-'+id).detach();
+        socket.on('deliveryCancel', function (id) {
+            $('#delivery-' + id).detach();
+            $('#deliveryAddress-' + id).detach();
         })
 
-        socket.on('deliveryOk',function(id){
-            var str = $('#delivery-'+id).html() + $('#deliveryAddress-'+id).html();
-            $('#delivery-'+id).detach();
-            $('#deliveryAddress-'+id).detach();
-            socket.emit('changeHtmlReq',str,'배달요청','주문접수');
+        socket.on('deliveryOk', function (id) {
+            var str = $('#delivery-' + id).html() + $('#deliveryAddress-' + id).html();
+            $('#delivery-' + id).detach();
+            $('#deliveryAddress-' + id).detach();
+            socket.emit('changeHtmlReq', str, '배달요청', '주문접수');
         })
 
-        socket.on('changeHtml',function(str,tag){
-            $(str).appendTo('.'+tag+'Box');
+        socket.on('changeHtml', function (str, tag) {
+            $(str).appendTo('.' + tag + 'Box');
         })
 
-        socket.on('mainInit',function(data, error){
-            if(error == ""){
+        socket.on('mainInit', function (data, error) {
+            if (error == "") {
                 $('.menuInfoBox').html(data);
-            }else{
+            } else {
                 location.href = "/";
             }
         })
 
-        socket.on('addProduct',function(data, error){
-            if(error == ""){
+        socket.on('addProduct', function (data, error) {
+            if (error == "") {
                 $(data).appendTo('.menuInfoBox');
-            }else{
+            } else {
                 window.alert(error);
             }
             document.querySelector(".modalbackground").className = "modalbackground";
@@ -240,15 +306,15 @@
 
         var deliveryReqData = {};
 
-        socket.on('order',function(key, data){
+        socket.on('order', function (key, data) {
             deliveryReqData[key] = data;
             window.alert('주문이 1건 접수되었습니다.');
             $(data).appendTo('.deliveryBox');
         })
 
-        $("input[name='menu']").change(function(){
+        $("input[name='menu']").change(function () {
             mainScreenClear();
-            switch($("input[name='menu']:checked").val()){
+            switch ($("input[name='menu']:checked").val()) {
                 case '1':
                     $(".menuInfoBox").show();
                     $(".add").show();
@@ -264,35 +330,37 @@
             }
         })
 
-        function mainScreenClear(){
+        function mainScreenClear() {
             $(".menuInfoBox").hide();
             $(".add").hide();
             $(".deliveryBox").hide();
             $(".receiptBox").hide();
         }
 
-        function deleteMenu(data){
+        function deleteMenu(data) {
             var menuName = data.split('-')[1];
-            var storePathData = [myMarket,myCategory,myStore];
+            var storePathData = [myMarket, myCategory, myStore];
 
-            socket.emit('deleteProductReq',storePathData,menuName);
+            socket.emit('deleteProductReq', storePathData, menuName);
         }
 
-        socket.on('deleteProduct',function(message){
+        socket.on('deleteProduct', function (message) {
             window.alert(message);
 
             // 새로고침
-            socket.emit('mainInitReq',myMarket,myStore,myCategory);
+            socket.emit('mainInitReq', myMarket, myStore, myCategory);
         })
 
-        socket.on('deliveryInit',function(str){
+        socket.on('deliveryInit', function (str) {
             $('.deliveryBox').html(str);
         })
 
-        socket.on('receiptInit',function(str){
+        socket.on('receiptInit', function (str) {
             $('.receiptBox').html(str);
         })
-        
+
     </script>
+    <script src="./js/change_store.js"></script>
 </body>
+
 </html>
