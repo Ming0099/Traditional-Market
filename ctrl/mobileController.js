@@ -36,7 +36,6 @@ function mobileInfoInitReq(marketname,category,storeName,socket){
             +'</div>';
         }
         
-        socket.emit('cartInit',data['menu'].length);
         socket.emit('infoInit',str);
     });
 }

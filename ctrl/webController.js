@@ -8,6 +8,8 @@ admin.initializeApp({
 });
 const db = firestore.getFirestore();
 
+const communicationCtrl = require("./communicationController");
+
 // 로그인요청
 function loginReq(name, id, pw, socket){
     console.log("점포 :", name,"login");
@@ -100,6 +102,27 @@ function mainInitReq(myMarket,myStore,myCategory,socket){
     }
 }
 
+// 배달요청 init 요청
+function deliveryInitReq(myMarket,myStore,myCategory,socket){
+    db.collection('점포배달').doc(myMarket+'&'+myStore).get().then((result)=>{
+        
+        var data = result.data();
+        var deliveryData;
+        var str = "";
+        var tempstr = "";
+        for(const key in data){
+            deliveryData = data[key];
+            for(let j=0; j<deliveryData['메뉴'].length; j++){
+                tempstr += deliveryData['메뉴'][j] + "<br>";
+            }
+            var address = [deliveryData['주소'],deliveryData['상세주소']];
+
+            str += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],address);
+        }
+        socket.emit('deliveryInit',str);
+    })
+}
+
 // 메인화면 상품추가 요청
 function addProductReq(imgurl,name,info,price,imgfile,imgfilename,storePathData,socket){
     var myData = "";
@@ -173,4 +196,5 @@ module.exports = {
     mainInitReq,
     addProductReq,
     deleteProductReq,
+    deliveryInitReq,
 };

@@ -61,6 +61,11 @@ io.sockets.on('connection',function(socket){
         webCtrl.deleteProductReq(storePathData,menuName,socket);
     })
 
+    // 배달요청 init 요청
+    socket.on('deliveryInitReq',function(myMarket,myStore,myCategory){
+        webCtrl.deliveryInitReq(myMarket,myStore,myCategory,socket);
+    })
+
 
     /* 모바일 */
     // 점포 정보창 초기화
@@ -123,5 +128,10 @@ io.sockets.on('connection',function(socket){
     // 주문하기(send)
     socket.on('order',function(market,store,data,price,id,address){
         communicationCtrl.oderReq(market,store,data,price,id,address,io,socket);
+    })
+
+    // 배달요청 취소
+    socket.on('deliveryCancelReq',function(userID,myMarket,myStore){
+        communicationCtrl.deliveryCancelReq(userID,myMarket,myStore,socket);
     })
 })

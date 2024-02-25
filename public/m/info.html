@@ -44,11 +44,6 @@
         // 총금액
         var price = 0;
 
-        socket.on('cartInit',function(data){
-            for(let i=0;i<data;i++){
-                cart[i] = 0;
-            }
-        })
         socket.on('changeText',function(Tag,text){
             $(Tag).text(text);
         })
@@ -60,6 +55,9 @@
         })
         function plus(data){
             data = data.split('-')[1];
+            if(cart[data] == undefined){
+                cart[data] = 0;
+            }
             cart[data]++;
             price += Number($('#menuprice-'+data).text().split('원')[0].replace( /,/gi, ''));
             var value = $('#count-'+data).val();
@@ -82,21 +80,29 @@
             }
         }
         function order(){
+            
             var sendCart = {};
             var address = [];
             var id;
+            var confirmText = "주문 하시겠습니까?\n\n";
             for(const key in cart){
                 if(cart[key] != 0){
-                    var menuName = document.getElementById('menutitle'+key).innerText;
+                    var menuName = document.getElementById('menutitle-'+key).innerText;
                     sendCart[menuName] = cart[key];
+                    confirmText += menuName + " " + cart[key] + "개\n";
                 }
             }
+            confirmText += "\n" + price + "원";
+            
             if(!isEmptyObj(sendCart)){
-                id = JSON.parse(localStorage.getItem('user'))['id'];
-                address.push(JSON.parse(localStorage.getItem('user'))['address']);
-                address.push(JSON.parse(localStorage.getItem('user'))['address2']);
-                socket.emit('order',marketname,storeName,sendCart,price,id,address);
+                if(window.confirm(confirmText)){
+                    id = JSON.parse(localStorage.getItem('user'))['id'];
+                    address.push(JSON.parse(localStorage.getItem('user'))['address']);
+                    address.push(JSON.parse(localStorage.getItem('user'))['address2']);
+                    socket.emit('order',marketname,storeName,sendCart,price,id,address);
+                }
             }
+            
         }
         function isEmptyObj(obj)  {
             if(obj.constructor === Object
@@ -105,6 +111,10 @@
             }
             return false;
         }
+        socket.on('orderComplete',function(message){
+            window.alert(message);
+            location.href = '/m/menu?menucategory='+restaurantID[0];
+        })
         socket.on('orderError',function(message){
             window.alert(message);
         })

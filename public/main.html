@@ -134,7 +134,10 @@
         
         $('#storeName').text('가게명 : ' + myStore);
 
+        // 메뉴 init
         socket.emit('mainInitReq',myMarket,myStore,myCategory);
+        // 배달 요청 init
+        socket.emit('deliveryInitReq',myMarket,myStore,myCategory);
 
         function show () {
             document.querySelector(".modalbackground").className = "modalbackground show";
@@ -173,6 +176,22 @@
             socket.emit('addProductReq',imgurl,name,info,price,imgfile,imgfile.name,storePathData);
         }
 
+        function deliveryOk(e){
+            var userID = e.split('&')[1];
+            console.log(userID,'ok');
+        }
+
+        function deliveryCancel(e){
+            var userID = e.split('&')[1];
+            socket.emit('deliveryCancelReq',userID,myMarket,myStore);
+            console.log(userID,'cancel');
+        }
+
+        socket.on('deliveryCancel',function(id){
+            $('#delivery-'+id).detach();
+            $('#deliveryAddress-'+id).detach();
+        })
+
         socket.on('mainInit',function(data, error){
             if(error == ""){
                 $('.menuInfoBox').html(data);
@@ -194,6 +213,7 @@
 
         socket.on('order',function(key, data){
             deliveryReqData[key] = data;
+            window.alert('주문이 1건 접수되었습니다.');
             $(data).appendTo('.deliveryReqBox');
         })
 
@@ -232,6 +252,10 @@
 
             // 새로고침
             socket.emit('mainInitReq',myMarket,myStore,myCategory);
+        })
+
+        socket.on('deliveryInit',function(str){
+            $('.deliveryReqBox').html(str);
         })
         
     </script>
