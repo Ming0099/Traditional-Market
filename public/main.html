@@ -57,8 +57,13 @@
             </div>
 
             <!--배달요청-->
-            <div class="deliveryReqBox" style="display: none;">
+            <div class="deliveryBox" style="display: none;">
                 <!--배달요청 추가-->
+            </div>
+
+            <!--접수완료-->
+            <div class="receiptBox" style="display: none;">
+                <!--접수완료 추가-->
             </div>
         </div>
     </div>
@@ -137,7 +142,7 @@
         // 메뉴 init
         socket.emit('mainInitReq',myMarket,myStore,myCategory);
         // 배달 요청 init
-        socket.emit('deliveryInitReq',myMarket,myStore,myCategory);
+        socket.emit('otherInitReq',myMarket,myStore,myCategory);
 
         function show () {
             document.querySelector(".modalbackground").className = "modalbackground show";
@@ -177,19 +182,41 @@
         }
 
         function deliveryOk(e){
+            var Tag = e.split('ReqAcceptButton')[0];
             var userID = e.split('&')[1];
-            console.log(userID,'ok');
+
+            switch(Tag){
+                case 'delivery':
+                    socket.emit('deliveryOkReq',userID,myMarket,myStore);
+                    break;
+                case 'receipt':
+                    break;
+                case 'delivering':
+                    break;
+                case 'deliveryComplete':
+                    break;
+            }
         }
 
         function deliveryCancel(e){
             var userID = e.split('&')[1];
             socket.emit('deliveryCancelReq',userID,myMarket,myStore);
-            console.log(userID,'cancel');
         }
 
         socket.on('deliveryCancel',function(id){
             $('#delivery-'+id).detach();
             $('#deliveryAddress-'+id).detach();
+        })
+
+        socket.on('deliveryOk',function(id){
+            var str = $('#delivery-'+id).html() + $('#deliveryAddress-'+id).html();
+            $('#delivery-'+id).detach();
+            $('#deliveryAddress-'+id).detach();
+            socket.emit('changeHtmlReq',str,'배달요청','주문접수');
+        })
+
+        socket.on('changeHtml',function(str,tag){
+            $(str).appendTo('.'+tag+'Box');
         })
 
         socket.on('mainInit',function(data, error){
@@ -214,7 +241,7 @@
         socket.on('order',function(key, data){
             deliveryReqData[key] = data;
             window.alert('주문이 1건 접수되었습니다.');
-            $(data).appendTo('.deliveryReqBox');
+            $(data).appendTo('.deliveryBox');
         })
 
         $("input[name='menu']").change(function(){
@@ -225,9 +252,10 @@
                     $(".add").show();
                     break;
                 case '2':
-                    $(".deliveryReqBox").show();
+                    $(".deliveryBox").show();
                     break;
                 case '3':
+                    $(".receiptBox").show();
                     break;
                 case '4':
                     break;
@@ -237,7 +265,8 @@
         function mainScreenClear(){
             $(".menuInfoBox").hide();
             $(".add").hide();
-            $(".deliveryReqBox").hide();
+            $(".deliveryBox").hide();
+            $(".receiptBox").hide();
         }
 
         function deleteMenu(data){
@@ -255,7 +284,11 @@
         })
 
         socket.on('deliveryInit',function(str){
-            $('.deliveryReqBox').html(str);
+            $('.deliveryBox').html(str);
+        })
+
+        socket.on('receiptInit',function(str){
+            $('.receiptBox').html(str);
         })
         
     </script>

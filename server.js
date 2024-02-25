@@ -62,8 +62,8 @@ io.sockets.on('connection',function(socket){
     })
 
     // 배달요청 init 요청
-    socket.on('deliveryInitReq',function(myMarket,myStore,myCategory){
-        webCtrl.deliveryInitReq(myMarket,myStore,myCategory,socket);
+    socket.on('otherInitReq',function(myMarket,myStore,myCategory){
+        webCtrl.otherInitReq(myMarket,myStore,myCategory,socket);
     })
 
 
@@ -134,4 +134,17 @@ io.sockets.on('connection',function(socket){
     socket.on('deliveryCancelReq',function(userID,myMarket,myStore){
         communicationCtrl.deliveryCancelReq(userID,myMarket,myStore,socket);
     })
+
+    // 배달요청 수락
+    socket.on('deliveryOkReq',function(userID,myMarket,myStore){
+        communicationCtrl.deliveryOkReq(userID,myMarket,myStore,socket);
+    })
+
+
+
+    // html 변환
+    socket.on('changeHtmlReq',function(str,before,after){
+        communicationCtrl.changeHtmlReq(str,before,after,socket);
+    })
 })
+

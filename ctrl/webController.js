@@ -102,13 +102,14 @@ function mainInitReq(myMarket,myStore,myCategory,socket){
     }
 }
 
-// 배달요청 init 요청
-function deliveryInitReq(myMarket,myStore,myCategory,socket){
+// 서브화면 init 요청
+function otherInitReq(myMarket,myStore,myCategory,socket){
     db.collection('점포배달').doc(myMarket+'&'+myStore).get().then((result)=>{
         
         var data = result.data();
         var deliveryData;
-        var str = "";
+        var deliveryStr = "";
+        var receiptStr = "";
         var tempstr = "";
         for(const key in data){
             deliveryData = data[key];
@@ -117,9 +118,22 @@ function deliveryInitReq(myMarket,myStore,myCategory,socket){
             }
             var address = [deliveryData['주소'],deliveryData['상세주소']];
 
-            str += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],address);
+            switch(deliveryData['상태']){
+                case '배달요청':
+                    deliveryStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],address,'배달요청');
+                    break;
+                case '주문접수':
+                    receiptStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],address,'주문접수');
+                    break;
+                case '배달중':
+                    break;
+                case '배달완료':
+                    break;
+            }
         }
-        socket.emit('deliveryInit',str);
+
+        socket.emit('deliveryInit',deliveryStr);
+        socket.emit('receiptInit',receiptStr);
     })
 }
 
@@ -196,5 +210,5 @@ module.exports = {
     mainInitReq,
     addProductReq,
     deleteProductReq,
-    deliveryInitReq,
+    otherInitReq,
 };
