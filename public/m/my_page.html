@@ -158,6 +158,10 @@
         }
         function write_save(text_find) { //수정 모달창에서 저장
             if (text_find.includes('market') === true) { //알맞은 시장인지 확인
+                if(document.getElementById('markets').value == ""){
+                    alert("시장이름을 정확히 입력해주세요");
+                    return;
+                }
                 name = document.getElementById('markets').value;
                 var check = 0;
                 for (var item of marketData) {
@@ -172,10 +176,14 @@
                     write_cancel();
                 }
                 else {
-                    alert("시장을 다시 입력하시오");
+                    alert("시장이름을 정확히 입력해주세요");
                 }
             }
             else {
+                if(document.getElementById('content').value == ""){
+                    alert("다시 입력해주세요");
+                    return;
+                }
                 sel_textbox.value = document.getElementById('content').value;
                 document.getElementById('content').value = "";
                 write_cancel();

@@ -64,7 +64,6 @@ function deliveryCancelReq(userID,myMarket,myStore,socket){
 
 // 배달요청 수락
 function deliveryOkReq(userID,myMarket,myStore,socket){
-    console.log(userID,myMarket,myStore);
     db.collection('유저배달').doc(userID).update({
         [myStore+'.상태'] : '주문접수'
     }).then(()=>{

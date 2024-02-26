@@ -270,6 +270,72 @@ function correction(storePathData,userData,score,text,socket){
     })
 }
 
+// 배달현황 init
+function mobileDeliveryInit(userData,socket){
+    db.collection('유저배달').doc(userData['id']).get().then((result)=>{
+        const data = result.data();
+        var str = "";
+        var progressVal = 0;
+        var menuStr = "";
+        var elapsedTime =  "";
+
+        for(const key in data){
+            menuStr = createDeliveryMenu(data[key]['메뉴']);
+            progressVal = changeProgressValue(data[key]['상태']);
+            elapsedTime = getElapsedTime(data[key]['시간'],new Date());
+            str += '<div class="deliverystate1">'
+                + '<span class="textview1"><b>'+data[key]['상태']+'</b></span> '
+                + '<div class="textcontainer1">'
+                + '<span><b>'+key+'</b></span>'
+                + '<span style="font-size:14px;">'+menuStr+'</span>'
+                + '<span style="font-size:14px;">'+elapsedTime+'분 전'+'</span>'
+                + '</div>'
+                + '<div class = "progressbar">'
+                + '<progress value="'+progressVal+'" max="100" id="pb"></progress>'
+                + '<div class="labels">'
+                + '<div class="label">배달요청</div>'
+                + '<div class="label">주문접수</div>'
+                + '<div class="label">배달중</div>'
+                + '<div class="label">배달완료</div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+                + '<div class="Block"></div>';
+        }
+        socket.emit('deliveryInit', str);
+    })
+}
+
+function changeProgressValue(state){
+    switch(state){
+        case '배달요청':
+            return 0;
+        case '주문접수':
+            return 33;
+        case '배달중':
+            return 66;
+        case '배달완료':
+            return 100;
+    }
+}
+
+function createDeliveryMenu(menu){
+    var str = "";
+    for(let i=0 ;i<menu.length;i++){
+        str += menu[i] + ', ';
+    }
+    return str.slice(0,-2);
+}
+
+function getElapsedTime(before,after){
+    const beforeSec = before._seconds;
+    const afterSec = Math.floor(after.getTime() / 1000);
+    const diffSec = afterSec - beforeSec;
+    const diffMin = Math.floor(diffSec / 60);
+
+    return diffMin;
+}
+
 module.exports = {
     mobileInfoInitReq,
     mobileMenuInit,
@@ -279,4 +345,5 @@ module.exports = {
     mobileReviewInitReq,
     writeComplete,
     correction,
+    mobileDeliveryInit,
 };

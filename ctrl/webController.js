@@ -156,12 +156,10 @@ function addProductReq(imgurl,name,info,price,imgfile,imgfilename,storePathData,
                 expires: '03-09-2491'
             }).then(signedUrls => {
                 db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
-                    "menu" : {
-                        [name] :{
-                            imgurl : signedUrls[0],
-                            info : info,
-                            price : price
-                        }
+                    ["menu."+name] : {
+                        imgurl : signedUrls[0],
+                        info : info,
+                        price : price
                     }
                     
                 }).then(()=>{

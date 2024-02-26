@@ -14,7 +14,15 @@
     ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io.connect();
+        window.onload = function(){
+            var socket = io.connect();
+
+            socket.emit('mobileDeliveryInit',JSON.parse(localStorage.getItem('user')));
+
+            socket.on('deliveryInit',function(str){
+                $(str).appendTo('body');
+            })
+        }
 
         function back(){
             location.href = "/m";
@@ -27,22 +35,5 @@
         <span id="order">배달현황</span>
     </div>
     <span class = originblock></span>
-    <div class="deliverystate1">
-        <span class="textview1"><b>배송 상태</b></span>  
-        <div class="textcontainer1">
-            <span>가게 이름</span>
-            <span>배달 메뉴</span>
-        </div>
-        <div class = "progressbar">
-			<progress value="33" max="100" id="pb"></progress>
-            <div class="labels">
-                <div class="label">배달요청</div>
-                <div class="label">주문접수</div>
-                <div class="label">배달중</div>
-                <div class="label">배달완료</div>
-            </div>
-        </div>
-    </div>
-    <div class="Block"></div>
 </body>
 </html>

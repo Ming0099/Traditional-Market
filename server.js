@@ -118,6 +118,11 @@ io.sockets.on('connection',function(socket){
         mobileCtrl.correction(storePathData, userData, score, text,socket);
     })
 
+    // 배달현황 init
+    socket.on('mobileDeliveryInit',function(userData){
+        mobileCtrl.mobileDeliveryInit(userData,socket);
+    })
+
 
     /* 통신 */
     // 점포 방 참가
