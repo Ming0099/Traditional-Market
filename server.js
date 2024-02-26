@@ -160,6 +160,11 @@ io.sockets.on('connection',function(socket){
         communicationCtrl.receiptOkReq(userID, myMarket, myStore,socket);
     })
 
+    // 배달중 -> 배달완료
+    socket.on('deliveringOkReq',function(userID, myMarket, myStore){
+        communicationCtrl.deliveringOkReq(userID, myMarket, myStore,socket);
+    })
+
 
 
     // html 변환

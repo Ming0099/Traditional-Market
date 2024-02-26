@@ -73,9 +73,14 @@
                 <!--접수완료 추가-->
             </div>
 
-            <!---->
+            <!--배달중-->
             <div class="deliveringBox" style="display: none;">
-                <!--접수완료 추가-->
+                <!--배달중 추가-->
+            </div>
+
+            <!--배달완료-->
+            <div class="deliveryCompleteBox" style="display: none;">
+                <!--배달완료 추가-->
             </div>
         </div>
     </div>
@@ -289,6 +294,7 @@
                     socket.emit('receiptOkReq', userID, myMarket, myStore);
                     break;
                 case 'delivering':
+                    socket.emit('deliveringOkReq', userID, myMarket, myStore);
                     break;
                 case 'deliveryComplete':
                     break;
@@ -317,6 +323,13 @@
             $('#delivery-' + id).detach();
             $('#deliveryAddress-' + id).detach();
             socket.emit('changeHtmlReq', str, '주문접수', '배달중');
+        })
+
+        socket.on('deliveringOk',function(id){
+            var str = $('#delivery-' + id).html() + $('#deliveryAddress-' + id).html();
+            $('#delivery-' + id).detach();
+            $('#deliveryAddress-' + id).detach();
+            socket.emit('changeHtmlReq', str, '배달중', '배달완료');
         })
 
         socket.on('changeHtml', function (str, tag) {
@@ -365,6 +378,7 @@
                     $(".deliveringBox").show();
                     break;
                 case '5':
+                    $(".deliveryCompleteBox").show();
                     break;
             }
         })
@@ -374,7 +388,7 @@
             $(".add").hide();
             $(".deliveryBox").hide();
             $(".receiptBox").hide();
-            $(".deliveringBox").hide();
+            $(".deliveryCompleteBox").hide();
         }
 
         function deleteMenu(data) {
@@ -402,6 +416,11 @@
         socket.on('deliveringInit', function(str){
             $('.deliveringBox').html(str);
         })
+
+        socket.on('deliveryCompleteStrInit',function(str){
+            $('.deliveryCompleteBox').html(str);
+        })
+
 
     </script>
     <script src="./js/change_store.js"></script>

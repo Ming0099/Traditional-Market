@@ -98,7 +98,7 @@ function createOrder(id,tempstr,price,date,address,condition){
             break;
         case '배달완료':
             tag = 'deliveryComplete';
-            okIcon = '';
+            okIcon = '<i class="fa-solid fa-motorcycle"></i>';
             break;
     }
     var str = '<div class="deliveryReqMenuBox" id=delivery-'+id+'>'
@@ -130,6 +130,9 @@ function createOrder(id,tempstr,price,date,address,condition){
 
     if(condition == '배달중'){
         str = str.replace('<button id="'+tag+'ReqCancelButton-'+id+'" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x"></i></button>','');
+    }else if(condition == '배달완료'){
+        str = str.replace('<button id="'+tag+'ReqCancelButton-'+id+'" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x"></i></button>','')
+        str = str.replace('<button id="'+tag+'ReqAcceptButton-'+id+'" style="background-color: #1A73E8;" onclick="deliveryOk(this.id)"><i class="fa-solid fa-motorcycle"></i></button>','')
     }
 
     return str;
@@ -155,6 +158,8 @@ function changeHtmlReq(str,before,after,socket){
     if(after == '배달중'){
         str = str.replace('<button id="'+afterTag+'ReqCancelButton-'+id+'" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x" aria-hidden="true"></i></button>','');
         str = str.replace('#1A73E8','#0dc7ce');
+    }else if(after == '배달완료'){str = str.replace('<button id="'+afterTag+'ReqCancelButton-'+id+'" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x" aria-hidden="true"></i></button>','');
+        str = str.replace('<button id="'+afterTag+'ReqAcceptButton-'+id+'" style="background-color: #0dc7ce;" onclick="deliveryOk(this.id)"><i class="fa-solid fa-motorcycle" aria-hidden="true"></i></button>','');
     }
     
 
@@ -183,7 +188,7 @@ function changeIcon(condition){
         case '배달중':
             return '"fa-solid fa-motorcycle"';
         case '배달완료':
-            return '';
+            return '"fa-solid fa-motorcycle"';
     }
 }
 
@@ -200,6 +205,19 @@ function receiptOkReq(userID, myMarket, myStore, socket){
     })
 }
 
+// 배달중 -> 배달완료
+function deliveringOkReq(userID, myMarket, myStore, socket){
+    db.collection('유저배달').doc(userID).update({
+        [myStore+'.상태'] : '배달완료'
+    }).then(()=>{
+        db.collection('점포배달').doc(myMarket+'&'+myStore).update({
+            [userID+'.상태'] : '배달완료'
+        }).then(()=>{
+            socket.emit('deliveringOk',userID);
+        })
+    })
+}
+
 module.exports = {
     oderReq,
     createOrder,
@@ -207,4 +225,5 @@ module.exports = {
     deliveryOkReq,
     changeHtmlReq,
     receiptOkReq,
+    deliveringOkReq,
 };

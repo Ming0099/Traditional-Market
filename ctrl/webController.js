@@ -111,6 +111,7 @@ function otherInitReq(myMarket,myStore,myCategory,socket){
         var deliveryStr = "";
         var receiptStr = "";
         var deliveringStr = "";
+        var deliveryCompleteStr = "";
         var tempstr = "";
         for(const key in data){
             deliveryData = data[key];
@@ -131,6 +132,7 @@ function otherInitReq(myMarket,myStore,myCategory,socket){
                     deliveringStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],deliveryData['시간']._seconds,address,'배달중');
                     break;
                 case '배달완료':
+                    deliveryCompleteStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],deliveryData['시간']._seconds,address,'배달완료');
                     break;
             }
         }
@@ -138,6 +140,7 @@ function otherInitReq(myMarket,myStore,myCategory,socket){
         socket.emit('deliveryInit',deliveryStr);
         socket.emit('receiptInit',receiptStr);
         socket.emit('deliveringInit',deliveringStr);
+        socket.emit('deliveryCompleteStrInit',deliveryCompleteStr);
     })
 }
 
