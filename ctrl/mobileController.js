@@ -49,10 +49,14 @@ function mobileMenuInit(marketname,category,socket){
             
             if(doc.id != 'temp'){
                 var myData = doc.data();
+                var imgurl = myData.imgurl;
+                if(imgurl == ""){
+                    imgurl = "image/none.jpg"
+                }
 
                 str += '<div class="Box" onclick="clickmenu(this.id)" id=' + doc.id.replace( / /gi, '_') + '>'
                     +'<div class="imageBox">'
-                        +'<img src=' + myData.imgurl + '>'
+                        +'<img src=' + imgurl + '>'
                         +'</div>'
                         +'<div class="textBox">'
                             +'<br>'

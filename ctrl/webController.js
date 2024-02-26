@@ -225,7 +225,6 @@ function popupInitReq(myMarket, myStore, myCategory, socket){
 
 // 정보 변경 요청
 function storeInfoChange(storePathData,delivery_cash, order_min_cash, start_time, end_time, bestMenuArray, imgfile, socket){
-    console.log(storePathData,delivery_cash, order_min_cash, start_time, end_time, bestMenuArray, imgfile);
     if(imgfile != null){
         const storage = admin.storage();
 

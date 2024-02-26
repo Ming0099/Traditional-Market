@@ -228,7 +228,6 @@
         })
 
         function show() {
-            console.log("이거맞음");
             document.querySelector(".modalbackground").className = "modalbackground show";
         }
 
@@ -244,6 +243,10 @@
             var price = document.getElementById("productprice").value;
             var imgfile = document.getElementById("uploadfile").files[0];
 
+            if(imgfile == undefined){
+                window.alert("상품 이미지를 등록해주세요.");
+                return;
+            }
             if (name.length < 1) {
                 window.alert("상품 이름을 입력해주세요.");
                 return;
