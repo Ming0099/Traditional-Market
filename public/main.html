@@ -46,7 +46,11 @@
             </div>
             <div class="menuBox">
                 <input type="radio" name="menu" value="4" id="menu4">
-                <label for="menu4">배달완료</label>
+                <label for="menu4">배달중</label>
+            </div>
+            <div class="menuBox">
+                <input type="radio" name="menu" value="5" id="menu5">
+                <label for="menu5">배달완료</label>
             </div>
         </div>
         <div class="managementBox">
@@ -66,6 +70,11 @@
 
             <!--접수완료-->
             <div class="receiptBox" style="display: none;">
+                <!--접수완료 추가-->
+            </div>
+
+            <!---->
+            <div class="deliveringBox" style="display: none;">
                 <!--접수완료 추가-->
             </div>
         </div>
@@ -270,13 +279,14 @@
 
         function deliveryOk(e) {
             var Tag = e.split('ReqAcceptButton')[0];
-            var userID = e.split('&')[1];
+            var userID = e.split('-')[1];
 
             switch (Tag) {
                 case 'delivery':
                     socket.emit('deliveryOkReq', userID, myMarket, myStore);
                     break;
                 case 'receipt':
+                    socket.emit('receiptOkReq', userID, myMarket, myStore);
                     break;
                 case 'delivering':
                     break;
@@ -286,7 +296,7 @@
         }
 
         function deliveryCancel(e) {
-            var userID = e.split('&')[1];
+            var userID = e.split('-')[1];
             socket.emit('deliveryCancelReq', userID, myMarket, myStore);
         }
 
@@ -300,6 +310,13 @@
             $('#delivery-' + id).detach();
             $('#deliveryAddress-' + id).detach();
             socket.emit('changeHtmlReq', str, '배달요청', '주문접수');
+        })
+
+        socket.on('receiptOk',function(id){
+            var str = $('#delivery-' + id).html() + $('#deliveryAddress-' + id).html();
+            $('#delivery-' + id).detach();
+            $('#deliveryAddress-' + id).detach();
+            socket.emit('changeHtmlReq', str, '주문접수', '배달중');
         })
 
         socket.on('changeHtml', function (str, tag) {
@@ -345,6 +362,9 @@
                     $(".receiptBox").show();
                     break;
                 case '4':
+                    $(".deliveringBox").show();
+                    break;
+                case '5':
                     break;
             }
         })
@@ -354,6 +374,7 @@
             $(".add").hide();
             $(".deliveryBox").hide();
             $(".receiptBox").hide();
+            $(".deliveringBox").hide();
         }
 
         function deleteMenu(data) {
@@ -376,6 +397,10 @@
 
         socket.on('receiptInit', function (str) {
             $('.receiptBox').html(str);
+        })
+
+        socket.on('deliveringInit', function(str){
+            $('.deliveringBox').html(str);
         })
 
     </script>

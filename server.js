@@ -155,6 +155,11 @@ io.sockets.on('connection',function(socket){
         communicationCtrl.deliveryOkReq(userID,myMarket,myStore,socket);
     })
 
+    // 접수완료 -> 배달중
+    socket.on('receiptOkReq',function(userID, myMarket, myStore){
+        communicationCtrl.receiptOkReq(userID, myMarket, myStore,socket);
+    })
+
 
 
     // html 변환

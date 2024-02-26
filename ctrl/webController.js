@@ -110,9 +110,11 @@ function otherInitReq(myMarket,myStore,myCategory,socket){
         var deliveryData;
         var deliveryStr = "";
         var receiptStr = "";
+        var deliveringStr = "";
         var tempstr = "";
         for(const key in data){
             deliveryData = data[key];
+            tempstr = "";
             for(let j=0; j<deliveryData['메뉴'].length; j++){
                 tempstr += deliveryData['메뉴'][j] + "<br>";
             }
@@ -120,12 +122,13 @@ function otherInitReq(myMarket,myStore,myCategory,socket){
 
             switch(deliveryData['상태']){
                 case '배달요청':
-                    deliveryStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],address,'배달요청');
+                    deliveryStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],deliveryData['시간']._seconds,address,'배달요청');
                     break;
                 case '주문접수':
-                    receiptStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],address,'주문접수');
+                    receiptStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],deliveryData['시간']._seconds,address,'주문접수');
                     break;
                 case '배달중':
+                    deliveringStr += communicationCtrl.createOrder(key,tempstr,deliveryData['가격'],deliveryData['시간']._seconds,address,'배달중');
                     break;
                 case '배달완료':
                     break;
@@ -134,6 +137,7 @@ function otherInitReq(myMarket,myStore,myCategory,socket){
 
         socket.emit('deliveryInit',deliveryStr);
         socket.emit('receiptInit',receiptStr);
+        socket.emit('deliveringInit',deliveringStr);
     })
 }
 

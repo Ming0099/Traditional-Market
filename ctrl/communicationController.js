@@ -40,7 +40,7 @@ function oderReq(market,store,data,price,id,address,io,socket){
                     시간 : today,
                 }
             }).then(()=>{ // 저장완료시 점포웹에 전달
-                var str = createOrder(id,tempstr,price,address,'배달요청');
+                var str = createOrder(id,tempstr,price,today.getTime() / 1000,address,'배달요청');
                     
                 socket.emit('orderComplete','주문을 완료했습니다');
                 io.sockets.in(market+'&'+store).emit('order', id, str);
@@ -51,6 +51,7 @@ function oderReq(market,store,data,price,id,address,io,socket){
 
 // 배달요청 취소
 function deliveryCancelReq(userID,myMarket,myStore,socket){
+    console.log(userID,myMarket,myStore);
     db.collection('유저배달').doc(userID).update({
         [myStore] : firestore.FieldValue.delete()
     }).then(()=>{
@@ -75,9 +76,12 @@ function deliveryOkReq(userID,myMarket,myStore,socket){
     })
 }
 
-function createOrder(id,tempstr,price,address,condition){
+function createOrder(id,tempstr,price,date,address,condition){
     var tag = "";
     var okIcon = "";
+    var okButtonBackground = "#1A73E8";
+    var newDate = new Date(Number(date)*1000);
+    var dateStr = (newDate.getMonth()+1) + '월 ' + newDate.getDate() + '일 ' + newDate.getHours() + ':' + newDate.getMinutes();
     switch(condition){
         case '배달요청':
             tag = 'delivery';
@@ -88,8 +92,9 @@ function createOrder(id,tempstr,price,address,condition){
             okIcon = '<i class="fa-solid fa-motorcycle"></i>';
             break;
         case '배달중':
+            okButtonBackground = "#0dc7ce";
             tag = 'delivering';
-            okIcon = '';
+            okIcon = '<i class="fa-solid fa-motorcycle"></i>';
             break;
         case '배달완료':
             tag = 'deliveryComplete';
@@ -102,10 +107,11 @@ function createOrder(id,tempstr,price,address,condition){
     +'<span id="deliveryReqMenu">주문목록</span><br>'
     +'<span id="deliveryReqMenuDetail">' + tempstr + '</span><br>'
     +'<span id="deliveryReqPrice">가격 : ' + price + '원</span><br>'
+    +'<span id="deliveryReqDate">주문일시 : ' + dateStr + '</span><br>'
     +'</div>'
     +'<div class="deliveryReqButton">'
-    +'<button id="' + tag + 'ReqCancelButton&' + id + '" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x"></i></button>'
-    +'<button id="' + tag + 'ReqAcceptButton&' + id + '" style="background-color: #1A73E8;" onclick="deliveryOk(this.id)">' + okIcon + '</button>'
+    +'<button id="' + tag + 'ReqCancelButton-' + id + '" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x"></i></button>'
+    +'<button id="' + tag + 'ReqAcceptButton-' + id + '" style="background-color: '+okButtonBackground+';" onclick="deliveryOk(this.id)">' + okIcon + '</button>'
     +'</div>'
     +'</div>'
     +'<div class="deliveryReqAddressBox"  id=deliveryAddress-'+id+'>'
@@ -121,6 +127,10 @@ function createOrder(id,tempstr,price,address,condition){
     +'</div>'
     +'</div>'
     +'</div>';
+
+    if(condition == '배달중'){
+        str = str.replace('<button id="'+tag+'ReqCancelButton-'+id+'" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x"></i></button>','');
+    }
 
     return str;
 }
@@ -141,6 +151,11 @@ function changeHtmlReq(str,before,after,socket){
 
     str = '<div class="deliveryReqMenuBox" id=delivery-'+id+'>' + topStr + '</div>' 
     + '<div class="deliveryReqAddressBox" id="deliveryAddress-'+id+'">' + bottomStr + '</div>';
+
+    if(after == '배달중'){
+        str = str.replace('<button id="'+afterTag+'ReqCancelButton-'+id+'" onclick="deliveryCancel(this.id)"><i class="fa-solid fa-x" aria-hidden="true"></i></button>','');
+        str = str.replace('#1A73E8','#0dc7ce');
+    }
     
 
     socket.emit('changeHtml',str,afterTag);
@@ -166,10 +181,23 @@ function changeIcon(condition){
         case '주문접수':
             return '"fa-solid fa-motorcycle"';
         case '배달중':
-            return '';
+            return '"fa-solid fa-motorcycle"';
         case '배달완료':
             return '';
     }
+}
+
+// 접수완료 -> 배달중
+function receiptOkReq(userID, myMarket, myStore, socket){
+    db.collection('유저배달').doc(userID).update({
+        [myStore+'.상태'] : '배달중'
+    }).then(()=>{
+        db.collection('점포배달').doc(myMarket+'&'+myStore).update({
+            [userID+'.상태'] : '배달중'
+        }).then(()=>{
+            socket.emit('receiptOk',userID);
+        })
+    })
 }
 
 module.exports = {
@@ -178,4 +206,5 @@ module.exports = {
     deliveryCancelReq,
     deliveryOkReq,
     changeHtmlReq,
+    receiptOkReq,
 };
