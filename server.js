@@ -66,6 +66,16 @@ io.sockets.on('connection',function(socket){
         webCtrl.otherInitReq(myMarket,myStore,myCategory,socket);
     })
 
+    // 정보 변경 팝업창 init 요청
+    socket.on('popupInitReq',function(myMarket, myStore, myCategory){
+        webCtrl.popupInitReq(myMarket, myStore, myCategory,socket);
+    })
+
+    // 정보 변경 요청
+    socket.on('storeInfoChange',function(storePathData,delivery_cash, order_min_cash, start_time, end_time, bestMenuArray, imgfile){
+        webCtrl.storeInfoChange(storePathData,delivery_cash, order_min_cash, start_time, end_time, bestMenuArray, imgfile,socket);
+    })
+
 
     /* 모바일 */
     // 점포 정보창 초기화

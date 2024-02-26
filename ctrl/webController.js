@@ -63,7 +63,7 @@ function signUpReq(marketName, storeName, myCategory, myId, myPw, socket){
             }
         });
         db.collection('전통시장').doc(marketName).collection(myCategory).doc(storeName).set({
-            bestmenu : ['','',''],
+            bestmenu : ['없음','없음','없음'],
             imgurl : "",
             maxtime : 0,
             mintime : 0,
@@ -202,6 +202,62 @@ function deleteProductReq(storePathData,menuName,socket){
     });
 }
 
+// 정보 변경 팝업창 init
+function popupInitReq(myMarket, myStore, myCategory, socket){
+    db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).get().then((result)=>{
+        var data = result.data();
+
+        socket.emit('changeImage','previewStore',data['imgurl']);
+        socket.emit('changeValue','delivery_cash',data['tip']);
+        socket.emit('changeValue','order_min_cash',data['minamount']);
+        socket.emit('changeValue','start_time',data['mintime']);
+        socket.emit('changeValue','end_time',data['maxtime']);
+
+        for(const key in data['menu']){
+            socket.emit('bestMenuInit',key);
+        }
+        for(let i=0; i<3; i++){
+            socket.emit('changeValue','best'+(i+1),data['bestmenu'][i]);
+        }
+        
+    })
+}
+
+// 정보 변경 요청
+function storeInfoChange(storePathData,delivery_cash, order_min_cash, start_time, end_time, bestMenuArray, imgfile, socket){
+    console.log(storePathData,delivery_cash, order_min_cash, start_time, end_time, bestMenuArray, imgfile);
+    if(imgfile != null){
+        const storage = admin.storage();
+
+        async function uploadFromMemory() {
+            await storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/thumbnail/'+ 'thumbnail.jpg').save(imgfile);
+
+            const fileRef = storage.bucket('vacation2023-2.appspot.com').file(storePathData[0]+'/'+storePathData[2]+'/thumbnail/'+ 'thumbnail.jpg');
+            
+            return fileRef.getSignedUrl({
+                action: 'read',
+                expires: '03-09-2491'
+            }).then(signedUrls => {
+                db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
+                    imgurl : signedUrls[0]
+                })
+            });
+        }
+        
+        uploadFromMemory();
+    }
+
+    db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
+        tip : Number(delivery_cash),
+        minamount : Number(order_min_cash),
+        mintime : Number(start_time),
+        maxtime : Number(end_time),
+        bestmenu : bestMenuArray,
+    }).then(()=>{
+        socket.emit('storeInfoChangeComplete');
+    })
+}
+
 module.exports = {
     loginReq,
     signUpReq,
@@ -209,4 +265,6 @@ module.exports = {
     addProductReq,
     deleteProductReq,
     otherInitReq,
+    popupInitReq,
+    storeInfoChange,
 };

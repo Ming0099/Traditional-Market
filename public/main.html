@@ -84,7 +84,7 @@
                         <img id="previewStore">
                     </div>
                     <div class="imgupload">
-                        <input id="changefile" type="file" class="real-upload" accept="image/*" onchange="readURL(this)"
+                        <input id="changefile" type="file" class="real-upload" accept="image/*" onchange="readURL(this,'previewStore')"
                             multiple>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                 <div class="popuptitle">
                     <span>배달시간</span>
                     <br>
-                    <input id="start_time" placeholder="숫자" class="times" type="number"/>분 ~ </span>
+                    <input id="start_time" placeholder="숫자" class="times" type="number"/><span>분 ~ </span>
                     <input id="end_time" placeholder="숫자" class="times" type="number"/><span>분</span>
                 </div>
                 <div class="popuptitle">
@@ -109,17 +109,17 @@
                     <br>
                     <span>1. </span>
                     <select id="best1">
-                        <option value="rttre">없음</option>
+                        <option value="없음">없음</option>
                     </select>
                     <br>
                     <span>2. </span>
                     <select id="best2" name>
-                        <option value="dsad">없음</option>
+                        <option value="없음">없음</option>
                     </select>
                     <br>
                     <span>3. </span>
                     <select id="best3">
-                        <option value="ds">없음</option>
+                        <option value="없음">없음</option>
                     </select>
                 </div>
                 <div class="popupaction">
@@ -147,7 +147,7 @@
                         <img id="preview">
                     </div>
                     <div class="imgupload">
-                        <input id="uploadfile" type="file" class="real-upload" accept="image/*" onchange="readURL(this)"
+                        <input id="uploadfile" type="file" class="real-upload" accept="image/*" onchange="readURL(this,'preview')"
                             multiple>
                     </div>
                 </div>
@@ -178,15 +178,15 @@
         </div>
     </div>
     <script>
-        function readURL(input) {
+        function readURL(input,id) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById(id).src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
             } else {
-                document.getElementById('preview').src = "";
+                document.getElementById(id).src = "";
             }
         }
     </script>
@@ -210,6 +210,22 @@
         socket.emit('mainInitReq', myMarket, myStore, myCategory);
         // 배달 요청 init
         socket.emit('otherInitReq', myMarket, myStore, myCategory);
+        // 정보 변경 팝업 init
+        socket.emit('popupInitReq', myMarket, myStore, myCategory);
+
+        socket.on('changeValue',function(id,str){
+            document.getElementById(id).value = str;
+        })
+
+        socket.on('changeImage',function(id,src){
+            document.getElementById(id).src = src;
+        })
+
+        socket.on('bestMenuInit', function(menu){
+            for(let i=1; i<=3; i++){
+                $("#best"+i).append('<option value="'+menu+'">'+menu+'</option>');
+            }
+        })
 
         function show() {
             console.log("이거맞음");
