@@ -114,6 +114,7 @@ function mobileSignUpReq(id, pw, nickname, oftenmarket, address, address2, socke
                 socket.emit('signUp',myRoute,errorMessage);
             })
             db.collection('유저배달').doc(id).set({});
+            db.collection('배달완료').doc(id).set({});
         }
     });
 }
