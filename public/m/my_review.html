@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="css/my_riview.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>주문 내역</title>
+    <script 
+        src="https://kit.fontawesome.com/9f8bb06fc7.js" 
+        crossorigin="anonymous"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        
+    </script>
+</head>
+<body>
+    <div class="logoBox">
+        <span id="back" onclick="back()"><i class="fa-solid fa-chevron-left"></i></span>
+        <span id="order">작성한 리뷰</span>
+    </div>
+    <span class = originblock></span>
+    <div class="reviewBox">
+        <div class="reviewInfoBox">
+            <div class="InfoBox">
+                <span id="title">장춘동 왕족발 보쌈<button><i class="fa-solid fa-trash-can"></i></button></span>
+                <span id="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                <span id="text">맛있네요</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
