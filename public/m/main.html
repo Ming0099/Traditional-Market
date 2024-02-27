@@ -61,6 +61,13 @@
                 location.href = '/m/delivery';
             }
         }
+        function toPurchase(){
+            if(localStorage.getItem('mlogin') != 'success'){
+                window.alert('로그인 후 이용해주세요.');
+            }else{
+                location.href = '/m/purchase';
+            }
+        }
         
     </script>
 </head>
@@ -83,7 +90,7 @@
                     </li>
 
                     <li>
-                      <a href="#"><i class="fa-solid fa-cart-shopping"></i> 구매내역</a>
+                      <a href="#" onclick="toPurchase()"><i class="fa-solid fa-cart-shopping"></i> 구매내역</a>
                     </li>
 
                     <li>

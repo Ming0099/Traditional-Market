@@ -310,6 +310,53 @@ function mobileDeliveryInit(userData,socket){
     })
 }
 
+// 구매내역 init
+function purchaseInitReq(userID, socket){
+    db.collection('배달완료').doc(userID).get().then((result)=>{
+        var data = result.data();
+
+        str = "";
+        for(const key in data){
+            str += createPurchaseHtml(key, data[key]['가게명'], data[key]['가격'], data[key]['메뉴']);
+        }
+
+        socket.emit('purchaseInit', str);
+    })
+}
+
+function createPurchaseHtml(time, store, price, menuArray){
+    var menuStr = "";
+    for(let i=0; i<menuArray.length; i++){
+        menuStr += menuArray[i] + ', ';
+    }
+    menuStr = menuStr.slice(0,-2)
+    var newDate = new Date(Number(time)*1000);
+    var hour = '';
+    var min = '';
+    if(newDate.getHours() < 10){
+        hour = '0' + newDate.getHours();
+    }else{
+        hour = newDate.getHours();
+    }
+    if(newDate.getMinutes() < 10){
+        min = '0' + newDate.getMinutes();
+    }else{
+        min = newDate.getMinutes();
+    }
+    var dateStr = newDate.getFullYear() + '년 ' + (newDate.getMonth()+1) + '월 ' + newDate.getDate() + '일 ' + hour + ':' + min;
+
+    var str = '';
+        str += '<div class="purchasestate">'
+        + '<div class="state"><b>배달 완료</b></div>'
+        + '<div class="storename">'+store+'</div>'
+        + '<div class="menu">'+menuStr+'</div>'
+        + '<div class="time">주문일시 : '+dateStr+'</div>'
+        + '</div>'
+        + '<div class="Block"></div>'
+
+    return str;
+}
+
 function changeProgressValue(state){
     switch(state){
         case '배달요청':
@@ -350,4 +397,5 @@ module.exports = {
     writeComplete,
     correction,
     mobileDeliveryInit,
+    purchaseInitReq,
 };

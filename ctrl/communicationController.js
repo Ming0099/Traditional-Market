@@ -207,13 +207,22 @@ function receiptOkReq(userID, myMarket, myStore, socket){
 
 // 배달중 -> 배달완료
 function deliveringOkReq(userID, myMarket, myStore, socket){
-    db.collection('유저배달').doc(userID).update({
-        [myStore+'.상태'] : '배달완료'
+    db.collection('점포배달').doc(myMarket+'&'+myStore).update({
+        [userID+'.상태'] : '배달완료'
     }).then(()=>{
-        db.collection('점포배달').doc(myMarket+'&'+myStore).update({
-            [userID+'.상태'] : '배달완료'
-        }).then(()=>{
-            socket.emit('deliveringOk',userID);
+        socket.emit('deliveringOk',userID);
+    })
+    db.collection('유저배달').doc(userID).get().then((result)=>{
+        var data = result.data()[myStore];
+        const sec = Number(data['시간']._seconds);
+        
+        db.collection('배달완료').doc(userID).update({
+            [sec+".가게명"] : myStore,
+            [sec+".메뉴"] : data['메뉴'],
+            [sec+".가격"] : data['가격'],
+        })
+        db.collection('유저배달').doc(userID).update({
+            [myStore] : firestore.FieldValue.delete()
         })
     })
 }

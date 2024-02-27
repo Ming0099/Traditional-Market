@@ -133,6 +133,11 @@ io.sockets.on('connection',function(socket){
         mobileCtrl.mobileDeliveryInit(userData,socket);
     })
 
+    // 구매내역 init
+    socket.on('purchaseInitReq',function(userID){
+        mobileCtrl.purchaseInitReq(userID,socket);
+    })
+
 
     /* 통신 */
     // 점포 방 참가

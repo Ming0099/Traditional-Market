@@ -61,4 +61,9 @@ router.get('/m/delivery',function(req,res){
     res.sendFile(path.join(__dirname, '../public/m/delivery.html'));
 })
 
+// 모바일 주문내역 페이지
+router.get('/m/purchase',function(req,res){
+    res.sendFile(path.join(__dirname, '../public/m/purchase.html'));
+})
+
 module.exports = router;

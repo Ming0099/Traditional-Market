@@ -14,7 +14,17 @@
     ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io.connect();
+        window.onload = function(){
+            var socket = io.connect();
+
+            var userData = JSON.parse(localStorage.getItem('user'));
+
+            socket.emit('purchaseInitReq',userData.id);
+
+            socket.on('purchaseInit',function(str){
+                $(str).appendTo('body');
+            })
+        }
 
         function back(){
             location.href = "/m";
@@ -24,15 +34,8 @@
 <body>
     <div class="logoBox">
         <span id="back" onclick="back()"><i class="fa-solid fa-chevron-left"></i></span>
-        <span id="order">주문내역</span>
+        <span id="order">구매내역</span>
     </div>
     <span class = originblock></span>
-    <div class="purchasestate">
-        <div class="state"><b>배달 완료</b></div>
-        <div class="storename">장춘동 왕족발 보쌈</div>
-        <div class="menu">보쌈 1개</div>
-        <div class="time">주문일시 : 2024년 02월 26일 오전 01:24</div>
-    </div>
-    <div class="Block"></div>
 </body>
 </html>
