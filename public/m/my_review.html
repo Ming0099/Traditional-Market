@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <link rel="stylesheet" href="css/my_riview.css">
+    <link rel="stylesheet" href="css/my_review.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>주문 내역</title>
@@ -14,7 +14,26 @@
     ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        
+        window.onload = function(){
+            // 소켓을 생성합니다.
+            var socket = io.connect();
+
+            var userData = JSON.parse(localStorage.getItem('user'));
+
+            socket.emit('my_reviewInitReq',userData.id);
+
+            socket.on('my_reviewInit',function(str){
+                $(str).appendTo('.reviewBox');
+            })
+        }
+
+        function back(){
+            location.href = "/m";
+        }
+
+        function deleteReview(e){
+            console.log(e);
+        }
     </script>
 </head>
 <body>
@@ -24,13 +43,7 @@
     </div>
     <span class = originblock></span>
     <div class="reviewBox">
-        <div class="reviewInfoBox">
-            <div class="InfoBox">
-                <span id="title">장춘동 왕족발 보쌈<button><i class="fa-solid fa-trash-can"></i></button></span>
-                <span id="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                <span id="text">맛있네요</span>
-            </div>
-        </div>
+        <!--작성한 리뷰 추가-->
     </div>
 </body>
 </html>

@@ -68,6 +68,13 @@
                 location.href = '/m/purchase';
             }
         }
+        function toMyreview(){
+            if(localStorage.getItem('mlogin') != 'success'){
+                window.alert('로그인 후 이용해주세요.');
+            }else{
+                location.href = '/m/my_review';
+            }
+        }
         
     </script>
 </head>
@@ -94,7 +101,7 @@
                     </li>
 
                     <li>
-                        <a href="#"><i class="fa-solid fa-pen"></i> 남긴리뷰</a>
+                        <a href="#" onclick="toMyreview()"><i class="fa-solid fa-pen"></i> 남긴리뷰</a>
                     </li>
                   </ul>
             </div>

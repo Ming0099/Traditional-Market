@@ -66,4 +66,9 @@ router.get('/m/purchase',function(req,res){
     res.sendFile(path.join(__dirname, '../public/m/purchase.html'));
 })
 
+// 모바일 작성한리뷰 페이지
+router.get('/m/my_review',function(req,res){
+    res.sendFile(path.join(__dirname, '../public/m/my_review.html'));
+})
+
 module.exports = router;

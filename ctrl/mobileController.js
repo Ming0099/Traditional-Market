@@ -239,6 +239,14 @@ function writeComplete(storePathData,userData,score,text,socket){
                 text : text,
             }
         }).then(()=>{
+            db.collection('유저').doc(userData.id).update({
+                ['review.'+storePathData[2]] : {
+                    rate : score,
+                    text : text,
+                    market : storePathData[0],
+                    category : storePathData[1],
+                }
+            })
             socket.emit('complete','리뷰 작성이 완료되었습니다.');
         })
     })
@@ -269,6 +277,14 @@ function correction(storePathData,userData,score,text,socket){
                 text : text,
             }
         }).then(()=>{
+            db.collection('유저').doc(userData.id).update({
+                ['review.'+storePathData[2]] : {
+                    rate : score,
+                    text : text,
+                    market : storePathData[0],
+                    category : storePathData[1],
+                }
+            })
             socket.emit('complete','리뷰 수정이 완료되었습니다.');
         })
     })
@@ -357,6 +373,39 @@ function createPurchaseHtml(time, store, price, menuArray){
     return str;
 }
 
+// 작성한리뷰 init
+function my_reviewInitReq(userID, socket){
+    db.collection('유저').doc(userID).get().then((result)=>{
+        var str = "";
+        var data = result.data()['review'];
+        var storePathData = [];
+
+        for(const key in data){
+            storePathData.push(data[key]['market']);
+            storePathData.push(data[key]['category']);
+            storePathData.push(key);
+            str += createMyreviewHtml(storePathData,data[key]['rate'],data[key]['text']);
+            storePathData = [];
+        }
+
+        socket.emit('my_reviewInit',str);
+    })
+}
+
+function createMyreviewHtml(storePathData, rate, text){
+    var starStr = createStar(Number(rate));
+    var buttonID = storePathData[0] + '-' + storePathData[1] + '-' + storePathData[2];
+    var str = "";
+    str += '<div class="reviewInfoBox">'
+        + '<div class="InfoBox">'
+        + '<span id="title">'+storePathData[2]+'<button id="'+buttonID+'" onclick="deleteReview(this.id)"><i class="fa-solid fa-trash-can"></i></button></span>'
+        + '<span id="star">'+starStr+'</span>'
+        + '<span id="text">'+text+'</span>'
+        + '</div>'
+        + '</div>'
+    return str;
+}
+
 function changeProgressValue(state){
     switch(state){
         case '배달요청':
@@ -398,4 +447,5 @@ module.exports = {
     correction,
     mobileDeliveryInit,
     purchaseInitReq,
+    my_reviewInitReq,
 };

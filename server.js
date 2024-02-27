@@ -138,6 +138,11 @@ io.sockets.on('connection',function(socket){
         mobileCtrl.purchaseInitReq(userID,socket);
     })
 
+    // 작성한리뷰 init
+    socket.on('my_reviewInitReq',function(userID){
+        mobileCtrl.my_reviewInitReq(userID,socket);
+    })
+
 
     /* 통신 */
     // 점포 방 참가
