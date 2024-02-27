@@ -228,7 +228,9 @@ function writeComplete(storePathData,userData,score,text,socket){
         }
         averageRate += Number(score);
 
-        averageRate /= Object.keys(reviewData).length;
+        if(Object.keys(reviewData).length != 0){
+            averageRate /= Object.keys(reviewData).length;
+        }
 
 
         db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
@@ -266,7 +268,9 @@ function correction(storePathData,userData,score,text,socket){
         }
         averageRate += Number(score);
 
-        averageRate /= Object.keys(reviewData).length;
+        if(Object.keys(reviewData).length != 0){
+            averageRate /= Object.keys(reviewData).length;
+        }
 
 
         db.collection('전통시장').doc(storePathData[0]).collection(storePathData[1]).doc(storePathData[2]).update({
@@ -396,7 +400,7 @@ function createMyreviewHtml(storePathData, rate, text){
     var starStr = createStar(Number(rate));
     var buttonID = storePathData[0] + '-' + storePathData[1] + '-' + storePathData[2];
     var str = "";
-    str += '<div class="reviewInfoBox">'
+    str += '<div class="reviewInfoBox" id="'+storePathData[2].replace(/ /gi, '_') +'">'
         + '<div class="InfoBox">'
         + '<span id="title">'+storePathData[2]+'<button id="'+buttonID+'" onclick="deleteReview(this.id)"><i class="fa-solid fa-trash-can"></i></button></span>'
         + '<span id="star">'+starStr+'</span>'

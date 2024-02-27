@@ -14,9 +14,10 @@
     ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        // 소켓을 생성합니다.
+        var socket = io.connect();
+
         window.onload = function(){
-            // 소켓을 생성합니다.
-            var socket = io.connect();
 
             var userData = JSON.parse(localStorage.getItem('user'));
 
@@ -25,6 +26,12 @@
             socket.on('my_reviewInit',function(str){
                 $(str).appendTo('.reviewBox');
             })
+
+            socket.on('deleteReview',function(id){
+                console.log(id);
+                $('#' + id.replace(/ /gi, '_')).detach();
+                alert('삭제가 완료되었습니다.');
+            })
         }
 
         function back(){
@@ -32,7 +39,13 @@
         }
 
         function deleteReview(e){
-            console.log(e);
+            if(confirm('정말로 삭제하시겠습니까?')){
+                const userID = JSON.parse(localStorage.getItem('user')).id;
+                const myMarket = e.split('-')[0];
+                const myCategory = e.split('-')[1];
+                const myStore = e.split('-')[2];
+                socket.emit('deleteReviewReq',userID,myMarket,myStore,myCategory);
+            }
         }
     </script>
 </head>

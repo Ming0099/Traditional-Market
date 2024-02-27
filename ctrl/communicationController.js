@@ -227,6 +227,35 @@ function deliveringOkReq(userID, myMarket, myStore, socket){
     })
 }
 
+// 리뷰삭제
+function deleteReviewReq(userID,myMarket,myStore,myCategory,socket){
+    db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).update({
+        ['review.'+userID] : firestore.FieldValue.delete()
+    }).then(()=>{
+        db.collection('유저').doc(userID).update({
+            ['review.'+myStore] : firestore.FieldValue.delete()
+        }).then(()=>{
+            socket.emit('deleteReview',myStore);
+        })
+        db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).get().then((result)=>{
+            var reviewData = result.data()['review'];
+            var averageRate = 0;
+
+            for(const key in reviewData){
+                averageRate += Number(reviewData[key]['rate']);
+            }
+    
+            if(Object.keys(reviewData).length != 0){
+                averageRate /= Object.keys(reviewData).length;
+            }
+
+            db.collection('전통시장').doc(myMarket).collection(myCategory).doc(myStore).update({
+                rate : averageRate,
+            })
+        })
+    })
+}
+
 module.exports = {
     oderReq,
     createOrder,
@@ -235,4 +264,5 @@ module.exports = {
     changeHtmlReq,
     receiptOkReq,
     deliveringOkReq,
+    deleteReviewReq,
 };

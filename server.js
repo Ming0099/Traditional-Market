@@ -175,6 +175,11 @@ io.sockets.on('connection',function(socket){
         communicationCtrl.deliveringOkReq(userID, myMarket, myStore,socket);
     })
 
+    // 리뷰 삭제
+    socket.on('deleteReviewReq',function(userID,myMarket,myStore,myCategory){
+        communicationCtrl.deleteReviewReq(userID,myMarket,myStore,myCategory,socket);
+    })
+
 
 
     // html 변환
